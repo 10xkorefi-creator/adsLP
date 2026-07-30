@@ -1,0 +1,115 @@
+---
+const testimonials = [
+  {
+    quote:
+      "What impressed us most was the document management system. Our clients can upload documents, track filing status, and access reports 24/7. It's elevated our firm's professional image significantly.",
+    author: "Aakarsh MG",
+    role: "Managing Partner at Aakar & More",
+    icon: "A",
+    logo: "/acc-n-more.png",
+  },
+  {
+    quote:
+      "AI Accountant has made financial management effortless. Expense categorization and bills automation simplify coordination with my CA, and this new dashboard helps track business performance. I suggested adding bank charge tracking, and AI Accountant built it; truly customer-focused!",
+    author: "Nishu B.",
+    role: "Co-Founder, UrbanWatch",
+    icon: "N",
+    logo: "/urbanwatch.png",
+  },
+  {
+    quote:
+      "Tracking invoices and payments manually was a challenge for us. AI Accountant's AP/AR Dashboard gives complete visibility into our bills and invoices, making reconciliation effortless.",
+    author: "Pragya Chandra",
+    role: "Director of Business Development, Trip India",
+    icon: "P",
+    logo: "/trip-india.png",
+  },
+  {
+    quote:
+      "AI Accountant makes it so much easier to move away from spreadsheets and have receivables and payables tracking in one place.",
+    author: "Bhupendra Singh",
+    role: "Managing Partner, Trifactorial Consulting LLP",
+    icon: "B",
+    logo: "/trifactorial.png",
+  },
+  {
+    quote:
+      "AI Accountant has really simplified things for us. The way it automatically matches transactions to invoices has saved us so much time.",
+    author: "Dhruvin Patel",
+    role: "CEO at Virtual Tech",
+    icon: "D",
+    logo: "/virtual-tech-logo.jpg",
+  },
+  {
+    quote:
+      "Through AI Accountant with just one click, I can create customized reports and track my finances in real-time, no more waiting until the year-end to see where things stand.",
+    author: "Chandan Prasad",
+    role: "Head Operation at SUBHAG® HealthTech",
+    icon: "C",
+    logo: "/subhag.png",
+  },
+  {
+    quote:
+      "The Tally integration with AI Accountant has been transformative. What earlier took hours of manual entry now syncs seamlessly in minutes, and the best part is how it connects directly with our dashboards. We can now show clients clean, real-time numbers during every review meeting.",
+    author: "Vadivel CMA",
+    role: "Founder at Vadivel & Co",
+    icon: "V",
+  },
+  {
+    quote:
+      "AI Accountant has eliminated the repetitive task of converting bank statements into Tally entries. This has increased efficiency across our team and allows us to focus on reconciliations and analysis rather than manual pasting. The way it blends into our traditional accounting processes is seamless.",
+    author: "Sunil",
+    role: "Calculators - The Tax People",
+    icon: "S",
+  },
+];
+---
+
+<!-- Section 3: Testimonials Grid (Exact Copy & Styling from Image) -->
+<section class="py-16 md:py-24 bg-purple-50/60" id="tally-reviews">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <h2
+        class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-2"
+      >
+        Real Results, <span class="text-purple-600">Real Success</span>
+      </h2>
+      <p class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+        Hear from Our Clients
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        testimonials.map((item) => (
+          <article class="bg-[#E6E6E6] border border-slate-300/60 rounded-2xl p-7 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <p class="text-slate-700 font-medium text-sm sm:text-base leading-relaxed mb-6">
+              "{item.quote}"
+            </p>
+            <div class="pt-4 border-t border-slate-300/70 mt-auto flex flex-col items-start gap-2.5">
+              {item.logo ? (
+                <img
+                  src={item.logo}
+                  alt={item.author}
+                  class="h-8 max-w-[130px] object-contain object-left mb-0.5"
+                />
+              ) : (
+                <div class="w-9 h-9 rounded-full bg-slate-900 text-white font-bold text-sm flex items-center justify-center shrink-0 mb-0.5">
+                  {item.icon}
+                </div>
+              )}
+              <div>
+                <h3 class="font-bold text-slate-900 text-base leading-snug">
+                  {item.author}
+                </h3>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">
+                  {item.role}
+                </p>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,482 @@
+---
+---
+
+<!-- Section 1: Generic AI Accountant Hero Header & Demo Form -->
+<header class="relative pt-6 pb-12 lg:pt-14 lg:pb-20 bg-white overflow-hidden" id="hero">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-14 items-center">
+      
+      <!-- Left Hero Content Column -->
+      <div class="lg:col-span-6 flex flex-col justify-center">
+        
+        <!-- Subtle Pill Tag -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-100/80 border border-purple-200 text-purple-900 text-xs sm:text-sm font-bold w-max mb-4">
+          <span class="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span>
+          AI-Powered Accounting Automation
+        </div>
+
+        <!-- H1 HEADLINE -->
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tight mb-4 text-slate-950 text-center lg:text-left">
+          Automate your books, reconciliations & reporting with AI
+        </h1>
+
+        <!-- Description Paragraph -->
+        <p class="text-base sm:text-lg text-slate-600 font-normal leading-relaxed mb-6 max-w-xl text-center lg:text-left">
+          AI Accountant connects with your existing accounting tools, bank feeds, and invoices — eliminating 80% of manual entry and providing real-time financial clarity for your business or firm.
+        </p>
+
+        <!-- Trust Certifications -->
+        <div class="flex text-xs sm:text-sm font-medium text-slate-500 tracking-wide flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-1.5">
+          <span class="inline-flex items-center gap-1">
+            <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            ISO Certified
+          </span>
+          <span class="text-slate-300">•</span>
+          <span class="inline-flex items-center gap-1">
+            <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            SOC 2 Type II
+          </span>
+          <span class="text-slate-300">•</span>
+          <span class="text-slate-900 font-bold">300M+ Transactions Analyzed</span>
+        </div>
+
+      </div>
+
+      <!-- Right Form Card Column -->
+      <div class="lg:col-span-6" id="lead-form-container">
+        <div class="bg-white border-2 border-slate-200/90 rounded-2xl p-5 sm:p-6 lg:p-8 shadow-sm relative">
+          
+          <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">Book a Demo</h2>
+              <p class="text-xs text-slate-500 font-semibold mt-0.5">See AI Accountant in action with your team</p>
+            </div>
+            <span class="inline-flex items-center gap-1 bg-purple-100 text-purple-900 text-xs font-bold px-2.5 py-1 rounded border border-purple-200 shrink-0">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse"></span>
+              Free Consultation
+            </span>
+          </div>
+
+          <form id="genericLeadForm" class="space-y-3" novalidate>
+            
+            <!-- Field 1: First Name -->
+            <div>
+              <input 
+                type="text" 
+                id="generic-first_name" 
+                name="first_name" 
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm sm:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" 
+                placeholder="Name *" 
+                required 
+              />
+              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-first_name-error">Please enter your name</span>
+            </div>
+
+            <!-- Field 2: Email -->
+            <div>
+              <input 
+                type="email" 
+                id="generic-email" 
+                name="email" 
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm sm:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" 
+                placeholder="Email Address *" 
+                required 
+              />
+              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-email-error">Please enter a valid email address</span>
+            </div>
+
+            <!-- Field 3: Phone -->
+            <div>
+              <div class="flex items-center">
+                <span class="inline-flex items-center px-3.5 h-11 sm:h-12 bg-purple-100/90 border border-r-0 border-purple-200/80 rounded-l text-slate-700 text-sm font-bold select-none shrink-0">
+                  +91
+                </span>
+                <input 
+                  type="tel" 
+                  id="generic-lg__phone" 
+                  name="lg__phone" 
+                  maxlength="10"
+                  inputmode="numeric"
+                  class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded-r text-slate-900 text-sm sm:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" 
+                  placeholder="Phone number *" 
+                  required 
+                />
+              </div>
+              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-lg__phone-error">Phone number must be exactly 10 digits</span>
+            </div>
+
+            <!-- Field 4: Software -->
+            <div>
+              <select 
+                id="generic-which_accounting_tool_do_you_use" 
+                name="which_accounting_tool_do_you_use" 
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm sm:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" 
+                required
+              >
+                <option value="" disabled selected>Which accounting tool do you use? *</option>
+                <option value="Tally">Tally</option>
+                <option value="Both">Both</option>
+                <option value="Zoho Books">Zoho Books</option>
+                <option value="Others">Others</option>
+              </select>
+              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-which_accounting_tool_do_you_use-error">Please select your accounting tool</span>
+            </div>
+
+            <!-- Field 5: Team Size -->
+            <div>
+              <select 
+                id="generic-accounting_team_size" 
+                name="accounting_team_size" 
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm sm:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" 
+                required
+              >
+                <option value="" disabled selected>Team size *</option>
+                <option value="0">0</option>
+                <option value="1-3">1-3</option>
+                <option value="3-5">3-5</option>
+                <option value="5-10">5-10</option>
+                <option value="10+">10+</option>
+              </select>
+              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-accounting_team_size-error">Please select team size</span>
+            </div>
+
+            <!-- Field 6: Role -->
+            <div>
+              <select 
+                id="generic-which_best_describes_you" 
+                name="which_best_describes_you" 
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm sm:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" 
+                required
+              >
+                <option value="" disabled selected>Which best describes you? *</option>
+                <option value="CA firm: automating my clients' books">CA firm: automating my clients' books</option>
+                <option value="Business owner: automating my company's accounting">Business owner: automating my company's accounting</option>
+                <option value="Finance team: looking to automate our books">Finance team: looking to automate our books</option>
+                <option value="Channel partner: looking to resell AiA">Channel partner: looking to resell AiA</option>
+              </select>
+              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-which_best_describes_you-error">Please select your role</span>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              id="Tally-Automation" 
+              class="w-full h-12 sm:h-13 mt-2 bg-slate-950 hover:bg-black text-white font-extrabold text-base lg:text-lg rounded border border-slate-950 shadow-sm transition-all cursor-pointer flex items-center justify-center tracking-wide"
+            >
+              Submit
+            </button>
+            <span id="generic-general-error" class="text-xs font-semibold text-[#dc2626] hidden mt-2 text-center block">
+              Couldn't save your details. Please try again.
+            </span>
+
+            <p class="text-[10px] sm:text-xs text-slate-500 text-center pt-1 leading-tight font-medium">
+              By submitting this form, you agree to our <a href="https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/6a44d5f5042f7ab8d58990ad_Privacy%20Policy_AIA_6.0_300626%20%201%20(1).pdf" target="_blank" rel="noopener" class="text-purple-700 font-bold underline hover:text-purple-900">Privacy Policy</a>.
+            </p>
+          </form>
+
+          <div id="genericSuccessMessage" class="hidden text-center py-6">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full inline-flex items-center justify-center mb-2">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 class="text-lg font-black text-slate-950 mb-1">You're All Set!</h3>
+            <p class="text-slate-600 text-xs sm:text-sm font-semibold">Thank you for requesting a demo. Our team will contact you shortly.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<script>
+  const CONFIG = {
+    contactSource: "AI Accountant",
+    defaultRouterId: "4963",
+    channelPartnerRouterId: "6273",
+    triggerSelector: "#Tally-Automation",
+    webhookUrl: "https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96",
+    blockedTools: ["Zoho Books", "Others"],
+    webhookOnAllPaths: false,
+    debug: true
+  };
+
+  const CLICK_ID_MAP: Record<string, string> = {
+    gclid: 'hs_google_click_id',
+    fbclid: 'hs_facebook_click_id',
+    li_fat_id: 'hs_linkedin_click_id'
+  };
+
+  const UTM_PARAMS = [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_term',
+    'utm_content',
+    'placements',
+    'utm_device'
+  ];
+
+  function ensureRevenueHeroLoaded(): Promise<void> {
+    return new Promise((resolve) => {
+      if ((window as any).RevenueHero) return resolve();
+      const existingScript = document.querySelector('script[src*="revenuehero.io"]');
+      if (existingScript) {
+        existingScript.addEventListener('load', () => resolve());
+        setTimeout(() => resolve(), 1200);
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://assets.revenuehero.io/scheduler.min.js';
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.head.appendChild(script);
+    });
+  }
+
+  function captureAttribution(form: HTMLFormElement) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const attributionData: Record<string, string> = {};
+
+    Object.entries(CLICK_ID_MAP).forEach(([paramName, storageKey]) => {
+      const urlValue = urlParams.get(paramName);
+      if (urlValue) {
+        sessionStorage.setItem(storageKey, urlValue);
+        attributionData[storageKey] = urlValue;
+      } else {
+        const storedValue = sessionStorage.getItem(storageKey);
+        if (storedValue) attributionData[storageKey] = storedValue;
+      }
+    });
+
+    UTM_PARAMS.forEach((paramName) => {
+      const value = urlParams.get(paramName);
+      if (value) attributionData[paramName] = value;
+    });
+
+    attributionData['contact_source'] = CONFIG.contactSource;
+
+    Object.entries(attributionData).forEach(([key, val]) => {
+      if (val) {
+        let input = form.querySelector(`input[name="${key}"]`) as HTMLInputElement;
+        if (!input) {
+          input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          form.appendChild(input);
+        }
+        input.value = val;
+      }
+    });
+
+    return attributionData;
+  }
+
+  function initGenericForm() {
+    const form = document.getElementById('genericLeadForm') as HTMLFormElement;
+    if (!form) return;
+
+    captureAttribution(form);
+
+    const nameInput = document.getElementById('generic-first_name') as HTMLInputElement;
+    const emailInput = document.getElementById('generic-email') as HTMLInputElement;
+    const phoneInput = document.getElementById('generic-lg__phone') as HTMLInputElement;
+    const softwareSelect = document.getElementById('generic-which_accounting_tool_do_you_use') as HTMLSelectElement;
+    const teamSizeSelect = document.getElementById('generic-accounting_team_size') as HTMLSelectElement;
+    const roleSelect = document.getElementById('generic-which_best_describes_you') as HTMLSelectElement;
+    const generalErr = document.getElementById('generic-general-error');
+    const successMsg = document.getElementById('genericSuccessMessage');
+
+    let isRhExecuting = false;
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', () => {
+        phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+      });
+    }
+
+    const setFieldError = (fieldElement: HTMLElement | null, errorSpan: HTMLElement | null, isError: boolean) => {
+      if (fieldElement) {
+        if (isError) {
+          fieldElement.style.border = '2px solid #dc2626';
+          fieldElement.style.backgroundColor = '#fef2f2';
+        } else {
+          fieldElement.style.border = '';
+          fieldElement.style.backgroundColor = '';
+        }
+      }
+      if (errorSpan) {
+        if (isError) {
+          errorSpan.classList.remove('hidden');
+        } else {
+          errorSpan.classList.add('hidden');
+        }
+      }
+    };
+
+    [
+      { input: nameInput, errId: 'generic-first_name-error' },
+      { input: emailInput, errId: 'generic-email-error' },
+      { input: phoneInput, errId: 'generic-lg__phone-error' },
+      { input: softwareSelect, errId: 'generic-which_accounting_tool_do_you_use-error' },
+      { input: teamSizeSelect, errId: 'generic-accounting_team_size-error' },
+      { input: roleSelect, errId: 'generic-which_best_describes_you-error' }
+    ].forEach(({ input, errId }) => {
+      if (!input) return;
+      const errSpan = document.getElementById(errId);
+      const clear = () => {
+        setFieldError(input, errSpan, false);
+        if (generalErr) generalErr.classList.add('hidden');
+      };
+      input.addEventListener('input', clear);
+      input.addEventListener('focus', clear);
+      input.addEventListener('change', clear);
+    });
+
+    const validateForm = () => {
+      let isValid = true;
+      let firstErroredField: HTMLElement | null = null;
+
+      const nameVal = nameInput?.value.trim() || '';
+      const nameErrSpan = document.getElementById('generic-first_name-error');
+      if (!nameVal) {
+        setFieldError(nameInput, nameErrSpan, true);
+        isValid = false;
+        if (!firstErroredField && nameInput) firstErroredField = nameInput;
+      } else setFieldError(nameInput, nameErrSpan, false);
+
+      const emailVal = emailInput?.value.trim() || '';
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailErrSpan = document.getElementById('generic-email-error');
+      if (!emailVal || !emailRegex.test(emailVal)) {
+        setFieldError(emailInput, emailErrSpan, true);
+        isValid = false;
+        if (!firstErroredField && emailInput) firstErroredField = emailInput;
+      } else setFieldError(emailInput, emailErrSpan, false);
+
+      const phoneDigits = (phoneInput?.value || '').replace(/\D/g, '');
+      const phoneErrSpan = document.getElementById('generic-lg__phone-error');
+      if (phoneDigits.length !== 10) {
+        setFieldError(phoneInput, phoneErrSpan, true);
+        isValid = false;
+        if (!firstErroredField && phoneInput) firstErroredField = phoneInput;
+      } else setFieldError(phoneInput, phoneErrSpan, false);
+
+      [
+        { select: softwareSelect, errId: 'generic-which_accounting_tool_do_you_use-error' },
+        { select: teamSizeSelect, errId: 'generic-accounting_team_size-error' },
+        { select: roleSelect, errId: 'generic-which_best_describes_you-error' }
+      ].forEach(({ select, errId }) => {
+        const errSpan = document.getElementById(errId);
+        if (select && !select.value) {
+          setFieldError(select, errSpan, true);
+          isValid = false;
+          if (!firstErroredField) firstErroredField = select;
+        } else if (select) setFieldError(select, errSpan, false);
+      });
+
+      if (!isValid && firstErroredField) {
+        firstErroredField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstErroredField.focus();
+      }
+
+      return isValid;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      if (isRhExecuting) return;
+      e.preventDefault();
+
+      if (generalErr) generalErr.classList.add('hidden');
+      captureAttribution(form);
+
+      const isValid = validateForm();
+      if (!isValid) return;
+
+      const formData = new FormData(form);
+      const payload: Record<string, string> = {};
+      formData.forEach((value, key) => {
+        const strVal = value.toString().trim();
+        if (strVal) payload[key] = strVal;
+      });
+
+      const toolVal = payload['which_accounting_tool_do_you_use'] || '';
+      const roleVal = payload['which_best_describes_you'] || '';
+      const isChannelPartner = roleVal.trim().toLowerCase().startsWith('channel partner');
+
+      const isBlockedTool = CONFIG.blockedTools.some(
+        (blocked) => blocked.toLowerCase() === toolVal.toLowerCase()
+      );
+
+      if (isBlockedTool) {
+        const submitBtn = document.querySelector(CONFIG.triggerSelector) as HTMLButtonElement;
+        if (submitBtn) {
+          submitBtn.style.pointerEvents = 'none';
+          submitBtn.style.opacity = '0.6';
+          submitBtn.innerText = 'Submitting...';
+        }
+
+        try {
+          const res = await fetch(CONFIG.webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ...payload,
+              __page: window.location.href,
+              __event: 'form_submit_blocked_tool'
+            })
+          });
+
+          if (!res.ok) throw new Error(`Webhook status: ${res.status}`);
+
+          form.style.display = 'none';
+          if (successMsg) successMsg.classList.remove('hidden');
+        } catch (err) {
+          if (generalErr) generalErr.classList.remove('hidden');
+          if (submitBtn) {
+            submitBtn.style.pointerEvents = 'auto';
+            submitBtn.style.opacity = '1.0';
+            submitBtn.innerText = 'Submit';
+          }
+        }
+        return;
+      }
+
+      const chosenRouterId = isChannelPartner
+        ? CONFIG.channelPartnerRouterId
+        : CONFIG.defaultRouterId;
+
+      await ensureRevenueHeroLoaded();
+
+      const oldTrigger = document.querySelector(CONFIG.triggerSelector) as HTMLElement;
+      if (oldTrigger) {
+        const clonedTrigger = oldTrigger.cloneNode(true) as HTMLElement;
+        oldTrigger.parentNode?.replaceChild(clonedTrigger, oldTrigger);
+      }
+
+      if ((window as any).RevenueHero) {
+        (window as any).hero = new (window as any).RevenueHero({
+          routerId: chosenRouterId
+        });
+
+        (window as any).hero.schedule('#genericLeadForm');
+        (window as any).hero.schedule(CONFIG.triggerSelector);
+
+        isRhExecuting = true;
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+
+        setTimeout(() => {
+          isRhExecuting = false;
+        }, 150);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGenericForm);
+  } else {
+    initGenericForm();
+  }
+  document.addEventListener('astro:page-load', initGenericForm);
+</script>
