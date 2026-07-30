@@ -1,123 +1,167 @@
 ---
+
 ---
 
 <!-- Section 1: Hero Header & Lead Form (Clean Mobile Layout with Visible Above-The-Fold Submit Button) -->
-<header class="relative pt-3 pb-8 lg:pt-14 lg:pb-20 bg-white overflow-hidden" id="hero">
+<header
+  class="relative pt-3 pb-8 lg:pt-14 lg:pb-20 bg-white overflow-hidden"
+  id="hero"
+>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-14 items-start">
-      
       <!-- Left Hero Content Column -->
       <div class="lg:col-span-6 flex flex-col justify-center">
-        
         <!-- MASSIVE H1 HEADLINE (Clean & un-smushed typography) -->
-        <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight lg:leading-[0.95] tracking-tighter mb-3 lg:mb-6 text-slate-950 text-center lg:text-left">
-          <span class="text-red-600 block font-black">
-            3 days left
-          </span>
+        <h1
+          class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight lg:leading-[0.95] tracking-tighter mb-3 lg:mb-6 text-slate-950 text-center lg:text-left"
+        >
+          <span class="text-red-600 block font-black"> 3 days left </span>
           <span class="block mt-0.5 lg:mt-2 font-black">
-            to get <span class="relative inline-block text-slate-950 underline decoration-red-500/80 decoration-2 lg:decoration-4 underline-offset-4 lg:underline-offset-8">40% off*</span>
+            to get <span
+              class="relative inline-block text-slate-950 underline decoration-red-500/80 decoration-2 lg:decoration-4 underline-offset-4 lg:underline-offset-8"
+              >40% off*</span
+            >
           </span>
         </h1>
 
         <!-- Subtle Description Paragraph: STRICTLY HIDDEN ON MOBILE (hidden lg:block) -->
-        <p class="hidden lg:block text-base sm:text-lg text-slate-600 font-normal leading-relaxed mb-6 max-w-xl">
-          Effortlessly integrate with Tally using our AI Accountant to streamline workflows, reduce manual errors, and gain real-time financial insights – empowering you to focus on growth and smarter decisions.
+        <p
+          class="hidden lg:block text-base sm:text-lg text-slate-600 font-normal leading-relaxed mb-6 max-w-xl"
+        >
+          Effortlessly integrate with Tally using our AI Accountant to
+          streamline workflows, reduce manual errors, and gain real-time
+          financial insights – empowering you to focus on growth and smarter
+          decisions.
         </p>
 
         <!-- Subtle Trust Certifications Line: STRICTLY HIDDEN ON MOBILE (hidden lg:block) -->
-        <div class="hidden lg:flex text-xs sm:text-sm font-medium text-slate-500 tracking-wide flex-wrap items-center gap-x-2 gap-y-1">
+        <div
+          class="hidden lg:flex text-xs sm:text-sm font-medium text-slate-500 tracking-wide flex-wrap items-center gap-x-2 gap-y-1"
+        >
           <span>ISO Certified</span>
           <span class="text-slate-300">•</span>
           <span>SOC 2 Type II Certified</span>
           <span class="text-slate-300">•</span>
-          <span class="text-slate-800 font-semibold">300M+ Transactions Analyzed</span>
+          <span class="text-slate-800 font-semibold"
+            >300M+ Transactions Analyzed</span
+          >
         </div>
-
       </div>
 
       <!-- Right Form Card Column (Comfortable 44px Mobile Inputs & Visible Submit Button) -->
       <div class="lg:col-span-6" id="lead-form-container">
-        <div class="bg-white border-2 border-slate-200/90 rounded-lg p-4 sm:p-6 lg:p-8 shadow-sm relative">
-          
-          <div class="flex items-center justify-between gap-2 mb-3 lg:mb-6 pb-2.5 lg:pb-4 border-b border-slate-100">
-            <h2 class="text-lg sm:text-xl lg:text-2xl font-black text-slate-950 tracking-tight">Book A Demo</h2>
-            <span class="inline-flex items-center gap-1 bg-purple-100 text-purple-900 text-xs font-bold px-2.5 py-1 rounded border border-purple-200">
-              <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse"></span>
+        <div
+          class="bg-white border-2 border-slate-200/90 rounded-lg p-4 sm:p-6 lg:p-8 shadow-sm relative"
+        >
+          <div
+            class="flex items-center justify-between gap-2 mb-3 lg:mb-6 pb-2.5 lg:pb-4 border-b border-slate-100"
+          >
+            <h2
+              class="text-lg sm:text-xl lg:text-2xl font-black text-slate-950 tracking-tight"
+            >
+              Book A Demo
+            </h2>
+            <span
+              class="inline-flex items-center gap-1 bg-purple-100 text-purple-900 text-xs font-bold px-2.5 py-1 rounded border border-purple-200"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse"
+              ></span>
               40 slots available
             </span>
           </div>
 
-          <form id="astroLeadForm" class="space-y-2.5 lg:space-y-3.5" novalidate>
-            
+          <form
+            id="astroLeadForm"
+            class="space-y-2.5 lg:space-y-3.5"
+            novalidate
+          >
             <!-- Field 1: First Name -->
             <div>
-              <input 
-                type="text" 
-                id="astro-first_name" 
-                name="first_name" 
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" 
-                placeholder="Name *" 
-                required 
+              <input
+                type="text"
+                id="astro-first_name"
+                name="first_name"
+                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                placeholder="Name *"
+                required
               />
-              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="astro-first_name-error">Please enter your name</span>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-first_name-error">Please enter your name</span
+              >
             </div>
 
             <!-- Field 2: Email -->
             <div>
-              <input 
-                type="email" 
-                id="astro-email" 
-                name="email" 
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" 
-                placeholder="Email Address *" 
-                required 
+              <input
+                type="email"
+                id="astro-email"
+                name="email"
+                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                placeholder="Email Address *"
+                required
               />
-              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="astro-email-error">Please enter a valid email address</span>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-email-error">Please enter a valid email address</span
+              >
             </div>
 
             <!-- Field 3: Phone -->
             <div>
               <div class="flex items-center">
-                <span class="inline-flex items-center px-3.5 h-11 sm:h-12 lg:h-14 bg-purple-100/90 border border-r-0 border-purple-200/80 rounded-l text-slate-700 text-sm lg:text-base font-bold select-none shrink-0">
+                <span
+                  class="inline-flex items-center px-3.5 h-11 sm:h-12 lg:h-14 bg-purple-100/90 border border-r-0 border-purple-200/80 rounded-l text-slate-700 text-sm lg:text-base font-bold select-none shrink-0"
+                >
                   +91
                 </span>
-                <input 
-                  type="tel" 
-                  id="astro-lg__phone" 
-                  name="lg__phone" 
+                <input
+                  type="tel"
+                  id="astro-lg__phone"
+                  name="lg__phone"
                   maxlength="10"
                   inputmode="numeric"
-                  class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded-r text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" 
-                  placeholder="Phone number *" 
-                  required 
+                  class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded-r text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                  placeholder="Phone number *"
+                  required
                 />
               </div>
-              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="astro-lg__phone-error">Phone number must be exactly 10 digits</span>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-lg__phone-error"
+                >Phone number must be exactly 10 digits</span
+              >
             </div>
 
             <!-- Field 4: Software -->
             <div>
-              <select 
-                id="astro-which_accounting_tool_do_you_use" 
-                name="which_accounting_tool_do_you_use" 
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" 
+              <select
+                id="astro-which_accounting_tool_do_you_use"
+                name="which_accounting_tool_do_you_use"
+                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
                 required
               >
-                <option value="" disabled selected>Which accounting tool do you use? *</option>
+                <option value="" disabled selected
+                  >Which accounting tool do you use? *</option
+                >
                 <option value="Tally">Tally</option>
                 <option value="Both">Both</option>
                 <option value="Zoho Books">Zoho Books</option>
                 <option value="Others">Others</option>
               </select>
-              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="astro-which_accounting_tool_do_you_use-error">Please select your accounting tool</span>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-which_accounting_tool_do_you_use-error"
+                >Please select your accounting tool</span
+              >
             </div>
 
             <!-- Field 5: Team Size -->
             <div>
-              <select 
-                id="astro-accounting_team_size" 
-                name="accounting_team_size" 
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" 
+              <select
+                id="astro-accounting_team_size"
+                name="accounting_team_size"
+                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
                 required
               >
                 <option value="" disabled selected>Team size *</option>
@@ -127,54 +171,98 @@
                 <option value="5-10">5-10</option>
                 <option value="10+">10+</option>
               </select>
-              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="astro-accounting_team_size-error">Please select team size</span>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-accounting_team_size-error"
+                >Please select team size</span
+              >
             </div>
 
             <!-- Field 6: Role -->
             <div>
-              <select 
-                id="astro-which_best_describes_you" 
-                name="which_best_describes_you" 
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" 
+              <select
+                id="astro-which_best_describes_you"
+                name="which_best_describes_you"
+                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
                 required
               >
-                <option value="" disabled selected>Which best describes you? *</option>
-                <option value="CA firm: automating my clients' books">CA firm: automating my clients' books</option>
-                <option value="Business owner: automating my company's accounting">Business owner: automating my company's accounting</option>
-                <option value="Finance team: looking to automate our books">Finance team: looking to automate our books</option>
-                <option value="Channel partner: looking to resell AiA">Channel partner: looking to resell AiA</option>
+                <option value="" disabled selected
+                  >Which best describes you? *</option
+                >
+                <option value="CA firm: automating my clients' books"
+                  >CA firm: automating my clients' books</option
+                >
+                <option
+                  value="Business owner: automating my company's accounting"
+                  >Business owner: automating my company's accounting</option
+                >
+                <option value="Finance team: looking to automate our books"
+                  >Finance team: looking to automate our books</option
+                >
+                <option value="Channel partner: looking to resell AiA"
+                  >Channel partner: looking to resell AiA</option
+                >
               </select>
-              <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="astro-which_best_describes_you-error">Please select your role</span>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-which_best_describes_you-error"
+                >Please select your role</span
+              >
             </div>
 
             <!-- Submit Button -->
-            <button 
-              type="submit" 
-              id="Tally-Automation" 
+            <button
+              type="submit"
+              id="Tally-Automation"
               class="w-full h-12 sm:h-13 lg:h-14 mt-1.5 lg:mt-2 bg-slate-950 hover:bg-black text-white font-extrabold text-base lg:text-lg rounded border border-slate-950 shadow-sm transition-all cursor-pointer flex items-center justify-center tracking-wide"
             >
               Submit
             </button>
-            <span id="astro-general-error" class="text-xs font-semibold text-[#dc2626] hidden mt-2 text-center block">
+            <span
+              id="astro-general-error"
+              class="text-xs font-semibold text-[#dc2626] hidden mt-2 text-center block"
+            >
               Couldn't save your details. Please try again.
             </span>
 
-            <p class="text-[10px] sm:text-xs text-slate-500 text-center pt-1 lg:pt-2 leading-tight font-medium">
-              By submitting this form, you agree to our <a href="https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/6a44d5f5042f7ab8d58990ad_Privacy%20Policy_AIA_6.0_300626%20%201%20(1).pdf" target="_blank" rel="noopener" class="text-purple-700 font-bold underline hover:text-purple-900">Privacy Policy</a> and consent to being contacted.
+            <p
+              class="text-[10px] sm:text-xs text-slate-500 text-center pt-1 lg:pt-2 leading-tight font-medium"
+            >
+              By submitting this form, you agree to our <a
+                href="https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/6a44d5f5042f7ab8d58990ad_Privacy%20Policy_AIA_6.0_300626%20%201%20(1).pdf"
+                target="_blank"
+                rel="noopener"
+                class="text-purple-700 font-bold underline hover:text-purple-900"
+                >Privacy Policy</a
+              > and consent to being contacted.
             </p>
           </form>
 
           <div id="astroSuccessMessage" class="hidden text-center py-6">
-            <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded inline-flex items-center justify-center mb-2">
-              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div
+              class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded inline-flex items-center justify-center mb-2"
+            >
+              <svg
+                class="w-6 h-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><polyline points="20 6 9 17 4 12"></polyline></svg
+              >
             </div>
-            <h3 class="text-lg font-black text-slate-950 mb-1">You're All Set!</h3>
-            <p class="text-slate-600 text-xs sm:text-sm font-semibold">Thank you for requesting a demo. Our team will contact you shortly.</p>
+            <h3 class="text-lg font-black text-slate-950 mb-1">
+              You're All Set!
+            </h3>
+            <p class="text-slate-600 text-xs sm:text-sm font-semibold">
+              Thank you for requesting a demo. Our team will contact you
+              shortly.
+            </p>
           </div>
-
         </div>
       </div>
-
     </div>
   </div>
 </header>
@@ -186,26 +274,27 @@
     defaultRouterId: "4963",
     channelPartnerRouterId: "6273",
     triggerSelector: "#Tally-Automation",
-    webhookUrl: "https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96",
+    webhookUrl:
+      "https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96",
     blockedTools: ["Zoho Books", "Others"],
     webhookOnAllPaths: false,
-    debug: true
+    debug: true,
   };
 
   const CLICK_ID_MAP: Record<string, string> = {
-    gclid: 'hs_google_click_id',
-    fbclid: 'hs_facebook_click_id',
-    li_fat_id: 'hs_linkedin_click_id'
+    gclid: "hs_google_click_id",
+    fbclid: "hs_facebook_click_id",
+    li_fat_id: "hs_linkedin_click_id",
   };
 
   const UTM_PARAMS = [
-    'utm_source',
-    'utm_medium',
-    'utm_campaign',
-    'utm_term',
-    'utm_content',
-    'placements',
-    'utm_device'
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content",
+    "placements",
+    "utm_device",
   ];
 
   function ensureRevenueHeroLoaded(): Promise<void> {
@@ -213,14 +302,16 @@
       if ((window as any).RevenueHero) {
         return resolve();
       }
-      const existingScript = document.querySelector('script[src*="revenuehero.io"]');
+      const existingScript = document.querySelector(
+        'script[src*="revenuehero.io"]',
+      );
       if (existingScript) {
-        existingScript.addEventListener('load', () => resolve());
+        existingScript.addEventListener("load", () => resolve());
         setTimeout(() => resolve(), 1200);
         return;
       }
-      const script = document.createElement('script');
-      script.src = 'https://assets.revenuehero.io/scheduler.min.js';
+      const script = document.createElement("script");
+      script.src = "https://assets.revenuehero.io/scheduler.min.js";
       script.async = true;
       script.onload = () => resolve();
       script.onerror = () => resolve();
@@ -255,15 +346,17 @@
     });
 
     // 3. Contact source
-    attributionData['contact_source'] = CONFIG.contactSource;
+    attributionData["contact_source"] = CONFIG.contactSource;
 
     // 4. Create / update hidden inputs in form
     Object.entries(attributionData).forEach(([key, val]) => {
       if (val) {
-        let input = form.querySelector(`input[name="${key}"]`) as HTMLInputElement;
+        let input = form.querySelector(
+          `input[name="${key}"]`,
+        ) as HTMLInputElement;
         if (!input) {
-          input = document.createElement('input');
-          input.type = 'hidden';
+          input = document.createElement("input");
+          input.type = "hidden";
           input.name = key;
           form.appendChild(input);
         }
@@ -275,67 +368,86 @@
   }
 
   function initLeadForm() {
-    const form = document.getElementById('astroLeadForm') as HTMLFormElement;
+    const form = document.getElementById("astroLeadForm") as HTMLFormElement;
     if (!form) return;
 
     captureAttribution(form);
 
-    const nameInput = document.getElementById('astro-first_name') as HTMLInputElement;
-    const emailInput = document.getElementById('astro-email') as HTMLInputElement;
-    const phoneInput = document.getElementById('astro-lg__phone') as HTMLInputElement;
-    const softwareSelect = document.getElementById('astro-which_accounting_tool_do_you_use') as HTMLSelectElement;
-    const teamSizeSelect = document.getElementById('astro-accounting_team_size') as HTMLSelectElement;
-    const roleSelect = document.getElementById('astro-which_best_describes_you') as HTMLSelectElement;
-    const generalErr = document.getElementById('astro-general-error');
-    const successMsg = document.getElementById('astroSuccessMessage');
+    const nameInput = document.getElementById(
+      "astro-first_name",
+    ) as HTMLInputElement;
+    const emailInput = document.getElementById(
+      "astro-email",
+    ) as HTMLInputElement;
+    const phoneInput = document.getElementById(
+      "astro-lg__phone",
+    ) as HTMLInputElement;
+    const softwareSelect = document.getElementById(
+      "astro-which_accounting_tool_do_you_use",
+    ) as HTMLSelectElement;
+    const teamSizeSelect = document.getElementById(
+      "astro-accounting_team_size",
+    ) as HTMLSelectElement;
+    const roleSelect = document.getElementById(
+      "astro-which_best_describes_you",
+    ) as HTMLSelectElement;
+    const generalErr = document.getElementById("astro-general-error");
+    const successMsg = document.getElementById("astroSuccessMessage");
 
     // Flag to allow RevenueHero submit listener to execute without interference
     let isRhExecuting = false;
 
     // Restrict phone input to digits only & max 10 digits
     if (phoneInput) {
-      phoneInput.addEventListener('input', () => {
-        phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+      phoneInput.addEventListener("input", () => {
+        phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
       });
     }
 
-    const setFieldError = (fieldElement: HTMLElement | null, errorSpan: HTMLElement | null, isError: boolean) => {
+    const setFieldError = (
+      fieldElement: HTMLElement | null,
+      errorSpan: HTMLElement | null,
+      isError: boolean,
+    ) => {
       if (fieldElement) {
         if (isError) {
-          fieldElement.style.border = '2px solid #dc2626';
-          fieldElement.style.backgroundColor = '#fef2f2';
+          fieldElement.style.border = "2px solid #dc2626";
+          fieldElement.style.backgroundColor = "#fef2f2";
         } else {
-          fieldElement.style.border = '';
-          fieldElement.style.backgroundColor = '';
+          fieldElement.style.border = "";
+          fieldElement.style.backgroundColor = "";
         }
       }
       if (errorSpan) {
         if (isError) {
-          errorSpan.classList.remove('hidden');
+          errorSpan.classList.remove("hidden");
         } else {
-          errorSpan.classList.add('hidden');
+          errorSpan.classList.add("hidden");
         }
       }
     };
 
     // Attach clear error events on input / focus / change
     [
-      { input: nameInput, errId: 'astro-first_name-error' },
-      { input: emailInput, errId: 'astro-email-error' },
-      { input: phoneInput, errId: 'astro-lg__phone-error' },
-      { input: softwareSelect, errId: 'astro-which_accounting_tool_do_you_use-error' },
-      { input: teamSizeSelect, errId: 'astro-accounting_team_size-error' },
-      { input: roleSelect, errId: 'astro-which_best_describes_you-error' }
+      { input: nameInput, errId: "astro-first_name-error" },
+      { input: emailInput, errId: "astro-email-error" },
+      { input: phoneInput, errId: "astro-lg__phone-error" },
+      {
+        input: softwareSelect,
+        errId: "astro-which_accounting_tool_do_you_use-error",
+      },
+      { input: teamSizeSelect, errId: "astro-accounting_team_size-error" },
+      { input: roleSelect, errId: "astro-which_best_describes_you-error" },
     ].forEach(({ input, errId }) => {
       if (!input) return;
       const errSpan = document.getElementById(errId);
       const clear = () => {
         setFieldError(input, errSpan, false);
-        if (generalErr) generalErr.classList.add('hidden');
+        if (generalErr) generalErr.classList.add("hidden");
       };
-      input.addEventListener('input', clear);
-      input.addEventListener('focus', clear);
-      input.addEventListener('change', clear);
+      input.addEventListener("input", clear);
+      input.addEventListener("focus", clear);
+      input.addEventListener("change", clear);
     });
 
     const validateForm = () => {
@@ -343,8 +455,8 @@
       let firstErroredField: HTMLElement | null = null;
 
       // 1. Name validation
-      const nameVal = nameInput?.value.trim() || '';
-      const nameErrSpan = document.getElementById('astro-first_name-error');
+      const nameVal = nameInput?.value.trim() || "";
+      const nameErrSpan = document.getElementById("astro-first_name-error");
       if (!nameVal) {
         setFieldError(nameInput, nameErrSpan, true);
         isValid = false;
@@ -354,9 +466,9 @@
       }
 
       // 2. Email validation
-      const emailVal = emailInput?.value.trim() || '';
+      const emailVal = emailInput?.value.trim() || "";
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const emailErrSpan = document.getElementById('astro-email-error');
+      const emailErrSpan = document.getElementById("astro-email-error");
       if (!emailVal || !emailRegex.test(emailVal)) {
         setFieldError(emailInput, emailErrSpan, true);
         isValid = false;
@@ -366,8 +478,8 @@
       }
 
       // 3. Phone validation (exactly 10 digits)
-      const phoneDigits = (phoneInput?.value || '').replace(/\D/g, '');
-      const phoneErrSpan = document.getElementById('astro-lg__phone-error');
+      const phoneDigits = (phoneInput?.value || "").replace(/\D/g, "");
+      const phoneErrSpan = document.getElementById("astro-lg__phone-error");
       if (phoneDigits.length !== 10) {
         setFieldError(phoneInput, phoneErrSpan, true);
         isValid = false;
@@ -378,9 +490,12 @@
 
       // 4. Select fields validation
       [
-        { select: softwareSelect, errId: 'astro-which_accounting_tool_do_you_use-error' },
-        { select: teamSizeSelect, errId: 'astro-accounting_team_size-error' },
-        { select: roleSelect, errId: 'astro-which_best_describes_you-error' }
+        {
+          select: softwareSelect,
+          errId: "astro-which_accounting_tool_do_you_use-error",
+        },
+        { select: teamSizeSelect, errId: "astro-accounting_team_size-error" },
+        { select: roleSelect, errId: "astro-which_best_describes_you-error" },
       ].forEach(({ select, errId }) => {
         const errSpan = document.getElementById(errId);
         if (select && !select.value) {
@@ -393,14 +508,17 @@
       });
 
       if (!isValid && firstErroredField) {
-        firstErroredField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstErroredField.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
         firstErroredField.focus();
       }
 
       return isValid;
     };
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener("submit", async (e) => {
       // If RevenueHero is dispatching, let its listener handle submission!
       if (isRhExecuting) {
         return;
@@ -408,14 +526,14 @@
 
       e.preventDefault();
 
-      if (generalErr) generalErr.classList.add('hidden');
+      if (generalErr) generalErr.classList.add("hidden");
 
       captureAttribution(form);
 
       const isValid = validateForm();
       if (!isValid) {
         if (CONFIG.debug) {
-          console.log('[DemoForm] Validation failed. Submission blocked.');
+          console.log("[DemoForm] Validation failed. Submission blocked.");
         }
         return;
       }
@@ -430,56 +548,61 @@
         }
       });
 
-      const toolVal = payload['which_accounting_tool_do_you_use'] || '';
-      const roleVal = payload['which_best_describes_you'] || '';
-      const isChannelPartner = roleVal.trim().toLowerCase().startsWith('channel partner');
+      const toolVal = payload["which_accounting_tool_do_you_use"] || "";
+      const roleVal = payload["which_best_describes_you"] || "";
+      const isChannelPartner = roleVal
+        .trim()
+        .toLowerCase()
+        .startsWith("channel partner");
 
       const isBlockedTool = CONFIG.blockedTools.some(
-        (blocked) => blocked.toLowerCase() === toolVal.toLowerCase()
+        (blocked) => blocked.toLowerCase() === toolVal.toLowerCase(),
       );
 
       // ROUTE 1: BLOCKED TOOL
       if (isBlockedTool) {
         if (CONFIG.debug) {
-          console.log('[DemoForm] Routing: BLOCKED TOOL (Webhook path)', {
+          console.log("[DemoForm] Routing: BLOCKED TOOL (Webhook path)", {
             toolVal,
             isChannelPartner,
-            chosenRouterId: null
+            chosenRouterId: null,
           });
           console.table(payload);
         }
 
-        const submitBtn = document.querySelector(CONFIG.triggerSelector) as HTMLButtonElement;
+        const submitBtn = document.querySelector(
+          CONFIG.triggerSelector,
+        ) as HTMLButtonElement;
         if (submitBtn) {
-          submitBtn.style.pointerEvents = 'none';
-          submitBtn.style.opacity = '0.6';
-          submitBtn.innerText = 'Submitting...';
+          submitBtn.style.pointerEvents = "none";
+          submitBtn.style.opacity = "0.6";
+          submitBtn.innerText = "Submitting...";
         }
 
         try {
           const res = await fetch(CONFIG.webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               ...payload,
               __page: window.location.href,
-              __event: 'form_submit_blocked_tool'
-            })
+              __event: "form_submit_blocked_tool",
+            }),
           });
 
           if (!res.ok) {
             throw new Error(`Webhook status: ${res.status}`);
           }
 
-          form.style.display = 'none';
-          if (successMsg) successMsg.classList.remove('hidden');
+          form.style.display = "none";
+          if (successMsg) successMsg.classList.remove("hidden");
         } catch (err) {
-          console.error('[DemoForm] Webhook error:', err);
-          if (generalErr) generalErr.classList.remove('hidden');
+          console.error("[DemoForm] Webhook error:", err);
+          if (generalErr) generalErr.classList.remove("hidden");
           if (submitBtn) {
-            submitBtn.style.pointerEvents = 'auto';
-            submitBtn.style.opacity = '1.0';
-            submitBtn.innerText = 'Submit';
+            submitBtn.style.pointerEvents = "auto";
+            submitBtn.style.opacity = "1.0";
+            submitBtn.innerText = "Submit";
           }
         }
         return;
@@ -491,30 +614,32 @@
         : CONFIG.defaultRouterId;
 
       if (CONFIG.debug) {
-        console.log('[DemoForm] Routing: REVENUEHERO SCHEDULER', {
+        console.log("[DemoForm] Routing: REVENUEHERO SCHEDULER", {
           toolVal,
           isChannelPartner,
-          chosenRouterId
+          chosenRouterId,
         });
         console.table(payload);
       }
 
       if (CONFIG.webhookOnAllPaths) {
         fetch(CONFIG.webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...payload,
             __page: window.location.href,
-            __event: 'form_submit_scheduled'
-          })
+            __event: "form_submit_scheduled",
+          }),
         }).catch(() => {});
       }
 
       await ensureRevenueHeroLoaded();
 
       // Replace trigger button with clone to clear any previous event bindings
-      const oldTrigger = document.querySelector(CONFIG.triggerSelector) as HTMLElement;
+      const oldTrigger = document.querySelector(
+        CONFIG.triggerSelector,
+      ) as HTMLElement;
 
       if (oldTrigger) {
         const clonedTrigger = oldTrigger.cloneNode(true) as HTMLElement;
@@ -523,7 +648,7 @@
 
       if ((window as any).RevenueHero) {
         (window as any).hero = new (window as any).RevenueHero({
-          routerId: chosenRouterId
+          routerId: chosenRouterId,
         });
 
         // Use RevenueHero's programmatic submit API to open the popup instantly
@@ -533,10 +658,10 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLeadForm);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLeadForm);
   } else {
     initLeadForm();
   }
-  document.addEventListener('astro:page-load', initLeadForm);
+  document.addEventListener("astro:page-load", initLeadForm);
 </script>
