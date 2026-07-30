@@ -526,19 +526,9 @@
           routerId: chosenRouterId
         });
 
-        // Schedule both form ID and trigger selector
-        (window as any).hero.schedule('#astroLeadForm');
-        (window as any).hero.schedule(CONFIG.triggerSelector);
-
-        // Set flag so our submit listener steps aside for RevenueHero's submit listener
-        isRhExecuting = true;
-
-        // Dispatch submit event to fire RevenueHero's scheduled handler
-        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-
-        setTimeout(() => {
-          isRhExecuting = false;
-        }, 150);
+        // Use RevenueHero's programmatic submit API to open the popup instantly
+        // without requiring a second physical click or synthetic event hacking.
+        (window as any).hero.submit(payload);
       }
     });
   }
