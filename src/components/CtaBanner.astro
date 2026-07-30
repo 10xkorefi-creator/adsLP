@@ -36,8 +36,11 @@
         const heroForm = document.getElementById('lead-form-container');
         if (heroForm) {
           heroForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          const nameField = document.getElementById('astro-name');
-          if (nameField) nameField.focus();
+          // The two hero variants prefix their fields differently.
+          const nameField =
+            document.getElementById('astro-first_name') ||
+            document.getElementById('generic-first_name');
+          if (nameField) nameField.focus({ preventScroll: true });
         }
       });
     }
