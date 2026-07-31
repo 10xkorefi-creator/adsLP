@@ -167,8 +167,9 @@ export function initLeadForm(config: LeadFormConfig): void {
       setFieldError(field, name, false);
       generalErr?.classList.add("hidden");
     };
+    // No "focus" here: validate() focuses the first bad field right after
+    // showing its error, and a focus-triggered clear would wipe it instantly.
     field.addEventListener("input", clear);
-    field.addEventListener("focus", clear);
     field.addEventListener("change", clear);
   };
 
@@ -186,40 +187,57 @@ export function initLeadForm(config: LeadFormConfig): void {
   });
 
   const validate = (): boolean => {
-    let valid = true;
-    let firstBad: HTMLElement | null = null;
-
-    const fail = (field: HTMLElement | null, name: string, message: string) => {
-      setFieldError(field, name, true, message);
-      valid = false;
-      if (!firstBad && field) firstBad = field;
+    // Checks run in visual field order; only the FIRST failing field shows
+    // its error — the user is guided through the form one step at a time.
+    type Check = {
+      field: HTMLElement | null;
+      name: string;
+      message: string;
+      ok: boolean;
     };
 
     const nameVal = nameInput?.value.trim() || "";
-    if (!nameVal) fail(nameInput, "first_name", "Please enter your name");
-    else setFieldError(nameInput, "first_name", false);
-
     const emailVal = emailInput?.value.trim() || "";
-    if (!emailVal) fail(emailInput, "email", "Please enter a valid email address");
-    else if (!EMAIL_RE.test(emailVal)) fail(emailInput, "email", "Invalid email format (e.g. name@company.com)");
-    else setFieldError(emailInput, "email", false);
-
     const digits = (phoneInput?.value || "").replace(/\D/g, "");
-    if (digits.length !== 10) fail(phoneInput, "lg__phone", "Phone number must be exactly 10 digits");
-    else setFieldError(phoneInput, "lg__phone", false);
 
-    requiredSelects.forEach((select) => {
-      if (!select.value) fail(select, select.name, "Please select an option");
-      else setFieldError(select, select.name, false);
-    });
+    const checks: Check[] = [
+      {
+        field: nameInput,
+        name: "first_name",
+        message: "Please enter your name",
+        ok: Boolean(nameVal),
+      },
+      {
+        field: emailInput,
+        name: "email",
+        message: !emailVal
+          ? "Please enter a valid email address"
+          : "Invalid email format (e.g. name@company.com)",
+        ok: Boolean(emailVal) && EMAIL_RE.test(emailVal),
+      },
+      {
+        field: phoneInput,
+        name: "lg__phone",
+        message: "Phone number must be exactly 10 digits",
+        ok: digits.length === 10,
+      },
+      ...requiredSelects.map((select) => ({
+        field: select as HTMLElement,
+        name: select.name,
+        message: "Please select an option",
+        ok: Boolean(select.value),
+      })),
+    ];
 
-    if (!valid && firstBad) {
-      const target = firstBad as HTMLElement;
-      target.scrollIntoView({ behavior: "smooth", block: "center" });
-      target.focus({ preventScroll: true });
+    const firstBad = checks.find((c) => !c.ok);
+    checks.forEach((c) => setFieldError(c.field, c.name, c === firstBad, c.message));
+
+    if (firstBad?.field) {
+      firstBad.field.scrollIntoView({ behavior: "smooth", block: "center" });
+      firstBad.field.focus({ preventScroll: true });
     }
 
-    return valid;
+    return !firstBad;
   };
 
   const postWebhook = (payload: Record<string, string>, event: string) =>

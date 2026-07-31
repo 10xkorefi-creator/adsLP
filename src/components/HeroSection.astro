@@ -4,7 +4,7 @@
 
 <!-- Section 1: Hero Header & Lead Form (Clean Mobile Layout with Visible Above-The-Fold Submit Button) -->
 <header
-  class="relative pt-3 pb-8 lg:pt-14 lg:pb-20 bg-white overflow-hidden"
+  class="relative pt-3 pb-8 lg:pt-6 lg:pb-10 bg-white overflow-hidden"
   id="hero"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,10 +51,10 @@
       <!-- Right Form Card Column (Comfortable 44px Mobile Inputs & Visible Submit Button) -->
       <div class="lg:col-span-6" id="lead-form-container">
         <div
-          class="bg-white border-2 border-slate-200/90 rounded-lg p-4 sm:p-6 lg:p-8 shadow-sm relative"
+          class="bg-white border-2 border-slate-200/90 rounded-lg p-4 sm:p-6 lg:p-6 shadow-sm relative"
         >
           <div
-            class="flex items-center justify-between gap-2 mb-3 lg:mb-6 pb-2.5 lg:pb-4 border-b border-slate-100"
+            class="flex items-center justify-between gap-2 mb-3 lg:mb-4 pb-2.5 lg:pb-3 border-b border-slate-100"
           >
             <h2
               class="text-lg sm:text-xl lg:text-2xl font-black text-slate-950 tracking-tight"
@@ -72,7 +72,7 @@
 
           <form
             id="astroLeadForm"
-            class="space-y-2.5 lg:space-y-3.5"
+            class="space-y-2.5 lg:space-y-3"
             novalidate
           >
             <!-- Field 1: First Name -->
@@ -81,7 +81,7 @@
                 type="text"
                 id="astro-first_name"
                 name="first_name"
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
                 placeholder="Name *"
                 required
               />
@@ -97,7 +97,7 @@
                 type="email"
                 id="astro-email"
                 name="email"
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
                 placeholder="Email Address *"
                 required
               />
@@ -111,7 +111,7 @@
             <div>
               <div class="flex items-center">
                 <span
-                  class="inline-flex items-center px-3.5 h-11 sm:h-12 lg:h-14 bg-purple-100/90 border border-r-0 border-purple-200/80 rounded-l text-slate-700 text-sm lg:text-base font-bold select-none shrink-0"
+                  class="inline-flex items-center px-3.5 h-11 sm:h-12 bg-purple-100/90 border border-r-0 border-purple-200/80 rounded-l text-slate-700 text-sm lg:text-base font-bold select-none shrink-0"
                 >
                   +91
                 </span>
@@ -121,7 +121,7 @@
                   name="lg__phone"
                   maxlength="10"
                   inputmode="numeric"
-                  class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded-r text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                  class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded-r text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
                   placeholder="Phone number *"
                   required
                 />
@@ -138,7 +138,7 @@
               <select
                 id="astro-which_accounting_tool_do_you_use"
                 name="which_accounting_tool_do_you_use"
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
                 required
               >
                 <option value="" disabled selected
@@ -161,7 +161,7 @@
               <select
                 id="astro-accounting_team_size"
                 name="accounting_team_size"
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
                 required
               >
                 <option value="" disabled selected>Team size *</option>
@@ -183,7 +183,7 @@
               <select
                 id="astro-which_best_describes_you"
                 name="which_best_describes_you"
-                class="w-full h-11 sm:h-12 lg:h-14 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
                 required
               >
                 <option value="" disabled selected
@@ -214,7 +214,7 @@
             <button
               type="submit"
               id="Tally-Automation"
-              class="w-full h-12 sm:h-13 lg:h-14 mt-1.5 lg:mt-2 bg-slate-950 hover:bg-black text-white font-extrabold text-base lg:text-lg rounded border border-slate-950 shadow-sm transition-all cursor-pointer flex items-center justify-center tracking-wide"
+              class="w-full h-12 sm:h-13 mt-1.5 lg:mt-2 bg-slate-950 hover:bg-black text-white font-extrabold text-base lg:text-lg rounded border border-slate-950 shadow-sm transition-all cursor-pointer flex items-center justify-center tracking-wide"
             >
               Submit
             </button>
