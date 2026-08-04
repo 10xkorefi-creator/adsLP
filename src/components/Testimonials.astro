@@ -1,4 +1,15 @@
 ---
+interface Props {
+  theme?: "purple" | "tally";
+}
+const { theme = "purple" } = Astro.props;
+
+const isTallyTheme = theme === "tally";
+const bgClass = isTallyTheme ? "bg-tally-50/60" : "bg-purple-50/60";
+const textAccentClass = isTallyTheme ? "text-tally-600" : "text-purple-600";
+const hoverShadowClass = isTallyTheme ? "hover:shadow-tally-600/15" : "hover:shadow-purple-600/15";
+const hoverBorderClass = isTallyTheme ? "hover:border-tally-200/60" : "hover:border-purple-200/60";
+
 const testimonials = [
   {
     quote:
@@ -58,13 +69,13 @@ const testimonials = [
 ---
 
 <!-- Section 3: Testimonials Grid (Exact Copy & Styling from Image) -->
-<section class="py-16 md:py-24 bg-purple-50/60" id="tally-reviews">
+<section class={`py-16 md:py-24 ${bgClass}`} id="tally-reviews">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-3xl mx-auto mb-12">
       <h2
         class="whitespace-nowrap text-[min(6.4vw,1.875rem)] sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-2"
       >
-        Real Results, <span class="text-purple-600">Real Success</span>
+        Real Results, <span class={textAccentClass}>Real Success</span>
       </h2>
       <p class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
         Hear from Our Clients
@@ -74,7 +85,7 @@ const testimonials = [
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {
         testimonials.map((item) => (
-          <article class="bg-white border border-slate-200/60 rounded-2xl p-8 shadow-sm hover:shadow-2xl hover:shadow-purple-600/15 hover:border-purple-200/60 transition-all duration-500 flex flex-col justify-between group">
+          <article class={`bg-white border border-slate-200/60 rounded-2xl p-8 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between group ${hoverShadowClass} ${hoverBorderClass}`}>
             <p class="text-slate-600 font-medium text-sm sm:text-base leading-relaxed mb-6 group-hover:text-slate-800 transition-colors">
               "{item.quote}"
             </p>
