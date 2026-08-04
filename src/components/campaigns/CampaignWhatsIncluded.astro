@@ -1,0 +1,59 @@
+---
+const services = [
+  {
+    title: "Bookkeeping & Accounting",
+    desc: "Day-to-day transaction recording, general ledger maintenance, and chart of accounts setup."
+  },
+  {
+    title: "Accounts Payable",
+    desc: "Invoice processing, vendor management, payment scheduling, and expense tracking."
+  },
+  {
+    title: "Accounts Receivable",
+    desc: "Invoicing, payment collection, aging reports, and customer account reconciliation."
+  },
+  {
+    title: "Bank Reconciliations",
+    desc: "Matching bank statements with internal records to ensure accuracy and identify discrepancies."
+  },
+  {
+    title: "Monthly Financial Reports",
+    desc: "Preparation of income statements, balance sheets, and cash flow statements."
+  },
+  {
+    title: "Tax Compliance",
+    desc: "Calculation and filing of GST, TDS, and other relevant taxes to ensure timely compliance."
+  },
+  {
+    title: "Payroll Processing",
+    desc: "Salary calculation, tax deductions, EPF/ESI compliance, and payroll reporting."
+  },
+  {
+    title: "Year-end Finalization",
+    desc: "Preparation of books for audit, final account statements, and coordination with auditors."
+  }
+];
+---
+
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-12">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">What's included in our accounting and bookkeeping services, every month? You never have to worry about this.</h2>
+      <p class="text-lg text-slate-500">Every single part of your finance function, handled.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+      {services.map((service, idx) => (
+        <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-50 hover:bg-slate-100 transition-colors duration-200 border border-slate-100">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-tally-100 text-tally-600 flex items-center justify-center font-bold text-sm">
+            {idx + 1}
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 mb-1">{service.title}</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">{service.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

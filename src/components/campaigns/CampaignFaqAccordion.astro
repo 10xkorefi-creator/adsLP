@@ -1,0 +1,82 @@
+---
+const faqs = [
+  {
+    question: "What is a books health check?",
+    answer: "A CA-led review of your books that scores audit-readiness and flags risks like GST↔ITR mismatches. You get a one-page report in 48 hours, free, no obligation."
+  },
+  {
+    question: "What do I need to share?",
+    answer: "Your Tally file or Tally access. Your data stays in India, on encrypted infrastructure. We sign an NDA before you share anything."
+  },
+  {
+    question: "Is it really free?",
+    answer: "Yes. The health check and report are free. If you want us to run your books after, that's a separate paid engagement, no pressure to take it."
+  },
+  {
+    question: "How is this different from my current accountant?",
+    answer: "Your accountant maintains the books. This is an independent second look that scores audit-readiness and catches gaps a single set of eyes can miss."
+  },
+  {
+    question: "What happens after I get the report?",
+    answer: "You may choose to: Fix it yourself, take it to your accountant, or have our CA-led team handle it."
+  }
+];
+---
+
+<section class="py-20 bg-slate-50 relative border-t border-slate-200">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="space-y-4">
+      {faqs.map((faq, index) => (
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all duration-200 hover:border-tally-200" x-data="{ expanded: false }">
+          <button 
+            @click="expanded = !expanded" 
+            class="flex items-center justify-between w-full p-6 text-left focus:outline-none focus-visible:ring focus-visible:ring-tally-500 focus-visible:ring-opacity-50"
+          >
+            <span class="text-lg font-bold text-slate-900">{faq.question}</span>
+            <span class="ml-6 flex-shrink-0 text-slate-400" :class="{ 'rotate-180': expanded, 'rotate-0': !expanded }">
+              <svg class="w-6 h-6 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </button>
+          
+          <div 
+            x-show="expanded" 
+            x-collapse 
+            class="px-6 pb-6 text-slate-600 leading-relaxed"
+            style="display: none;"
+          >
+            <p>{faq.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Include Alpine.js if not already present in Layout. Note: check if project uses Alpine, if not, fallback to vanilla JS accordion -->
+<script>
+  // Vanilla JS fallback for accordion if Alpine is not used
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof Alpine === 'undefined') {
+      const buttons = document.querySelectorAll('button[x-data]');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const content = btn.nextElementSibling;
+          const icon = btn.querySelector('svg');
+          if (content.style.display === 'none' || !content.style.display) {
+            content.style.display = 'block';
+            icon.classList.add('rotate-180');
+          } else {
+            content.style.display = 'none';
+            icon.classList.remove('rotate-180');
+          }
+        });
+      });
+    }
+  });
+</script>

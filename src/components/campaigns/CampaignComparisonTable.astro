@@ -1,0 +1,72 @@
+---
+const comparisonData = [
+  {
+    feature: "Speed & Efficiency",
+    virtual: "Daily updates, real-time sync",
+    ca: "Often delayed, batch processing",
+    inhouse: "Depends on individual capacity"
+  },
+  {
+    feature: "Cost Structure",
+    virtual: "Predictable flat monthly fee",
+    ca: "Variable, hourly or transaction based",
+    inhouse: "High fixed cost (Salary, Benefits, Tools)"
+  },
+  {
+    feature: "Tech & Automation",
+    virtual: "Advanced AI, seamless integrations",
+    ca: "Traditional software, manual entry",
+    inhouse: "Basic tools unless extra budget allocated"
+  },
+  {
+    feature: "Proactive Risk Flags",
+    virtual: "Continuous (e.g., GST↔ITR mismatch)",
+    ca: "Usually only at year-end or audit",
+    inhouse: "Depends entirely on accountant's skill"
+  },
+  {
+    feature: "Scalability",
+    virtual: "Instantly scalable as you grow",
+    ca: "Limited by firm's bandwidth",
+    inhouse: "Requires tedious hiring process"
+  },
+  {
+    feature: "Availability",
+    virtual: "24/7 access via live dashboard",
+    ca: "Standard office hours",
+    inhouse: "Office hours, subject to sick/annual leave"
+  }
+];
+---
+
+<section class="py-20 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Virtual Accounting Services vs CA Firm vs In-house Accountant</h2>
+      <p class="text-lg text-slate-600">See why 300+ businesses are switching to a tech-enabled finance function.</p>
+    </div>
+
+    <div class="overflow-x-auto rounded-2xl shadow-xl border border-slate-200">
+      <table class="w-full text-left bg-white whitespace-nowrap md:whitespace-normal">
+        <thead>
+          <tr class="bg-slate-900 text-white">
+            <th class="py-5 px-6 font-semibold text-sm uppercase tracking-wider w-1/4 rounded-tl-2xl">Feature</th>
+            <th class="py-5 px-6 font-bold text-base tracking-wider bg-tally-600 w-1/4 text-center">Virtual Accountant</th>
+            <th class="py-5 px-6 font-semibold text-sm uppercase tracking-wider w-1/4 text-slate-300 text-center">Traditional CA Firm</th>
+            <th class="py-5 px-6 font-semibold text-sm uppercase tracking-wider w-1/4 text-slate-300 text-center rounded-tr-2xl">In-house Accountant</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {comparisonData.map((row, idx) => (
+            <tr class={idx % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+              <td class="py-5 px-6 font-bold text-slate-900">{row.feature}</td>
+              <td class="py-5 px-6 font-semibold text-tally-700 bg-tally-50/30 text-center">{row.virtual}</td>
+              <td class="py-5 px-6 text-slate-600 text-center">{row.ca}</td>
+              <td class="py-5 px-6 text-slate-600 text-center">{row.inhouse}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

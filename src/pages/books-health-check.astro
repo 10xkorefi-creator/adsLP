@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Campaign1Hero from "../components/campaigns/Campaign1Hero.astro";
+import Campaign1SubHero from "../components/campaigns/Campaign1SubHero.astro";
+import CampaignHealthCheckDelivers from "../components/campaigns/CampaignHealthCheckDelivers.astro";
+import CampaignComparisonTable from "../components/campaigns/CampaignComparisonTable.astro";
+import CampaignWhatsIncluded from "../components/campaigns/CampaignWhatsIncluded.astro";
+import Testimonials from "../components/Testimonials.astro";
+import CampaignTrustStrip from "../components/campaigns/CampaignTrustStrip.astro";
+import CampaignFaqAccordion from "../components/campaigns/CampaignFaqAccordion.astro";
+import CampaignBookingCta from "../components/campaigns/CampaignBookingCta.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="Books Health Check - AI Accountant">
+  <main class="scroll-smooth">
+    <Campaign1Hero />
+    <Campaign1SubHero />
+    
+    <!-- Shared Body Starts Here -->
+    <CampaignHealthCheckDelivers />
+    <CampaignComparisonTable />
+    <CampaignWhatsIncluded />
+    
+    <div class="bg-slate-50 py-10">
+      <Testimonials />
+    </div>
+    
+    <CampaignTrustStrip />
+    <CampaignFaqAccordion />
+    <CampaignBookingCta />
+    
+  </main>
+  <Footer />
+</Layout>

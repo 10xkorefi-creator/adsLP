@@ -1,0 +1,76 @@
+---
+// Campaign2Explainer.astro
+---
+
+<section class="py-12 bg-slate-50 border-y border-slate-200 relative overflow-hidden">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-12">
+      
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4">
+        
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center text-center flex-1">
+          <div class="w-20 h-20 rounded-2xl bg-orange-50 border-2 border-orange-100 text-orange-500 flex items-center justify-center mb-4 transform transition-transform hover:-translate-y-1">
+            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z" />
+            </svg>
+          </div>
+          <h4 class="font-bold text-lg text-slate-900">GST Turnover</h4>
+          <div class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 my-2 text-slate-500 font-black">
+            ≠
+          </div>
+          <h4 class="font-bold text-lg text-slate-900">ITR Turnover</h4>
+        </div>
+        
+        <!-- Arrow -->
+        <div class="hidden md:flex shrink-0 items-center justify-center text-slate-300">
+          <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </div>
+        <div class="md:hidden shrink-0 text-slate-300 transform rotate-90">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center text-center flex-1">
+          <div class="w-20 h-20 rounded-2xl bg-red-50 border-2 border-red-100 text-red-500 flex items-center justify-center mb-4 transform transition-transform hover:-translate-y-1">
+            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+            </svg>
+          </div>
+          <h4 class="font-bold text-lg text-slate-900">PAN Flagged</h4>
+          <p class="text-sm text-slate-500 mt-1 max-w-[200px]">Automated government system detects anomaly</p>
+        </div>
+        
+        <!-- Arrow -->
+        <div class="hidden md:flex shrink-0 items-center justify-center text-slate-300">
+          <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </div>
+        <div class="md:hidden shrink-0 text-slate-300 transform rotate-90">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center text-center flex-1">
+          <div class="relative w-20 h-20 rounded-2xl bg-slate-900 border-2 border-slate-800 text-white flex items-center justify-center mb-4 transform transition-transform hover:-translate-y-1 shadow-lg shadow-red-500/20">
+            <div class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-xs animate-bounce">!</div>
+            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h4 class="font-bold text-lg text-slate-900">Tax Notice</h4>
+          <p class="text-sm text-slate-500 mt-1 max-w-[200px]">Issued requiring justification & evidence</p>
+        </div>
+
+      </div>
+      
+    </div>
+  </div>
+</section>

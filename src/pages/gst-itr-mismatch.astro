@@ -1,0 +1,208 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Campaign2Hero from "../components/campaigns/Campaign2Hero.astro";
+import Campaign2Explainer from "../components/campaigns/Campaign2Explainer.astro";
+import Campaign2Pivot from "../components/campaigns/Campaign2Pivot.astro";
+import CampaignHealthCheckDelivers from "../components/campaigns/CampaignHealthCheckDelivers.astro";
+import CampaignComparisonTable from "../components/campaigns/CampaignComparisonTable.astro";
+import CampaignWhatsIncluded from "../components/campaigns/CampaignWhatsIncluded.astro";
+import Testimonials from "../components/Testimonials.astro";
+import CampaignTrustStrip from "../components/campaigns/CampaignTrustStrip.astro";
+import CampaignFaqAccordion from "../components/campaigns/CampaignFaqAccordion.astro";
+import CampaignBookingCta from "../components/campaigns/CampaignBookingCta.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="GST↔ITR Mismatch Check - AI Accountant">
+  <main class="scroll-smooth">
+    <Campaign2Hero />
+    <Campaign2Explainer />
+    <Campaign2Pivot />
+    
+    <!-- Shared Body Starts Here -->
+    <CampaignHealthCheckDelivers />
+    <CampaignComparisonTable />
+    <CampaignWhatsIncluded />
+    
+    <div class="bg-slate-50 py-10">
+      <Testimonials />
+    </div>
+    
+    <CampaignTrustStrip />
+    <CampaignFaqAccordion />
+    
+    <!-- Using the same booking CTA since it has the form/CTA we need -->
+    <CampaignBookingCta />
+    
+  </main>
+  
+  <!-- Lead Form Section -->
+  <section class="py-20 bg-white" id="hero-form">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 p-8">
+        <div class="text-center mb-8">
+          <h3 class="text-2xl font-bold text-slate-900 mb-2">Request Health Check</h3>
+          <p class="text-sm text-slate-500">Fill details below and our CA team will connect within 2 hours.</p>
+        </div>
+        
+        <form id="campaign2-form" class="space-y-4">
+          <div>
+            <label for="c2-name" class="block text-sm font-semibold text-slate-700 mb-1">Name</label>
+            <input type="text" id="c2-name" name="name" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-tally-500 focus:border-tally-500 outline-none transition-all" placeholder="Enter your name">
+            <span id="c2-name-error" class="hidden text-red-600 text-xs mt-1">Please enter your name.</span>
+          </div>
+          <div>
+            <label for="c2-email" class="block text-sm font-semibold text-slate-700 mb-1">Work Email</label>
+            <input type="email" id="c2-email" name="email" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-tally-500 focus:border-tally-500 outline-none transition-all" placeholder="founder@company.com">
+            <span id="c2-email-error" class="hidden text-red-600 text-xs mt-1">Please enter a valid email.</span>
+          </div>
+          <div>
+            <label for="c2-phone" class="block text-sm font-semibold text-slate-700 mb-1">Phone Number</label>
+            <input type="tel" id="c2-phone" name="phone" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-tally-500 focus:border-tally-500 outline-none transition-all" placeholder="98765 43210">
+            <span id="c2-phone-error" class="hidden text-red-600 text-xs mt-1">Please enter a valid 10-digit phone number.</span>
+          </div>
+          <button type="submit" id="c2-submit" class="w-full bg-tally-600 hover:bg-tally-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all hover:scale-[1.02] mt-6">
+            Get Started For Free
+          </button>
+          <p class="text-xs text-center text-slate-500 mt-4">We respect your privacy. No spam.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+  
+  <Footer />
+</Layout>
+
+<script type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('campaign2-form');
+    if(!form) return;
+    const nameInput = document.getElementById('c2-name');
+    const emailInput = document.getElementById('c2-email');
+    const phoneInput = document.getElementById('c2-phone');
+    const btn = document.getElementById('c2-submit');
+
+    // Phone format
+    phoneInput.addEventListener("input", () => {
+      phoneInput.value = phoneInput.value.replace(/\\D/g, "").slice(0, 10);
+    });
+
+    const showError = (id, show) => {
+      const el = document.getElementById(id);
+      const err = document.getElementById(`${id}-error`);
+      if (show) {
+        el.style.borderColor = '#dc2626';
+        err.classList.remove('hidden');
+      } else {
+        el.style.borderColor = '';
+        err.classList.add('hidden');
+      }
+    };
+
+    [nameInput, emailInput, phoneInput].forEach(el => {
+      el.addEventListener('input', () => showError(el.id, false));
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const emailRe = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      
+      let isValid = true;
+      let firstBad = null;
+
+      if (phone.length !== 10) { isValid = false; showError('c2-phone', true); firstBad = firstBad || phoneInput; }
+      if (!email || !emailRe.test(email)) { isValid = false; showError('c2-email', true); firstBad = firstBad || emailInput; }
+      if (!name) { isValid = false; showError('c2-name', true); firstBad = firstBad || nameInput; }
+
+      if (!isValid) {
+        if (firstBad) firstBad.focus();
+        return;
+      }
+
+      // RH snippet logic using the proven submit & dialog.open API
+      btn.textContent = "Scheduling...";
+      btn.style.opacity = "0.7";
+      
+      const payload = {
+        first_name: name,
+        email: email,
+        lg__phone: phone, // standard phone field from leadForm.ts
+        campaign: "virtual-accounting-GAds", // passing the slug as context
+        contact_source: "gst-itr-mismatch"
+      };
+
+      // Gather attribution parameters (matches /tally-automation logic)
+      const params = new URLSearchParams(window.location.search);
+      const CLICK_ID_MAP = {
+        gclid: "hs_google_click_id",
+        fbclid: "hs_facebook_click_id",
+        li_fat_id: "hs_linkedin_click_id",
+      };
+      const UTM_PARAMS = [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_term",
+        "utm_content",
+        "placements",
+        "utm_device",
+        "gclid",
+      ];
+      
+      const clickIdStorageKey = "__clickids";
+      let storedClickIds = {};
+      try { storedClickIds = JSON.parse(sessionStorage.getItem(clickIdStorageKey) || "{}"); } catch(e){}
+      
+      Object.entries(CLICK_ID_MAP).forEach(([urlParam, hsInputName]) => {
+        const fromUrl = params.get(urlParam);
+        if (fromUrl) {
+          storedClickIds[hsInputName] = fromUrl;
+          payload[hsInputName] = fromUrl;
+        } else if (storedClickIds[hsInputName]) {
+          payload[hsInputName] = storedClickIds[hsInputName];
+        }
+      });
+      try { sessionStorage.setItem(clickIdStorageKey, JSON.stringify(storedClickIds)); } catch(e){}
+      
+      UTM_PARAMS.forEach((param) => {
+        const value = params.get(param);
+        if (value) payload[param] = value;
+      });
+
+      try {
+        if (!window.RevenueHero) {
+          throw new Error("RevenueHero script not loaded yet");
+        }
+        
+        const hero = new window.RevenueHero({ routerId: '5434' });
+        
+        hero.submit(payload).then(sessionData => {
+          if (sessionData) {
+            hero.dialog.open(sessionData);
+          } else {
+            console.error("No session data returned from RH");
+          }
+          // Reset btn after a short delay
+          setTimeout(() => {
+            btn.textContent = "Get Started For Free";
+            btn.style.opacity = "1";
+          }, 2000);
+        }).catch(err => {
+          console.error("RH Submit Error:", err);
+          btn.textContent = "Get Started For Free";
+          btn.style.opacity = "1";
+        });
+
+      } catch (err) {
+        console.error("RH Error:", err);
+        btn.textContent = "Get Started For Free";
+        btn.style.opacity = "1";
+      }
+    });
+  });
+</script>
