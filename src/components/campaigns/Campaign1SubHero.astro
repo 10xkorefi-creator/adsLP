@@ -2,61 +2,61 @@
 // Campaign1SubHero.astro
 ---
 <section class="py-12 bg-slate-900 border-b border-slate-800 relative z-20 shadow-2xl">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 relative">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 md:gap-4 relative pt-4">
       
-      <!-- Optional: connecting line for desktop -->
-      <div class="hidden md:block absolute top-6 left-[10%] right-[10%] h-0.5 bg-slate-800 -z-10 border-t border-dashed border-slate-700"></div>
+      <!-- Connecting dashed line for desktop -->
+      <div class="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[2px] bg-slate-800 -z-10 border-t-2 border-dashed border-slate-700"></div>
 
       <!-- Step 1 -->
-      <div class="flex flex-col items-center text-center flex-1 group">
+      <div class="flex flex-col items-center text-center flex-1 group z-10">
         <div class="w-12 h-12 rounded-full bg-slate-800 text-slate-300 font-black flex items-center justify-center mb-4 border-2 border-slate-700 shadow-md transition-transform group-hover:scale-110 group-hover:border-slate-500">
           1
         </div>
         <h4 class="text-white font-bold text-lg mb-1">Send us your Tally</h4>
-        <p class="text-slate-400 text-sm max-w-[200px]">File or remote access</p>
+        <p class="text-slate-400 text-sm max-w-[180px]">File or remote access</p>
       </div>
       
       <!-- Arrow 1 -->
-      <div class="hidden md:flex shrink-0 text-slate-500 pb-8 items-center justify-center">
+      <div class="hidden md:flex shrink-0 text-slate-600 mt-2 items-center justify-center z-10 bg-slate-900 px-2">
         <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
         </svg>
       </div>
-      <div class="md:hidden shrink-0 text-slate-600 transform rotate-90">
+      <div class="md:hidden shrink-0 text-slate-600 transform rotate-90 z-10">
         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </div>
       
       <!-- Step 2 -->
-      <div class="flex flex-col items-center text-center flex-1 group">
+      <div class="flex flex-col items-center text-center flex-1 group z-10">
         <div class="w-12 h-12 rounded-full bg-slate-800 text-slate-300 font-black flex items-center justify-center mb-4 border-2 border-slate-700 shadow-md transition-transform group-hover:scale-110 group-hover:border-slate-500">
           2
         </div>
         <h4 class="text-white font-bold text-lg mb-1">Our CA team reviews</h4>
-        <p class="text-slate-400 text-sm max-w-[200px]">Deep analysis of books</p>
+        <p class="text-slate-400 text-sm max-w-[180px]">Deep analysis of books</p>
       </div>
       
       <!-- Arrow 2 -->
-      <div class="hidden md:flex shrink-0 text-slate-500 pb-8 items-center justify-center">
+      <div class="hidden md:flex shrink-0 text-slate-600 mt-2 items-center justify-center z-10 bg-slate-900 px-2">
         <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
         </svg>
       </div>
-      <div class="md:hidden shrink-0 text-slate-600 transform rotate-90">
+      <div class="md:hidden shrink-0 text-slate-600 transform rotate-90 z-10">
         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </div>
 
       <!-- Step 3 -->
-      <div class="flex flex-col items-center text-center flex-1 group">
-        <div class="w-12 h-12 rounded-full bg-tally-900 text-tally-400 font-black flex items-center justify-center mb-4 border-2 border-tally-600 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-110 group-hover:bg-tally-800">
+      <div class="flex flex-col items-center text-center flex-1 group z-10">
+        <div class="w-12 h-12 rounded-full bg-tally-500 text-white font-black flex items-center justify-center mb-4 border-2 border-tally-100 shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-transform group-hover:scale-110 group-hover:bg-tally-600">
           3
         </div>
         <h4 class="text-white font-bold text-lg mb-1">Get score & report</h4>
-        <p class="text-tally-400 font-medium text-sm max-w-[200px]">In 48 hours. Free.</p>
+        <p class="text-tally-500 font-medium text-sm max-w-[180px]">In 48 hours. Free.</p>
       </div>
 
     </div>
