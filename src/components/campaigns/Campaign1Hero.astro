@@ -258,7 +258,7 @@
         email: email,
         lg__phone: phone, // standard phone field from leadForm.ts
         campaign: "virtual-accounting-GAds", // passing the slug as context
-        contact_source: "health-check",
+        contact_source: "va-health-check",
       };
 
       // Gather attribution parameters (matches /tally-automation logic)
@@ -278,11 +278,15 @@
         "utm_device",
         "gclid",
       ];
-      
+
       const clickIdStorageKey = "__clickids";
       let storedClickIds = {};
-      try { storedClickIds = JSON.parse(sessionStorage.getItem(clickIdStorageKey) || "{}"); } catch(e){}
-      
+      try {
+        storedClickIds = JSON.parse(
+          sessionStorage.getItem(clickIdStorageKey) || "{}",
+        );
+      } catch (e) {}
+
       Object.entries(CLICK_ID_MAP).forEach(([urlParam, hsInputName]) => {
         const fromUrl = params.get(urlParam);
         if (fromUrl) {
@@ -292,8 +296,13 @@
           payload[hsInputName] = storedClickIds[hsInputName];
         }
       });
-      try { sessionStorage.setItem(clickIdStorageKey, JSON.stringify(storedClickIds)); } catch(e){}
-      
+      try {
+        sessionStorage.setItem(
+          clickIdStorageKey,
+          JSON.stringify(storedClickIds),
+        );
+      } catch (e) {}
+
       UTM_PARAMS.forEach((param) => {
         const value = params.get(param);
         if (value) payload[param] = value;
