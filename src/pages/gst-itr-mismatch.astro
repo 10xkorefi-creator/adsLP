@@ -113,7 +113,7 @@ import Footer from "../components/Footer.astro";
       const name = nameInput.value.trim();
       const email = emailInput.value.trim();
       const phone = phoneInput.value.trim();
-      const emailRe = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
       let isValid = true;
       let firstBad = null;
@@ -136,7 +136,7 @@ import Footer from "../components/Footer.astro";
         email: email,
         lg__phone: phone, // standard phone field from leadForm.ts
         campaign: "virtual-accounting-GAds", // passing the slug as context
-        contact_source: "gst-itr-mismatch"
+        contact_source: "va-gst-itr"
       };
 
       // Gather attribution parameters (matches /tally-automation logic)
@@ -182,7 +182,7 @@ import Footer from "../components/Footer.astro";
           throw new Error("RevenueHero script not loaded yet");
         }
         
-        const hero = new window.RevenueHero({ routerId: '5434' });
+        const hero = new window.RevenueHero({ routerId: '6551' });
         
         hero.submit(payload).then(sessionData => {
           if (sessionData) {
