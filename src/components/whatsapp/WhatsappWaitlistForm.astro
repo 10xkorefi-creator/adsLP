@@ -313,13 +313,20 @@
       payload.__event = "form_submit_whatsapp_waitlist";
 
       try {
-        // Fire the webhook for backend processing (includes RevenueHero routing)
-        await fetch("https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
+        // Also fire the webhook for redundancy
+        fetch("https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain;charset=UTF-8" },
           body: JSON.stringify(payload),
-        });
+        }).catch(() => {});
+
+        // RevenueHero Submission in the background
+        if (window.RevenueHero) {
+          const hero = new window.RevenueHero({ routerId: '6563', showLoader: false });
+          // Submit to RH without opening the dialog (sends data to HubSpot silently)
+          await hero.submit(payload).catch(console.error);
+        }
 
         // Show success state
         form.style.display = "none";
@@ -335,3 +342,4 @@
     });
   });
 </script>
+<script type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
