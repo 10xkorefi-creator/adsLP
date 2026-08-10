@@ -1,7 +1,16 @@
 ---
 // WhatsappHero.astro
 ---
-<section class="relative pt-20 pb-20 lg:pt-32 lg:pb-32 bg-slate-50 overflow-hidden" id="hero">
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
+<section class="relative pt-12 pb-12 lg:pt-16 lg:pb-16 xl:pt-20 xl:pb-20 bg-slate-50 overflow-hidden flex items-center min-h-[90vh]" id="hero">
   <!-- WhatsApp brand color glow in background -->
   <div class="absolute top-0 right-1/4 w-[800px] h-[800px] bg-[#25D366]/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
 
@@ -17,12 +26,12 @@
           Live on WhatsApp
         </div>
         
-        <h1 class="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-tight text-slate-900 leading-[1.1] mb-6">
+        <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-slate-900 leading-[1.1] mb-4">
           Chat with your accounting data.<br />
           <span class="text-[#25D366]">Right inside WhatsApp.</span>
         </h1>
         
-        <p class="text-lg sm:text-xl text-slate-600 mb-10 leading-relaxed font-medium max-w-xl">
+        <p class="text-lg sm:text-xl text-slate-600 mb-6 leading-relaxed font-medium max-w-xl">
           Cash in hand, who owes you money, what you owe, today's sales. Ask AI Accountant like you'd message anyone else and get a straight answer in seconds. Connected to your Tally, live on WhatsApp, free to start.
         </p>
         
@@ -37,13 +46,13 @@
       </div>
       
       <!-- Phone Mockup Visual -->
-      <div class="relative mx-auto w-full max-w-[340px] lg:max-w-[380px] perspective-1000">
+      <div class="relative mx-auto w-full max-w-[300px] lg:max-w-[320px] perspective-1000">
         <!-- Decoration behind phone -->
         <div class="absolute -inset-4 bg-gradient-to-r from-[#25D366]/20 to-emerald-200/20 rounded-full blur-2xl -z-10"></div>
         
         <!-- Phone Frame -->
         <div class="bg-slate-900 rounded-[3rem] p-3 shadow-2xl ring-1 ring-slate-900/5 transform lg:rotate-y-[-10deg] lg:rotate-x-[5deg] transition-transform duration-500 hover:rotate-0">
-          <div class="bg-[#EFEAE2] rounded-[2.25rem] overflow-hidden border border-slate-800 relative h-[650px] flex flex-col">
+          <div class="bg-[#EFEAE2] rounded-[2.25rem] overflow-hidden border border-slate-800 relative h-[520px] lg:h-[540px] flex flex-col">
             
             <!-- Phone Notch / Status Bar Area -->
             <div class="absolute top-0 inset-x-0 h-7 flex justify-center z-20">
@@ -66,7 +75,7 @@
             <div class="absolute inset-0 top-[88px] opacity-60 pointer-events-none bg-cover bg-center" style="background-image: url('/whatsapp-bg.png');"></div>
             
             <!-- Chat Area -->
-            <div class="flex-1 p-4 flex flex-col gap-4 overflow-y-auto z-10 relative">
+            <div class="flex-1 p-4 flex flex-col gap-4 overflow-y-auto no-scrollbar z-10 relative">
               <div class="flex justify-center mb-2">
                 <span class="bg-[#E1F3FB] text-slate-600 text-[11px] px-3 py-1 rounded-lg font-medium shadow-sm">Today</span>
               </div>
