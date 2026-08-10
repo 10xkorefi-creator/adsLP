@@ -12,22 +12,22 @@
 </style>
 
 <div id="waitlist-modal" class="fixed inset-0 z-[100] hidden flex-col items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
-  <div class="bg-white rounded-[2rem] p-6 sm:p-10 shadow-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto no-scrollbar relative transform scale-95 transition-transform duration-300" id="waitlist-modal-content">
+  <div class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto no-scrollbar relative transform scale-95 transition-transform duration-300" id="waitlist-modal-content">
     
     <button onclick="closeWaitlistModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full p-2 transition-colors z-10">
       <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
     </button>
     
-    <div class="mb-8 text-center pt-2">
-      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight mb-2">
+    <div class="mb-6 text-center pt-2">
+      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight mb-1">
         Your numbers, one message away.
       </h2>
-      <p class="text-lg text-slate-600 font-medium">
+      <p class="text-base sm:text-lg text-slate-600 font-medium">
         Join the waitlist to get early access to AI Accountant.
       </p>
     </div>
 
-    <form id="wa-form" class="space-y-4">
+    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Field 1: First Name -->
       <div>
         <input
@@ -126,12 +126,14 @@
         <span id="wa-role-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select your role</span>
       </div>
 
-      <button type="submit" id="wa-submit" class="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-xl py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1 mt-4 shadow-[#25D366]/20">
-        Join The Waitlist
-      </button>
-      <span id="wa-general-error" class="hidden text-red-600 text-sm mt-2 text-center block font-semibold">Couldn't save your details. Please try again.</span>
-      
-      <p class="text-xs text-center text-slate-500 mt-4 font-medium">We respect your privacy. No spam.</p>
+      <div class="md:col-span-2">
+        <button type="submit" id="wa-submit" class="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-xl py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1 mt-2 shadow-[#25D366]/20">
+          Join The Waitlist
+        </button>
+        <span id="wa-general-error" class="hidden text-red-600 text-sm mt-2 text-center block font-semibold">Couldn't save your details. Please try again.</span>
+        
+        <p class="text-xs text-center text-slate-500 mt-3 font-medium">We respect your privacy. No spam.</p>
+      </div>
     </form>
 
     <!-- Success Message -->
