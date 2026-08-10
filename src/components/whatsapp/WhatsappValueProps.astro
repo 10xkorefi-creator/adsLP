@@ -1,0 +1,156 @@
+---
+// WhatsappValueProps.astro
+---
+<section class="py-24 bg-white" id="features">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+    
+    <!-- Value Prop 1: Quick Insights -->
+    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <div class="flex-1 space-y-8">
+        <h2 class="text-4xl sm:text-5xl font-black text-slate-900 leading-tight">
+          Stop flying blind between accountant updates.
+        </h2>
+        <p class="text-xl text-slate-600 leading-relaxed font-medium">
+          As a founder you shouldn't have to call someone to find out where your business stands. Now you just ask.
+        </p>
+        <ul class="space-y-4 text-lg font-medium text-slate-700 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+          <li class="flex items-start gap-3">
+            <span class="text-[#25D366] mt-1">✓</span>
+            “How much cash do I have right now?”
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-[#25D366] mt-1">✓</span>
+            “Who hasn't paid me yet?”
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-[#25D366] mt-1">✓</span>
+            “What are my dues this week?”
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-[#25D366] mt-1">✓</span>
+            “How were sales this month vs last?”
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-[#25D366] mt-1">✓</span>
+            “Is my business healthy?”
+          </li>
+        </ul>
+        <p class="text-xl text-slate-700 font-medium">
+          You ask the way you'd say it out loud. AI Accountant reads straight from your Tally and answers in seconds.
+        </p>
+        <div>
+          <button onclick="openWaitlistModal()" class="inline-flex items-center justify-center bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg shadow-[#25D366]/20 transition-all hover:-translate-y-1">
+            Join The Waitlist
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 w-full relative">
+        <div class="absolute inset-0 bg-blue-100/50 rounded-full blur-3xl -z-10"></div>
+        <div class="bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 transform rotate-2">
+          <!-- Mini Chat Snippet -->
+          <div class="bg-[#EFEAE2] rounded-2xl p-4 flex flex-col gap-3 relative overflow-hidden z-0">
+            <div class="absolute inset-0 opacity-60 pointer-events-none bg-cover bg-center -z-10" style="background-image: url('/whatsapp-bg.png');"></div>
+            <div class="flex justify-end">
+              <div class="bg-[#D9FDD3] text-slate-800 p-3 rounded-l-xl rounded-br-xl rounded-tr-sm shadow-sm max-w-[85%] text-lg font-medium">
+                Who hasn't paid me yet?
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="bg-white text-slate-800 p-3 rounded-r-xl rounded-bl-xl rounded-tl-sm shadow-sm max-w-[95%] border border-slate-100">
+                <p class="text-base font-medium mb-2">Here are your top pending receivables:</p>
+                <div class="bg-slate-50 p-3 rounded border border-slate-100 text-sm space-y-2">
+                  <div class="flex justify-between"><span>Acme Corp</span><span class="font-bold text-red-500">₹4,20,000</span></div>
+                  <div class="flex justify-between"><span>Stark Ind.</span><span class="font-bold text-red-500">₹1,55,000</span></div>
+                  <div class="flex justify-between"><span>Wayne Ent.</span><span class="font-bold text-red-500">₹90,000</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Value Prop 2: Bills -->
+    <div class="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
+      <div class="flex-1 w-full relative">
+        <div class="absolute inset-0 bg-orange-100/50 rounded-full blur-3xl -z-10"></div>
+        <div class="bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 transform -rotate-1">
+          <!-- Mini Chat Snippet -->
+          <div class="bg-[#EFEAE2] rounded-2xl p-4 flex flex-col gap-3 relative overflow-hidden z-0">
+            <div class="absolute inset-0 opacity-60 pointer-events-none bg-cover bg-center -z-10" style="background-image: url('/whatsapp-bg.png');"></div>
+            <div class="flex justify-end">
+              <div class="bg-[#D9FDD3] text-slate-800 p-2 rounded-l-xl rounded-br-xl rounded-tr-sm shadow-sm max-w-[85%] text-lg font-medium">
+                <div class="rounded mb-1 border border-[#BDE8B8] overflow-hidden">
+                  <img src="/bill-asset.png" alt="Restaurant bill" class="w-full h-auto max-h-56 object-cover object-top" />
+                </div>
+                <p class="px-1 text-[15px]">Add this.</p>
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="bg-white text-slate-800 p-3 rounded-r-xl rounded-bl-xl rounded-tl-sm shadow-sm max-w-[95%] border border-slate-100">
+                <p class="text-base font-medium mb-1">Got it. Extracted details:</p>
+                <p class="text-sm text-slate-600 mb-2">Vendor: <span class="font-bold text-slate-800">Taj Lands End</span><br/>Amount: <span class="font-bold text-slate-800">₹8,450</span><br/>Category: <span class="font-bold text-slate-800">Meals & Entertainment</span></p>
+                <div class="bg-[#D9FDD3]/50 text-emerald-800 text-sm font-bold p-2 rounded text-center border border-emerald-200">
+                  Entry pushed to Tally (Needs Review)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 space-y-6">
+        <h2 class="text-4xl sm:text-5xl font-black text-slate-900 leading-tight">
+          Forward the bill. We'll do the entry.
+        </h2>
+        <p class="text-xl text-slate-600 leading-relaxed font-medium">
+          Snap a photo or forward a purchase bill into the chat. The details get read, extracted, and dropped into your books under Needs Review, ready for you to approve. No manual typing, no bill pile at month-end.
+        </p>
+        <div class="inline-flex items-center gap-3 bg-red-50 text-red-700 px-5 py-3 rounded-xl border border-red-100 font-bold text-lg mt-4 shadow-sm">
+          🔥 Send us your ugliest, most crumpled, worst bill.
+        </div>
+      </div>
+    </div>
+
+    <!-- Value Prop 3: Nudges -->
+    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <div class="flex-1 space-y-6">
+        <h2 class="text-4xl sm:text-5xl font-black text-slate-900 leading-tight">
+          It tells you what needs doing before it becomes a problem.
+        </h2>
+        <p class="text-xl text-slate-600 leading-relaxed font-medium">
+          AI Accountant sends short, action-ready nudges to keep your books current, so nothing slips and you're never scrambling before a filing. You don't have to remember to check in. It checks in with you.
+        </p>
+      </div>
+      <div class="flex-1 w-full relative">
+        <div class="absolute inset-0 bg-purple-100/50 rounded-full blur-3xl -z-10"></div>
+        <div class="bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 transform rotate-1">
+          <!-- Mini Chat Snippet -->
+          <div class="bg-[#EFEAE2] rounded-2xl p-4 flex flex-col gap-3 relative overflow-hidden z-0">
+            <div class="absolute inset-0 opacity-60 pointer-events-none bg-cover bg-center -z-10" style="background-image: url('/whatsapp-bg.png');"></div>
+             <div class="flex justify-center mb-1">
+                <span class="bg-[#E1F3FB] text-slate-600 text-[11px] px-3 py-1 rounded-lg font-medium shadow-sm">Yesterday</span>
+              </div>
+            <div class="flex justify-start">
+              <div class="bg-white text-slate-800 p-4 rounded-r-xl rounded-bl-xl rounded-tl-sm shadow-sm max-w-[95%] border border-slate-100 relative">
+                <div class="absolute -top-3 -right-3 w-8 h-8 bg-amber-400 text-amber-900 rounded-full flex items-center justify-center font-bold shadow-sm">!</div>
+                <p class="text-base font-bold mb-1 text-slate-900">Pending Action 🔔</p>
+                <p class="text-base font-medium text-slate-700">
+                  You have 14 unreconciled bank entries for HDFC Curr 4099 from last week. 
+                </p>
+                <p class="text-base font-medium text-slate-700 mt-2">
+                  Want me to categorize the recurring ones automatically?
+                </p>
+              </div>
+            </div>
+            <div class="flex justify-end mt-2">
+              <div class="bg-[#D9FDD3] text-slate-800 p-3 rounded-l-xl rounded-br-xl rounded-tr-sm shadow-sm max-w-[85%] text-lg font-medium">
+                Yes please do it
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

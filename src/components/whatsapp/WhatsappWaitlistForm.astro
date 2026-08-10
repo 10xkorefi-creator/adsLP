@@ -1,0 +1,345 @@
+---
+// WhatsappWaitlistForm.astro
+---
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
+
+<div id="waitlist-modal" class="fixed inset-0 z-[100] hidden flex-col items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+  <div class="bg-white rounded-[2rem] p-6 sm:p-10 shadow-2xl max-w-2xl w-full max-h-[95vh] overflow-y-auto no-scrollbar relative transform scale-95 transition-transform duration-300" id="waitlist-modal-content">
+    
+    <button onclick="closeWaitlistModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full p-2 transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+    
+    <div class="mb-8 text-center pt-2">
+      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight mb-2">
+        Your numbers, one message away.
+      </h2>
+      <p class="text-lg text-slate-600 font-medium">
+        Join the waitlist to get early access to AI Accountant.
+      </p>
+    </div>
+
+    <form id="wa-form" class="space-y-4">
+      <!-- Field 1: First Name -->
+      <div>
+        <input
+          type="text"
+          id="wa-first_name"
+          name="first_name"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+          placeholder="Full Name *"
+          required
+        />
+        <span id="wa-first_name-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter your name.</span>
+      </div>
+
+      <!-- Field 2: Email -->
+      <div>
+        <input
+          type="email"
+          id="wa-email"
+          name="email"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+          placeholder="Work Email *"
+          required
+        />
+        <span id="wa-email-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter a valid email.</span>
+      </div>
+
+      <!-- Field 3: Phone -->
+      <div>
+        <div class="flex items-center">
+          <span class="inline-flex items-center px-4 py-3 bg-slate-100 border border-r-0 border-slate-300 rounded-l-xl text-slate-700 text-base font-bold select-none shrink-0">
+            +91
+          </span>
+          <input
+            type="tel"
+            id="wa-phone"
+            name="lg__phone"
+            maxlength="10"
+            inputmode="numeric"
+            class="w-full px-5 py-3 rounded-r-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+            placeholder="WhatsApp Number *"
+            required
+          />
+        </div>
+        <span id="wa-phone-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter a valid 10-digit phone number.</span>
+      </div>
+
+      <!-- Field 4: Software -->
+      <div>
+        <select
+          id="wa-accounting_tool"
+          name="which_accounting_tool_do_you_use"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          required
+        >
+          <option value="" disabled selected>Which accounting tool do you use? *</option>
+          <option value="Tally">Tally</option>
+          <option value="Both">Both</option>
+          <option value="Zoho Books">Zoho Books</option>
+          <option value="Others">Others</option>
+        </select>
+        <span id="wa-accounting_tool-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select your accounting tool</span>
+      </div>
+
+      <!-- Field 5: Team Size -->
+      <div>
+        <select
+          id="wa-team_size"
+          name="accounting_team_size"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          required
+        >
+          <option value="" disabled selected>Accounting Team size *</option>
+          <option value="0">0</option>
+          <option value="1-3">1-3</option>
+          <option value="3-5">3-5</option>
+          <option value="5-10">5-10</option>
+          <option value="10+">10+</option>
+        </select>
+        <span id="wa-team_size-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select team size</span>
+      </div>
+
+      <!-- Field 6: Role -->
+      <div>
+        <select
+          id="wa-role"
+          name="which_best_describes_you"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          required
+        >
+          <option value="" disabled selected>Which best describes you? *</option>
+          <option value="CA firm: automating my clients' books">CA firm: automating my clients' books</option>
+          <option value="Business owner: automating my company's accounting">Business owner: automating my company's accounting</option>
+          <option value="Finance team: looking to automate our books">Finance team: looking to automate our books</option>
+          <option value="Channel partner: looking to resell AiA">Channel partner: looking to resell AiA</option>
+        </select>
+        <span id="wa-role-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select your role</span>
+      </div>
+
+      <button type="submit" id="wa-submit" class="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-xl py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1 mt-4 shadow-[#25D366]/20">
+        Join The Waitlist
+      </button>
+      <span id="wa-general-error" class="hidden text-red-600 text-sm mt-2 text-center block font-semibold">Couldn't save your details. Please try again.</span>
+      
+      <p class="text-xs text-center text-slate-500 mt-4 font-medium">We respect your privacy. No spam.</p>
+    </form>
+
+    <!-- Success Message -->
+    <div id="wa-success" class="hidden text-center py-12">
+      <div class="w-20 h-20 bg-emerald-100 text-[#25D366] rounded-full inline-flex items-center justify-center mb-6 shadow-inner">
+        <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3 class="text-3xl font-black text-slate-900 mb-4">
+        You're In
+      </h3>
+      <p class="text-lg text-slate-600 font-medium mb-8">
+        We will email you once the Bot is ready!
+      </p>
+      <button onclick="closeWaitlistModal()" class="px-8 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Expose modal toggle functions globally so inline onclick works
+  window.openWaitlistModal = () => {
+    const modal = document.getElementById('waitlist-modal');
+    const content = document.getElementById('waitlist-modal-content');
+    if (!modal || !content) return;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    // small delay for transition
+    requestAnimationFrame(() => {
+      modal.classList.remove('opacity-0');
+      content.classList.remove('scale-95');
+    });
+  };
+
+  window.closeWaitlistModal = () => {
+    const modal = document.getElementById('waitlist-modal');
+    const content = document.getElementById('waitlist-modal-content');
+    if (!modal || !content) return;
+    
+    modal.classList.add('opacity-0');
+    content.classList.add('scale-95');
+    setTimeout(() => {
+      modal.classList.remove('flex');
+      modal.classList.add('hidden');
+    }, 300); // match transition duration
+  };
+
+  // Close modal on click outside
+  document.getElementById('waitlist-modal')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      window.closeWaitlistModal();
+    }
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('wa-form') as HTMLFormElement;
+    if(!form) return;
+    
+    const nameInput = document.getElementById('wa-first_name') as HTMLInputElement;
+    const emailInput = document.getElementById('wa-email') as HTMLInputElement;
+    const phoneInput = document.getElementById('wa-phone') as HTMLInputElement;
+    const toolInput = document.getElementById('wa-accounting_tool') as HTMLSelectElement;
+    const teamInput = document.getElementById('wa-team_size') as HTMLSelectElement;
+    const roleInput = document.getElementById('wa-role') as HTMLSelectElement;
+    
+    const btn = document.getElementById('wa-submit') as HTMLButtonElement;
+    const successMsg = document.getElementById('wa-success') as HTMLElement;
+    const generalErr = document.getElementById('wa-general-error') as HTMLElement;
+
+    // Phone format
+    phoneInput.addEventListener("input", () => {
+      phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+    });
+
+    const showError = (id: string, show: boolean) => {
+      const el = document.getElementById(id);
+      const err = document.getElementById(`${id}-error`);
+      if (el) el.style.borderColor = show ? '#dc2626' : '';
+      if (err) {
+        if (show) err.classList.remove('hidden');
+        else err.classList.add('hidden');
+      }
+    };
+
+    [nameInput, emailInput, phoneInput, toolInput, teamInput, roleInput].forEach(el => {
+      el.addEventListener('input', () => {
+        showError(el.id, false);
+        generalErr.classList.add('hidden');
+      });
+      el.addEventListener('change', () => {
+        showError(el.id, false);
+        generalErr.classList.add('hidden');
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      let isValid = true;
+      let firstBad = null;
+
+      // Validate in reverse order so the top-most error gets focus
+      if (!roleInput.value) { isValid = false; showError('wa-role', true); firstBad = firstBad || roleInput; }
+      if (!teamInput.value) { isValid = false; showError('wa-team_size', true); firstBad = firstBad || teamInput; }
+      if (!toolInput.value) { isValid = false; showError('wa-accounting_tool', true); firstBad = firstBad || toolInput; }
+      if (phone.length !== 10) { isValid = false; showError('wa-phone', true); firstBad = firstBad || phoneInput; }
+      if (!email || !emailRe.test(email)) { isValid = false; showError('wa-email', true); firstBad = firstBad || emailInput; }
+      if (!name) { isValid = false; showError('wa-first_name', true); firstBad = firstBad || nameInput; }
+
+      if (!isValid) {
+        if (firstBad) {
+          firstBad.scrollIntoView({ behavior: "smooth", block: "center" });
+          firstBad.focus();
+        }
+        return;
+      }
+
+      btn.textContent = "Submitting...";
+      btn.style.opacity = "0.7";
+      btn.style.pointerEvents = "none";
+      
+      const payload: Record<string, string> = {
+        first_name: name,
+        email: email,
+        lg__phone: phone,
+        which_accounting_tool_do_you_use: toolInput.value,
+        accounting_team_size: teamInput.value,
+        which_best_describes_you: roleInput.value,
+        campaign: "whatsapp-aiaccountant",
+        contact_source: "WA bot - LinkedIn ads"
+      };
+
+      // Gather Attribution
+      const params = new URLSearchParams(window.location.search);
+      const CLICK_ID_MAP: Record<string, string> = {
+        gclid: "hs_google_click_id",
+        fbclid: "hs_facebook_click_id",
+        li_fat_id: "hs_linkedin_click_id",
+      };
+      const UTM_PARAMS = [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_term",
+        "utm_content",
+        "placements",
+        "utm_device",
+        "gclid",
+      ];
+      
+      const clickIdStorageKey = "__clickids";
+      let storedClickIds: Record<string, string> = {};
+      try { storedClickIds = JSON.parse(sessionStorage.getItem(clickIdStorageKey) || "{}"); } catch(e){}
+      
+      Object.entries(CLICK_ID_MAP).forEach(([urlParam, hsInputName]) => {
+        const fromUrl = params.get(urlParam);
+        if (fromUrl) {
+          storedClickIds[hsInputName] = fromUrl;
+          payload[hsInputName] = fromUrl;
+        } else if (storedClickIds[hsInputName]) {
+          payload[hsInputName] = storedClickIds[hsInputName];
+        }
+      });
+      try { sessionStorage.setItem(clickIdStorageKey, JSON.stringify(storedClickIds)); } catch(e){}
+      
+      UTM_PARAMS.forEach((param) => {
+        const value = params.get(param);
+        if (value) payload[param] = value;
+      });
+
+      payload.__page = window.location.href;
+      payload.__event = "form_submit_whatsapp_waitlist";
+
+      try {
+        // Also fire the webhook for redundancy
+        fetch("https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=UTF-8" },
+          body: JSON.stringify(payload),
+        }).catch(() => {});
+
+        // RevenueHero Submission
+        if (!window.RevenueHero) {
+          throw new Error("RevenueHero script not loaded yet");
+        }
+        const hero = new window.RevenueHero({ routerId: '6506' });
+        
+        await hero.submit(payload);
+        
+        // Skip hero.dialog.open() to prevent calendar from showing.
+        
+        // Show success state
+        form.style.display = "none";
+        successMsg.classList.remove("hidden");
+
+      } catch (err) {
+        console.error("Submit Error:", err);
+        generalErr.classList.remove("hidden");
+        btn.textContent = "Join The Waitlist";
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+      }
+    });
+  });
+</script>
+<script type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
