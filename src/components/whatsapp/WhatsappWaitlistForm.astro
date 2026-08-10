@@ -267,7 +267,8 @@
         accounting_team_size: teamInput.value,
         which_best_describes_you: roleInput.value,
         campaign: "whatsapp-aiaccountant",
-        contact_source: "WA bot - LinkedIn ads"
+        contact_source: "WA bot - LinkedIn ads",
+        routerId: "6563"
       };
 
       // Gather Attribution
@@ -312,24 +313,14 @@
       payload.__event = "form_submit_whatsapp_waitlist";
 
       try {
-        // Also fire the webhook for redundancy
-        fetch("https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
+        // Fire the webhook for backend processing (includes RevenueHero routing)
+        await fetch("https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain;charset=UTF-8" },
           body: JSON.stringify(payload),
-        }).catch(() => {});
+        });
 
-        // RevenueHero Submission
-        if (!window.RevenueHero) {
-          throw new Error("RevenueHero script not loaded yet");
-        }
-        const hero = new window.RevenueHero({ routerId: '6506' });
-        
-        await hero.submit(payload);
-        
-        // Skip hero.dialog.open() to prevent calendar from showing.
-        
         // Show success state
         form.style.display = "none";
         successMsg.classList.remove("hidden");
@@ -344,4 +335,3 @@
     });
   });
 </script>
-<script type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
