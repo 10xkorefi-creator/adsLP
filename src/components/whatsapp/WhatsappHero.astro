@@ -2,6 +2,24 @@
 // WhatsappHero.astro
 ---
 <style>
+  .minimal-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .minimal-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .minimal-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+  }
+  .minimal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .minimal-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -75,7 +93,7 @@
             <div class="absolute inset-0 top-[88px] opacity-60 pointer-events-none bg-cover bg-center" style="background-image: url('/whatsapp-bg.png');"></div>
             
             <!-- Chat Area -->
-            <div class="flex-1 p-4 flex flex-col gap-4 overflow-y-auto no-scrollbar z-10 relative">
+            <div class="flex-1 p-4 flex flex-col gap-4 overflow-y-auto minimal-scrollbar z-10 relative">
               <div class="flex justify-center mb-2">
                 <span class="bg-[#E1F3FB] text-slate-600 text-[11px] px-3 py-1 rounded-lg font-medium shadow-sm">Today</span>
               </div>
