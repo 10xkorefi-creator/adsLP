@@ -1,4 +1,9 @@
 ---
+interface Props {
+  hideTestimonials?: boolean;
+}
+
+const { hideTestimonials = false } = Astro.props;
 ---
 
 <!-- Section 5: Footer (Exact Match to Image) -->
@@ -22,7 +27,9 @@
         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">Quick Links</h4>
         <ul class="space-y-2 text-xs font-medium text-slate-400">
           <li><a href="#hero" class="hover:text-white transition-colors">Home</a></li>
-          <li><a href="#tally-reviews" class="hover:text-white transition-colors">Testimonials</a></li>
+          {!hideTestimonials && (
+            <li><a href="#tally-reviews" class="hover:text-white transition-colors">Testimonials</a></li>
+          )}
         </ul>
       </div>
 
