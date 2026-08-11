@@ -1,0 +1,114 @@
+---
+// src/pages/gads/tally-automation-search.astro
+import Layout from "../../layouts/Layout.astro";
+import SearchHero from "../../components/campaigns/SearchHero.astro";
+import WhatItDoes from "../../components/campaigns/WhatItDoes.astro";
+import HowItWorks from "../../components/campaigns/HowItWorks.astro";
+import Testimonials from "../../components/Testimonials.astro";
+import CtaBanner from "../../components/CtaBanner.astro";
+import FAQ from "../../components/campaigns/FAQ.astro";
+import Footer from "../../components/Footer.astro";
+
+const title = "Turn bank statements into Tally entries | AI Accountant";
+const description =
+  "AI Accountant reads your documents and creates clean, sorted entries in TallyPrime. Cut manual data entry by 75% and close your books faster.";
+---
+
+<Layout
+  title={title}
+  description={description}
+  bodyClass="bg-slate-50 text-slate-900 scroll-smooth"
+>
+  <main>
+    <SearchHero />
+    <WhatItDoes />
+    <HowItWorks />
+
+    <Testimonials curatedAuthors={["Vadivel CMA", "Sunil", "Adarsh MG"]} />
+
+    <!-- Discount Offer Block -->
+    <section class="py-16 md:py-24 bg-slate-50 relative overflow-hidden">
+      <!-- Decorative background glow -->
+      <div
+        class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-100/40 via-transparent to-transparent -z-10"
+      >
+      </div>
+
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="bg-slate-950 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl relative overflow-hidden border border-slate-800 transform hover:-translate-y-1 transition-transform duration-500"
+        >
+          <!-- Abstract Background Elements for Premium Feel -->
+          <div
+            class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-purple-600/30 blur-3xl"
+          >
+          </div>
+          <div
+            class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-red-600/20 blur-3xl"
+          >
+          </div>
+
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <!-- Urgency Badge -->
+            <div
+              class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-bold px-4 py-1.5 rounded-full mb-8 shadow-inner"
+            >
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"
+              ></span>
+              40 slots available
+            </div>
+
+            <!-- Main Headline -->
+            <h2
+              class="text-[2.5rem] leading-[1.05] sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-8 flex flex-col items-center"
+            >
+              <span class="block mb-3">3 days left to get</span>
+              <span class="relative inline-block px-4 py-2 mt-1 whitespace-nowrap">
+                <span class="absolute inset-0 bg-[#FFE81A] transform -skew-x-6 rounded-md shadow-[4px_4px_0px_0px_rgba(239,68,68,1)] border-2 border-[#FFE81A]"></span>
+                <span class="relative text-slate-950 block text-[3rem] sm:text-[4rem] lg:text-[5rem] tracking-tighter">40% off*</span>
+              </span>
+            </h2>
+
+            <!-- CTA Button -->
+            <a
+              href="#hero"
+              class="group relative inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-lg sm:text-xl font-extrabold text-slate-950 bg-white rounded-xl overflow-hidden transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]"
+            >
+              <span class="relative z-10 flex items-center gap-2">
+                Book a demo
+                <svg
+                  class="w-5 h-5 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  ><path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg
+                >
+              </span>
+              <!-- Hover effect background -->
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-purple-100 to-red-100 opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <FAQ />
+
+    <!-- Closing CTA (Reuse the urgency block which has the CTA) -->
+    <CtaBanner />
+  </main>
+
+  <script is:inline type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
+  <script is:inline type="text/javascript">
+    window.hero = new RevenueHero({ routerId: '6506' });
+    hero.schedule('#Search-Automation-Submit');
+  </script>
+
+  <Footer />
+</Layout>

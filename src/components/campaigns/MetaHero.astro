@@ -1,0 +1,267 @@
+---
+// src/components/campaigns/MetaHero.astro
+---
+
+<!-- Section 1: Hero Header & Lead Form (Problem-led for Meta Ads) -->
+<header
+  class="relative pt-6 pb-12 lg:pt-12 lg:pb-16 bg-white overflow-hidden"
+  id="hero"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+      <!-- Left Hero Content Column -->
+      <div class="lg:col-span-6 flex flex-col justify-center pt-4 lg:pt-12">
+        <!-- MASSIVE H1 HEADLINE -->
+        <h1
+          class="text-4xl sm:text-5xl md:text-6xl font-black leading-tight lg:leading-tight tracking-tighter mb-4 lg:mb-6 text-slate-950 text-center lg:text-left"
+        >
+          Still entering bank statements into Tally <span class="text-purple-600 underline decoration-purple-200 underline-offset-4">by hand?</span>
+        </h1>
+
+        <!-- Sub-headline -->
+        <p
+          class="text-base sm:text-lg text-slate-600 font-medium leading-relaxed mb-8 max-w-xl text-center lg:text-left"
+        >
+          There is a faster way. AI Accountant does the data entry for you, so you don't lose your evenings at month-end.
+        </p>
+      </div>
+
+      <!-- Right Form Card Column -->
+      <div class="lg:col-span-6" id="lead-form-container">
+        <div
+          class="bg-white border-2 border-slate-200/90 rounded-xl p-5 sm:p-7 lg:p-8 shadow-xl relative"
+        >
+          <div
+            class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100"
+          >
+            <h2
+              class="text-xl sm:text-2xl lg:text-3xl font-black text-slate-950 tracking-tight"
+            >
+              See how it works
+            </h2>
+          </div>
+
+          <form id="metaLeadForm" class="space-y-3 lg:space-y-4" novalidate>
+            <!-- Field 1: First Name -->
+            <div>
+              <input
+                type="text"
+                id="meta-first_name"
+                name="first_name"
+                class="w-full h-12 sm:h-14 px-4 bg-purple-50/70 border border-purple-200/80 rounded-lg text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                placeholder="Name *"
+                required
+              />
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="meta-first_name-error">Please enter your name</span
+              >
+            </div>
+
+            <!-- Field 2: Email -->
+            <div>
+              <input
+                type="email"
+                id="meta-email"
+                name="email"
+                class="w-full h-12 sm:h-14 px-4 bg-purple-50/70 border border-purple-200/80 rounded-lg text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                placeholder="Email Address *"
+                required
+              />
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="meta-email-error">Please enter a valid email address</span
+              >
+            </div>
+
+            <!-- Field 3: Phone -->
+            <div>
+              <div class="flex items-center">
+                <span
+                  class="inline-flex items-center px-4 h-12 sm:h-14 bg-purple-100/90 border border-r-0 border-purple-200/80 rounded-l-lg text-slate-700 text-sm lg:text-base font-bold select-none shrink-0"
+                >
+                  +91
+                </span>
+                <input
+                  type="tel"
+                  id="meta-lg__phone"
+                  name="lg__phone"
+                  maxlength="10"
+                  inputmode="numeric"
+                  class="w-full h-12 sm:h-14 px-4 bg-purple-50/70 border border-purple-200/80 rounded-r-lg text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                  placeholder="Phone number *"
+                  required
+                />
+              </div>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="meta-lg__phone-error"
+                >Phone number must be exactly 10 digits</span
+              >
+            </div>
+
+            <!-- Field 4: Software -->
+            <div>
+              <select
+                id="meta-which_accounting_tool_do_you_use"
+                name="which_accounting_tool_do_you_use"
+                class="w-full h-12 sm:h-14 px-4 bg-purple-50/70 border border-purple-200/80 rounded-lg text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                required
+              >
+                <option value="" disabled selected
+                  >Which accounting tool do you use? *</option
+                >
+                <option value="Tally">Tally</option>
+                <option value="Both">Both</option>
+                <option value="Zoho Books">Zoho Books</option>
+                <option value="Others">Others</option>
+              </select>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="meta-which_accounting_tool_do_you_use-error"
+                >Please select your accounting tool</span
+              >
+            </div>
+
+            <!-- Field 5: Team Size -->
+            <div>
+              <select
+                id="meta-accounting_team_size"
+                name="accounting_team_size"
+                class="w-full h-12 sm:h-14 px-4 bg-purple-50/70 border border-purple-200/80 rounded-lg text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                required
+              >
+                <option value="" disabled selected
+                  >Accounting Team size *</option
+                >
+                <option value="0">0</option>
+                <option value="1-3">1-3</option>
+                <option value="3-5">3-5</option>
+                <option value="5-10">5-10</option>
+                <option value="10+">10+</option>
+              </select>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="meta-accounting_team_size-error"
+                >Please select team size</span
+              >
+            </div>
+
+            <!-- Field 6: Role -->
+            <div>
+              <select
+                id="meta-which_best_describes_you"
+                name="which_best_describes_you"
+                class="w-full h-12 sm:h-14 px-4 bg-purple-50/70 border border-purple-200/80 rounded-lg text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                required
+              >
+                <option value="" disabled selected
+                  >Which best describes you? *</option
+                >
+                <option value="CA firm: automating my clients' books"
+                  >CA firm: automating my clients' books</option
+                >
+                <option
+                  value="Business owner: automating my company's accounting"
+                  >Business owner: automating my company's accounting</option
+                >
+                <option value="Finance team: looking to automate our books"
+                  >Finance team: looking to automate our books</option
+                >
+                <option value="Channel partner: looking to resell AiA"
+                  >Channel partner: looking to resell AiA</option
+                >
+              </select>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="meta-which_best_describes_you-error"
+                >Please select your role</span
+              >
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              id="Meta-Automation-Submit"
+              class="w-full h-14 mt-2 bg-slate-950 hover:bg-black text-white font-black text-lg rounded-lg border border-slate-950 shadow-md transition-all cursor-pointer flex items-center justify-center tracking-wide"
+            >
+              See how it works
+            </button>
+            <span
+              id="meta-general-error"
+              class="text-xs font-semibold text-[#dc2626] hidden mt-2 text-center block"
+            >
+              Couldn't save your details. Please try again.
+            </span>
+
+            <p
+              class="text-xs text-slate-500 text-center pt-2 leading-tight font-medium"
+            >
+              By submitting this form, you agree to our <a
+                href="https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/6a44d5f5042f7ab8d58990ad_Privacy%20Policy_AIA_6.0_300626%20%201%20(1).pdf"
+                target="_blank"
+                rel="noopener"
+                class="text-purple-700 font-bold underline hover:text-purple-900"
+                >Privacy Policy</a
+              >.
+            </p>
+          </form>
+
+          <div id="metaSuccessMessage" class="hidden text-center py-8">
+            <div
+              class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full inline-flex items-center justify-center mb-4"
+            >
+              <svg
+                class="w-8 h-8"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><polyline points="20 6 9 17 4 12"></polyline></svg
+              >
+            </div>
+            <h3 class="text-2xl font-black text-slate-950 mb-2">
+              You're All Set!
+            </h3>
+            <p class="text-slate-600 text-sm font-semibold">
+              Thank you for requesting a demo. Our team will contact you
+              shortly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  import { bindLeadForm } from "../../scripts/leadForm";
+
+  const run = () => {
+    bindLeadForm({
+      contactSource: "Tally Automation Meta",
+      defaultRouterId: "6506",
+      channelPartnerRouterId: "6273",
+      triggerSelector: "#Meta-Automation-Submit",
+      webhookUrl:
+        "https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96",
+      blockedTools: ["Zoho Books", "Others"],
+      webhookOnAllPaths: false,
+      debug: true,
+
+      formSelector: "#metaLeadForm",
+      fieldIdPrefix: "meta-",
+      successSelector: "#metaSuccessMessage",
+      generalErrorSelector: "#meta-general-error",
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run, { once: true });
+  } else {
+    run();
+  }
+  document.addEventListener("astro:page-load", run);
+</script>

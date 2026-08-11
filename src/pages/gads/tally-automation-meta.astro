@@ -1,0 +1,40 @@
+---
+// src/pages/gads/tally-automation-meta.astro
+import Layout from '../../layouts/Layout.astro';
+import MetaHero from '../../components/campaigns/MetaHero.astro';
+import TheProblem from '../../components/campaigns/TheProblem.astro';
+import TheOutcome from '../../components/campaigns/TheOutcome.astro';
+import HowItWorks from '../../components/campaigns/HowItWorks.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = "Stop entering bank statements by hand | AI Accountant";
+const description = "There is a faster way. AI Accountant does the data entry for you, so you don't lose your evenings at month-end.";
+---
+
+<Layout title={title} description={description} bodyClass="bg-slate-50 text-slate-900 scroll-smooth">
+  <main>
+    <MetaHero />
+    <TheProblem />
+    <TheOutcome />
+    <HowItWorks />
+    
+    <Testimonials 
+      customTitle="Businesses like yours have already switched" 
+      customSubtitle=" "
+      curatedAuthors={["Vadivel CMA", "Sunil", "Adarsh MG"]} 
+    />
+    
+    <!-- Offer / Closing CTA -->
+    <CtaBanner />
+  </main>
+  
+  <script is:inline type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
+  <script is:inline type="text/javascript">
+    window.hero = new RevenueHero({ routerId: '6506' });
+    hero.schedule('#Meta-Automation-Submit');
+  </script>
+
+  <Footer />
+</Layout>

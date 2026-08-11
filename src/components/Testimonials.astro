@@ -1,8 +1,11 @@
 ---
 interface Props {
   theme?: "purple" | "tally";
+  curatedAuthors?: string[];
+  customTitle?: string;
+  customSubtitle?: string;
 }
-const { theme = "purple" } = Astro.props;
+const { theme = "purple", curatedAuthors, customTitle, customSubtitle } = Astro.props;
 
 const isTallyTheme = theme === "tally";
 const bgClass = isTallyTheme ? "bg-tally-50/60" : "bg-purple-50/60";
@@ -10,7 +13,7 @@ const textAccentClass = isTallyTheme ? "text-tally-600" : "text-purple-600";
 const hoverShadowClass = isTallyTheme ? "hover:shadow-tally-600/15" : "hover:shadow-purple-600/15";
 const hoverBorderClass = isTallyTheme ? "hover:border-tally-200/60" : "hover:border-purple-200/60";
 
-const testimonials = [
+const allTestimonials = [
   {
     quote:
       "AI Accountant has made financial management effortless. Expense categorization and bills automation simplify coordination with my CA, and this new dashboard helps track business performance. I suggested adding bank charge tracking, and AI Accountant built it; truly customer-focused!",
@@ -65,21 +68,44 @@ const testimonials = [
     role: "Calculators - The Tax People",
     icon: "S",
   },
+  {
+    quote:
+      "Clients can upload documents, track filing status, and access reports 24/7. It's elevated our firm's professional image.",
+    author: "Adarsh MG",
+    role: "Managing Partner at Acc 'N' More",
+    icon: "A",
+  },
 ];
+
+const testimonials = curatedAuthors 
+  ? allTestimonials.filter(t => curatedAuthors.includes(t.author)) 
+  : allTestimonials;
+
 ---
 
 <!-- Section 3: Testimonials Grid (Exact Copy & Styling from Image) -->
 <section class={`py-16 md:py-24 ${bgClass}`} id="tally-reviews">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-3xl mx-auto mb-12">
-      <h2
-        class="whitespace-nowrap text-[min(6.4vw,1.875rem)] sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-2"
-      >
-        Real Results, <span class={textAccentClass}>Real Success</span>
-      </h2>
-      <p class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-        Hear from Our Clients
-      </p>
+      {customTitle ? (
+        <h2 class="whitespace-nowrap text-[min(6.4vw,1.875rem)] sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-2">
+          {customTitle}
+        </h2>
+      ) : (
+        <h2 class="whitespace-nowrap text-[min(6.4vw,1.875rem)] sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-2">
+          Real Results, <span class={textAccentClass}>Real Success</span>
+        </h2>
+      )}
+      {!customTitle && !customSubtitle && (
+        <p class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          Hear from Our Clients
+        </p>
+      )}
+      {customSubtitle && (
+        <p class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          {customSubtitle}
+        </p>
+      )}
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

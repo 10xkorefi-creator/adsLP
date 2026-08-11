@@ -1,0 +1,290 @@
+---
+// src/components/campaigns/SearchHero.astro
+---
+
+<!-- Section 1: Hero Header & Lead Form (Clean Mobile Layout with Visible Above-The-Fold Submit Button) -->
+<header
+  class="relative pt-6 pb-12 lg:pt-12 lg:pb-16 bg-white overflow-hidden"
+  id="hero"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+      <!-- Left Hero Content Column -->
+      <div class="lg:col-span-6 flex flex-col justify-center pt-4 lg:pt-8">
+        <!-- MASSIVE H1 HEADLINE -->
+        <h1
+          class="text-[2.5rem] sm:text-5xl md:text-6xl font-black leading-[1.05] tracking-tighter mb-6 lg:mb-8 text-center lg:text-left"
+        >
+          <span class="text-slate-950">Turn bank statements, bills, and vouchers into Tally entries</span>
+          <span class="relative inline-block mt-3 sm:mt-4 whitespace-nowrap">
+            <!-- Mobile optimized high-contrast highlight block -->
+            <span class="absolute inset-0 bg-[#FFE81A] transform -skew-x-6 rounded-sm shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] border-2 border-slate-900"></span>
+            <span class="relative text-slate-950 px-4 py-1 sm:px-5 sm:py-2 block text-[2.25rem] sm:text-5xl md:text-6xl">— automatically</span>
+          </span>
+        </h1>
+
+        <!-- Sub-headline -->
+        <p
+          class="text-base sm:text-lg text-slate-600 font-medium leading-relaxed mb-8 max-w-xl text-center lg:text-left"
+        >
+          AI Accountant reads your documents and creates clean, sorted entries in TallyPrime. Cut manual data entry by 75% and close your books faster.
+        </p>
+
+        <!-- Subtle Trust Certifications Line -->
+        <div
+          class="flex text-xs sm:text-sm font-bold text-slate-500 tracking-wide flex-wrap items-center justify-center lg:justify-start gap-x-2 gap-y-1"
+        >
+          <span>ISO 27001:2022 Certified</span>
+          <span class="text-slate-300">•</span>
+          <span>SOC 2 Type II Certified</span>
+          <span class="text-slate-300">•</span>
+          <span>300M+ Transactions Analysed</span>
+        </div>
+      </div>
+
+      <!-- Right Form Card Column (Comfortable 44px Mobile Inputs & Visible Submit Button) -->
+      <div class="lg:col-span-6" id="lead-form-container">
+        <div
+          class="bg-white border-2 border-slate-200/90 rounded-lg p-4 sm:p-6 lg:p-6 shadow-sm relative"
+        >
+          <div
+            class="flex items-center justify-between gap-2 mb-3 lg:mb-4 pb-2.5 lg:pb-3 border-b border-slate-100"
+          >
+            <h2
+              class="text-lg sm:text-xl lg:text-2xl font-black text-slate-950 tracking-tight"
+            >
+              Book A Demo
+            </h2>
+            <span
+              class="inline-flex items-center gap-1 bg-purple-100 text-purple-900 text-xs font-bold px-2.5 py-1 rounded border border-purple-200"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse"
+              ></span>
+              40 slots available
+            </span>
+          </div>
+
+          <form id="astroLeadForm" class="space-y-2.5 lg:space-y-3" novalidate>
+            <!-- Field 1: First Name -->
+            <div>
+              <input
+                type="text"
+                id="astro-first_name"
+                name="first_name"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                placeholder="Name *"
+                required
+              />
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-first_name-error">Please enter your name</span
+              >
+            </div>
+
+            <!-- Field 2: Email -->
+            <div>
+              <input
+                type="email"
+                id="astro-email"
+                name="email"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                placeholder="Email Address *"
+                required
+              />
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-email-error">Please enter a valid email address</span
+              >
+            </div>
+
+            <!-- Field 3: Phone -->
+            <div>
+              <div class="flex items-center">
+                <span
+                  class="inline-flex items-center px-3.5 h-11 sm:h-12 bg-purple-100/90 border border-r-0 border-purple-200/80 rounded-l text-slate-700 text-sm lg:text-base font-bold select-none shrink-0"
+                >
+                  +91
+                </span>
+                <input
+                  type="tel"
+                  id="astro-lg__phone"
+                  name="lg__phone"
+                  maxlength="10"
+                  inputmode="numeric"
+                  class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded-r text-slate-900 text-sm lg:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all"
+                  placeholder="Phone number *"
+                  required
+                />
+              </div>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-lg__phone-error"
+                >Phone number must be exactly 10 digits</span
+              >
+            </div>
+
+            <!-- Field 4: Software -->
+            <div>
+              <select
+                id="astro-which_accounting_tool_do_you_use"
+                name="which_accounting_tool_do_you_use"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                required
+              >
+                <option value="" disabled selected
+                  >Which accounting tool do you use? *</option
+                >
+                <option value="Tally">Tally</option>
+                <option value="Both">Both</option>
+                <option value="Zoho Books">Zoho Books</option>
+                <option value="Others">Others</option>
+              </select>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-which_accounting_tool_do_you_use-error"
+                >Please select your accounting tool</span
+              >
+            </div>
+
+            <!-- Field 5: Team Size -->
+            <div>
+              <select
+                id="astro-accounting_team_size"
+                name="accounting_team_size"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                required
+              >
+                <option value="" disabled selected
+                  >Accounting Team size *</option
+                >
+                <option value="0">0</option>
+                <option value="1-3">1-3</option>
+                <option value="3-5">3-5</option>
+                <option value="5-10">5-10</option>
+                <option value="10+">10+</option>
+              </select>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-accounting_team_size-error"
+                >Please select team size</span
+              >
+            </div>
+
+            <!-- Field 6: Role -->
+            <div>
+              <select
+                id="astro-which_best_describes_you"
+                name="which_best_describes_you"
+                class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm lg:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer"
+                required
+              >
+                <option value="" disabled selected
+                  >Which best describes you? *</option
+                >
+                <option value="CA firm: automating my clients' books"
+                  >CA firm: automating my clients' books</option
+                >
+                <option
+                  value="Business owner: automating my company's accounting"
+                  >Business owner: automating my company's accounting</option
+                >
+                <option value="Finance team: looking to automate our books"
+                  >Finance team: looking to automate our books</option
+                >
+                <option value="Channel partner: looking to resell AiA"
+                  >Channel partner: looking to resell AiA</option
+                >
+              </select>
+              <span
+                class="text-xs font-semibold text-[#dc2626] hidden mt-1"
+                id="astro-which_best_describes_you-error"
+                >Please select your role</span
+              >
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              id="Search-Automation-Submit"
+              class="w-full h-12 sm:h-13 mt-1.5 lg:mt-2 bg-slate-950 hover:bg-black text-white font-extrabold text-base lg:text-lg rounded border border-slate-950 shadow-sm transition-all cursor-pointer flex items-center justify-center tracking-wide"
+            >
+              Submit
+            </button>
+            <span
+              id="astro-general-error"
+              class="text-xs font-semibold text-[#dc2626] hidden mt-2 text-center block"
+            >
+              Couldn't save your details. Please try again.
+            </span>
+
+            <p
+              class="text-[10px] sm:text-xs text-slate-500 text-center pt-1 lg:pt-2 leading-tight font-medium"
+            >
+              By submitting this form, you agree to our <a
+                href="https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/6a44d5f5042f7ab8d58990ad_Privacy%20Policy_AIA_6.0_300626%20%201%20(1).pdf"
+                target="_blank"
+                rel="noopener"
+                class="text-purple-700 font-bold underline hover:text-purple-900"
+                >Privacy Policy</a
+              > and consent to being contacted.
+            </p>
+          </form>
+
+          <div id="astroSuccessMessage" class="hidden text-center py-6">
+            <div
+              class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded inline-flex items-center justify-center mb-2"
+            >
+              <svg
+                class="w-6 h-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><polyline points="20 6 9 17 4 12"></polyline></svg
+              >
+            </div>
+            <h3 class="text-lg font-black text-slate-950 mb-1">
+              You're All Set!
+            </h3>
+            <p class="text-slate-600 text-xs sm:text-sm font-semibold">
+              Thank you for requesting a demo. Our team will contact you
+              shortly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  import { bindLeadForm } from "../../scripts/leadForm";
+
+  const run = () => {
+    bindLeadForm({
+      contactSource: "Tally Automation Search",
+      defaultRouterId: "6506",
+      channelPartnerRouterId: "6273",
+      triggerSelector: "#Search-Automation-Submit",
+      webhookUrl:
+        "https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96",
+      blockedTools: ["Zoho Books", "Others"],
+      webhookOnAllPaths: false,
+      debug: true,
+
+      formSelector: "#astroLeadForm",
+      fieldIdPrefix: "astro-",
+      successSelector: "#astroSuccessMessage",
+      generalErrorSelector: "#astro-general-error",
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run, { once: true });
+  } else {
+    run();
+  }
+  document.addEventListener("astro:page-load", run);
+</script>
