@@ -10,19 +10,49 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
       <!-- Left Hero Content Column -->
-      <div class="lg:col-span-6 flex flex-col justify-center pt-4 lg:pt-12">
+      <div class="lg:col-span-6 flex flex-col justify-center pt-4 lg:pt-8">
+        <!-- Visual hook for CRO -->
+        <div class="mb-8 flex justify-center lg:justify-start">
+          <div
+            class="relative w-36 h-36 sm:w-44 sm:h-44 bg-white rounded-2xl shadow-[0_12px_40px_-12px_rgba(239,68,68,0.6)] border border-red-100 overflow-hidden group"
+          >
+            <!-- Subtle background tint inside the box -->
+            <div class="absolute inset-0 bg-gradient-to-b from-white to-red-50">
+            </div>
+            <!-- Image zoomed and positioned to show only above the chest -->
+            <img
+              src="/stressed-accountant.png"
+              alt="Stressed Accountant"
+              class="w-full h-full object-cover object-top scale-125 translate-y-3 relative z-10 group-hover:scale-110 transition-transform duration-500"
+            />
+          </div>
+        </div>
+
         <!-- MASSIVE H1 HEADLINE -->
         <h1
-          class="text-4xl sm:text-5xl md:text-6xl font-black leading-tight lg:leading-tight tracking-tighter mb-4 lg:mb-6 text-slate-950 text-center lg:text-left"
+          class="text-[2.5rem] sm:text-5xl md:text-6xl font-black leading-[1.05] tracking-tighter mb-6 lg:mb-8 text-center lg:text-left"
         >
-          Still entering bank statements into Tally <span class="text-purple-600 underline decoration-purple-200 underline-offset-4">by hand?</span>
+          <span class="text-slate-950 block"
+            >Still entering bank statements into Tally</span
+          >
+          <span class="relative inline-block mt-3 sm:mt-4 whitespace-nowrap">
+            <!-- Mobile optimized high-contrast highlight block -->
+            <span
+              class="absolute inset-0 bg-[#FFE81A] transform -skew-x-6 rounded-sm shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] border-2 border-slate-900"
+            ></span>
+            <span
+              class="relative text-slate-950 px-4 py-1 sm:px-5 sm:py-2 block text-[2.25rem] sm:text-5xl md:text-6xl"
+              >— by hand?</span
+            >
+          </span>
         </h1>
 
         <!-- Sub-headline -->
         <p
           class="text-base sm:text-lg text-slate-600 font-medium leading-relaxed mb-8 max-w-xl text-center lg:text-left"
         >
-          There is a faster way. AI Accountant does the data entry for you, so you don't lose your evenings at month-end.
+          There is a faster way. AI Accountant does the data entry for you, so
+          you don't lose your evenings at month-end.
         </p>
       </div>
 
@@ -241,7 +271,7 @@
 
   const run = () => {
     bindLeadForm({
-      contactSource: "Tally Automation Meta",
+      contactSource: "Meta ads",
       defaultRouterId: "6506",
       channelPartnerRouterId: "6273",
       triggerSelector: "#Meta-Automation-Submit",

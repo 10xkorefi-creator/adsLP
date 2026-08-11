@@ -1,27 +1,83 @@
 ---
 // src/components/campaigns/TheOutcome.astro
 ---
-<section class="py-16 lg:py-24 bg-purple-600 relative overflow-hidden" id="the-outcome">
+
+<section
+  class="py-16 lg:py-24 bg-purple-600 relative overflow-hidden"
+  id="the-outcome"
+>
   <!-- Decorative background elements -->
   <div class="absolute inset-0 opacity-10">
-    <svg class="absolute left-0 top-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <svg
+      class="absolute left-0 top-0 h-full w-full"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+    >
       <path d="M0 100 C 20 0 50 0 100 100 Z" fill="currentColor"></path>
     </svg>
   </div>
 
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div class="text-center bg-purple-700/30 backdrop-blur-sm rounded-3xl p-8 sm:p-12 border border-purple-400/20 shadow-2xl">
-      <div class="w-16 h-16 mx-auto bg-purple-500/30 text-purple-100 rounded-full flex items-center justify-center mb-6">
-        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div
+      class="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-2xl relative flex flex-col md:flex-row items-center gap-8 lg:gap-12"
+    >
+      <!-- Character Image -->
+      <div
+        class="flex-shrink-0 relative transform md:-translate-y-8 lg:-translate-y-12"
+      >
+        <div
+          class="relative w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 bg-white rounded-3xl shadow-[0_15px_50px_-15px_rgba(16,185,129,0.5)] border border-emerald-100 overflow-hidden group"
+        >
+          <!-- Subtle background tint inside the box -->
+          <div
+            class="absolute inset-0 bg-gradient-to-b from-white to-emerald-50/50"
+          >
+          </div>
+          <!-- Image zoomed massively for a tight headshot (above chest) -->
+          <img
+            src="/happy-accountant.png"
+            alt="Happy Stress-free Accountant"
+            class="w-full h-full object-cover object-top scale-[3.5] origin-top -translate-y-5 relative z-10 group-hover:scale-[2.7] transition-transform duration-500"
+          />
+        </div>
       </div>
-      
-      <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
-        Imagine month-end <span class="text-purple-200 border-b-4 border-purple-400">without the stress</span>
-      </h2>
-      
-      <p class="text-lg sm:text-xl md:text-2xl text-purple-50 font-medium leading-relaxed max-w-2xl mx-auto">
-        Your books stay up to date. Entries are posted as documents come in. You can see your cash, receivables, and payables any day of the month — not just at year-end.
-      </p>
+
+      <!-- Text Content -->
+      <div class="text-center md:text-left flex-1">
+        <div
+          class="w-16 h-16 mx-auto md:mx-0 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-6 shadow-sm"
+        >
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            ><path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+            ></path></svg
+          >
+        </div>
+
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-950 tracking-tight leading-tight mb-6"
+        >
+          Imagine month-end <span
+            class="text-purple-600 border-b-4 border-purple-200"
+            >without the stress</span
+          >
+        </h2>
+
+        <p
+          class="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed"
+        >
+          Your books stay up to date. Entries are posted as documents come in.
+          You can see your cash, receivables, and payables any day of the month
+          — not just at year-end.
+        </p>
+      </div>
     </div>
   </div>
 </section>
