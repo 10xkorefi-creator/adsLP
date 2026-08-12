@@ -1,5 +1,9 @@
 ---
 // WhatsappWaitlistForm.astro
+interface Props {
+  contactSource?: string;
+}
+const { contactSource = "WA bot - LinkedIn ads" } = Astro.props;
 ---
 <style>
   .no-scrollbar::-webkit-scrollbar {
@@ -27,7 +31,7 @@
       </p>
     </div>
 
-    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource}>
       <!-- Field 1: First Name -->
       <div>
         <input
@@ -259,6 +263,8 @@
       btn.style.opacity = "0.7";
       btn.style.pointerEvents = "none";
       
+      const contactSource = form.getAttribute('data-contact-source') || "WA bot - LinkedIn ads";
+      
       const payload: Record<string, string> = {
         first_name: name,
         email: email,
@@ -267,7 +273,7 @@
         accounting_team_size: teamInput.value,
         which_best_describes_you: roleInput.value,
         campaign: "whatsapp-aiaccountant",
-        contact_source: "WA bot - LinkedIn ads",
+        contact_source: contactSource,
         routerId: "6563"
       };
 
