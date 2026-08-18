@@ -2,8 +2,10 @@
 // WhatsappWaitlistForm.astro
 interface Props {
   contactSource?: string;
+  showTallyReadyMessage?: boolean;
+  hideHeaderOnSuccess?: boolean;
 }
-const { contactSource = "WA bot - LinkedIn ads" } = Astro.props;
+const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, hideHeaderOnSuccess = true } = Astro.props;
 ---
 <style>
   .no-scrollbar::-webkit-scrollbar {
@@ -22,7 +24,7 @@ const { contactSource = "WA bot - LinkedIn ads" } = Astro.props;
       <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
     </button>
     
-    <div class="mb-6 text-center pt-2">
+    <div id="wa-header" class="mb-6 text-center pt-2">
       <h2 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight mb-1">
         Your numbers, one message away.
       </h2>
@@ -31,7 +33,7 @@ const { contactSource = "WA bot - LinkedIn ads" } = Astro.props;
       </p>
     </div>
 
-    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource}>
+    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()}>
       <!-- Field 1: First Name -->
       <div>
         <input
@@ -141,17 +143,22 @@ const { contactSource = "WA bot - LinkedIn ads" } = Astro.props;
     </form>
 
     <!-- Success Message -->
-    <div id="wa-success" class="hidden text-center py-12">
-      <div class="w-20 h-20 bg-emerald-100 text-[#25D366] rounded-full inline-flex items-center justify-center mb-6 shadow-inner">
+    <div id="wa-success" class="hidden text-center py-8 sm:py-12 px-2 sm:px-0">
+      <div class="w-20 h-20 bg-emerald-100 text-[#25D366] rounded-full inline-flex items-center justify-center mb-6 shadow-inner mx-auto">
         <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </div>
-      <h3 class="text-3xl font-black text-slate-900 mb-4">
+      <h3 class="text-3xl font-black text-slate-900 mb-3 sm:mb-4">
         You're In
       </h3>
-      <p class="text-lg text-slate-600 font-medium mb-8">
+      <p class="text-base sm:text-lg text-slate-600 font-medium mb-8 sm:mb-8">
         We will email you once the Bot is ready!
       </p>
-      <button onclick="closeWaitlistModal()" class="px-8 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors">Close</button>
+      {showTallyReadyMessage && (
+        <p class="text-2xl sm:text-3xl font-black text-slate-900 mb-8 sm:mb-10 leading-tight">
+          Please <span class="text-[#25D366]">have Tally ready</span> before the call for easy onboarding.
+        </p>
+      )}
+      <button onclick="closeWaitlistModal()" class="w-full sm:w-auto px-8 py-3.5 sm:py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors">Close</button>
     </div>
   </div>
 </div>
@@ -337,6 +344,10 @@ const { contactSource = "WA bot - LinkedIn ads" } = Astro.props;
         // Show success state
         form.style.display = "none";
         successMsg.classList.remove("hidden");
+        const waHeader = document.getElementById('wa-header');
+        if (waHeader && form.getAttribute('data-hide-header') === 'true') {
+          waHeader.style.display = "none";
+        }
 
       } catch (err) {
         console.error("Submit Error:", err);
