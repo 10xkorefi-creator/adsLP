@@ -1,11 +1,15 @@
 ---
-
+interface Props {
+  contactSource?: string;
+}
+const { contactSource = "Tally automation - dgen" } = Astro.props;
 ---
 
 <!-- Section 1: Generic AI Accountant Hero Header & Demo Form -->
 <header
   class="relative pt-6 pb-12 lg:pt-6 lg:pb-10 bg-white overflow-hidden"
   id="hero"
+  data-contact-source={contactSource}
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-14 items-center">
@@ -295,9 +299,12 @@
 <script>
   import { bindLeadForm } from "../scripts/leadForm";
 
+  const heroEl = document.getElementById("hero");
+  const contactSource = heroEl?.dataset.contactSource || "Tally automation - dgen";
+
   // Editable per page.
   bindLeadForm({
-    contactSource: "Tally automation - dgen",
+    contactSource: contactSource,
     defaultRouterId: "6506",
     channelPartnerRouterId: "6273",
     triggerSelector: "#Tally-Automation",
