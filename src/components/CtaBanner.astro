@@ -1,4 +1,9 @@
 ---
+interface Props {
+  ctaText?: string;
+}
+
+const { ctaText = "Book a demo" } = Astro.props;
 ---
 
 <!-- Section 4: Urgency CTA Banner (Slightly Pointy Corners) -->
@@ -18,7 +23,7 @@
 
         <div class="flex justify-center">
           <a href="#hero" id="astro-cta-btn" class="inline-flex items-center justify-center bg-slate-950 hover:bg-black text-white font-extrabold text-base px-8 py-3.5 rounded border border-slate-950 shadow transition-all hover:scale-[1.02]">
-            Book a demo
+            {ctaText}
           </a>
         </div>
       </div>
