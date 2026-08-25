@@ -170,16 +170,20 @@ import Footer from "../../components/Footer.astro";
 
 <script>
   // --- Start inlined leadForm logic tailored for ta-dgen ---
-  document.addEventListener("DOMContentLoaded", () => {
+  const initLeadForm = () => {
     const form = document.getElementById("genericLeadForm");
     if (!form) return;
+    
+    // Prevent double binding on astro client-side navigation
+    if (form.dataset.leadFormBound === "true") return;
+    form.dataset.leadFormBound = "true";
 
     // Configuration
     const config = {
       contactSource: "GAds-TA-dgen",
       defaultRouterId: "6506",
       channelPartnerRouterId: "6273",
-      webhookUrl: "https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96",
+      webhookUrl: "https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96",
       blockedTools: ["Zoho Books", "Others"],
       tallyOfflineRedirectUrl: "https://app.aiaccountant.com/sign-up",
     };
@@ -192,7 +196,52 @@ import Footer from "../../components/Footer.astro";
     const tallySetupContainer = document.getElementById("generic-tally_setup-container");
     const generalErr = document.getElementById("generic-general-error");
     const successMsg = document.getElementById("genericSuccessMessage");
-    const trigger = document.getElementById("Tally-Automation");
+    let trigger = document.getElementById("Tally-Automation");
+
+    // Attribution - Inject into DOM exactly like leadForm.ts for HubSpot auto-collection compatibility
+    const captureAttribution = (formEl, source) => {
+      const params = new URLSearchParams(window.location.search);
+      const CLICK_ID_MAP = { gclid: "hs_google_click_id", fbclid: "hs_facebook_click_id", li_fat_id: "hs_linkedin_click_id" };
+      const UTM_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "placements", "utm_device", "gclid"];
+      
+      const data = {};
+      const clickIdStorageKey = "__clickids";
+      let storedClickIds = {};
+      try { storedClickIds = JSON.parse(sessionStorage.getItem(clickIdStorageKey) || "{}"); } catch (e) {}
+
+      Object.entries(CLICK_ID_MAP).forEach(([urlParam, hsInputName]) => {
+        const fromUrl = params.get(urlParam);
+        if (fromUrl) {
+          storedClickIds[hsInputName] = fromUrl;
+          data[hsInputName] = fromUrl;
+        } else if (storedClickIds[hsInputName]) {
+          data[hsInputName] = storedClickIds[hsInputName];
+        }
+      });
+      try { sessionStorage.setItem(clickIdStorageKey, JSON.stringify(storedClickIds)); } catch (e) {}
+
+      UTM_PARAMS.forEach((param) => {
+        const value = params.get(param);
+        if (value) data[param] = value;
+      });
+      data.contact_source = source;
+
+      // Inject hidden inputs
+      Object.entries(data).forEach(([name, value]) => {
+        if (!value) return;
+        let input = formEl.querySelector(`input[name="${name}"]`);
+        if (!input) {
+          input = document.createElement("input");
+          input.type = "hidden";
+          input.name = name;
+          formEl.appendChild(input);
+        }
+        input.value = value;
+      });
+    };
+
+    // Run attribution on load so HubSpot tracking script can scrape it if needed
+    captureAttribution(form, config.contactSource);
 
     // Conditional visibility logic
     toolSelect?.addEventListener("change", (e) => {
@@ -278,35 +327,6 @@ import Footer from "../../components/Footer.astro";
       return !firstBad;
     };
 
-    // Attribution
-    const captureAttribution = (dataObj) => {
-      const params = new URLSearchParams(window.location.search);
-      const CLICK_ID_MAP = { gclid: "hs_google_click_id", fbclid: "hs_facebook_click_id", li_fat_id: "hs_linkedin_click_id" };
-      const UTM_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "placements", "utm_device", "gclid"];
-      
-      const clickIdStorageKey = "__clickids";
-      let storedClickIds = {};
-      try { storedClickIds = JSON.parse(sessionStorage.getItem(clickIdStorageKey) || "{}"); } catch (e) {}
-
-      Object.entries(CLICK_ID_MAP).forEach(([urlParam, hsInputName]) => {
-        const fromUrl = params.get(urlParam);
-        if (fromUrl) {
-          storedClickIds[hsInputName] = fromUrl;
-          dataObj[hsInputName] = fromUrl;
-        } else if (storedClickIds[hsInputName]) {
-          dataObj[hsInputName] = storedClickIds[hsInputName];
-        }
-      });
-      try { sessionStorage.setItem(clickIdStorageKey, JSON.stringify(storedClickIds)); } catch (e) {}
-
-      UTM_PARAMS.forEach((param) => {
-        const value = params.get(param);
-        if (value) dataObj[param] = value;
-      });
-      dataObj.contact_source = config.contactSource;
-      return dataObj;
-    };
-
     const postWebhook = (payload, eventName) =>
       fetch(config.webhookUrl, {
         method: "POST",
@@ -337,6 +357,9 @@ import Footer from "../../components/Footer.astro";
       e.preventDefault();
       generalErr?.classList.add("hidden");
 
+      // Ensure attribution is in DOM before validation/submission in case of dynamic URL change
+      captureAttribution(form, config.contactSource);
+
       if (!validate()) return;
 
       const payload = {};
@@ -344,7 +367,6 @@ import Footer from "../../components/Footer.astro";
         const str = value.toString().trim();
         if (str) payload[key] = str;
       });
-      captureAttribution(payload);
 
       const tool = (payload.which_accounting_tool_do_you_use || "").trim().toLowerCase();
       const role = (payload.which_best_describes_you || "").trim().toLowerCase();
@@ -400,7 +422,7 @@ import Footer from "../../components/Footer.astro";
 
       if (bypassRHForOffline) {
         try {
-          await postWebhook(payload, "form_submit_offline_redirect");
+          await postWebhook(payload, "form_submit_blocked_tool");
           window.location.href = config.tallyOfflineRedirectUrl;
         } catch (err) {
           generalErr?.classList.remove("hidden");
@@ -414,6 +436,13 @@ import Footer from "../../components/Footer.astro";
         generalErr?.classList.remove("hidden");
         setBtnLoading(false);
         return;
+      }
+
+      // Stale binding prevention for RevenueHero exactly like leadForm.ts
+      if (trigger) {
+        const clone = trigger.cloneNode(true);
+        trigger.parentNode?.replaceChild(clone, trigger);
+        trigger = clone;
       }
 
       const RH = window.RevenueHero;
@@ -431,5 +460,13 @@ import Footer from "../../components/Footer.astro";
       }
       setBtnLoading(false);
     });
-  });
+  };
+
+  const runInit = () => initLeadForm();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", runInit, { once: true });
+  } else {
+    runInit();
+  }
+  document.addEventListener("astro:page-load", runInit);
 </script>
