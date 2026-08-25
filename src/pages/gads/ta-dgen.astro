@@ -1,6 +1,5 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import GenericHeroSection from "../../components/GenericHeroSection.astro";
 import LogosWall from "../../components/LogosWall.astro";
 import Testimonials from "../../components/Testimonials.astro";
 import CtaBanner from "../../components/CtaBanner.astro";
@@ -9,10 +8,428 @@ import Footer from "../../components/Footer.astro";
 
 <Layout title="AI Accountant - Automate Accounting, Reconciliations & Reports">
   <main>
-    <GenericHeroSection contactSource="GAds-TA-dgen" />
+    <!-- Inlined Hero Section -->
+    <header
+      class="relative pt-6 pb-12 lg:pt-6 lg:pb-10 bg-white overflow-hidden"
+      id="hero"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-14 items-center">
+          <!-- Left Hero Content Column -->
+          <div class="lg:col-span-6 flex flex-col justify-center">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-100/80 border border-purple-200 text-purple-900 text-xs sm:text-sm font-bold w-max mb-4">
+              <span class="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span>
+              AI-Powered Accounting Automation
+            </div>
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tight mb-4 text-slate-950 text-center lg:text-left">
+              Automate your books, reconciliations & reporting with AI
+            </h1>
+            <p class="text-base sm:text-lg text-slate-600 font-normal leading-relaxed mb-6 max-w-xl text-center lg:text-left">
+              AI Accountant connects with your existing accounting tools, bank
+              feeds, and invoices — eliminating 80% of manual entry and providing
+              real-time financial clarity for your business or firm.
+            </p>
+            <div class="flex text-xs sm:text-sm font-medium text-slate-500 tracking-wide flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-1.5">
+              <span class="inline-flex items-center gap-1">
+                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                ISO Certified
+              </span>
+              <span class="text-slate-300">•</span>
+              <span class="inline-flex items-center gap-1">
+                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                SOC 2 Type II
+              </span>
+              <span class="text-slate-300">•</span>
+              <span>300M+ Transactions Analyzed</span>
+            </div>
+          </div>
+
+          <!-- Right Form Card Column -->
+          <div class="lg:col-span-6" id="lead-form-container">
+            <div class="bg-white border-2 border-slate-200/90 rounded-2xl p-5 sm:p-6 lg:p-6 shadow-sm relative">
+              <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+                <div>
+                  <h2 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">
+                    Book a Free Trial
+                  </h2>
+                  <p class="text-xs text-slate-500 font-semibold mt-0.5">
+                    See AI Accountant in action with your team
+                  </p>
+                </div>
+                <span class="inline-flex items-center gap-1 bg-purple-100 text-purple-900 text-xs font-bold px-2.5 py-1 rounded border border-purple-200 shrink-0">
+                  <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse"></span>
+                  Free Consultation
+                </span>
+              </div>
+
+              <form id="genericLeadForm" class="space-y-3" novalidate>
+                <!-- Field 1: First Name -->
+                <div>
+                  <input type="text" id="generic-first_name" name="first_name" class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm sm:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" placeholder="Name *" required />
+                  <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-first_name-error">Please enter your name</span>
+                </div>
+
+                <!-- Field 2: Email -->
+                <div>
+                  <input type="email" id="generic-email" name="email" class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-900 text-sm sm:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" placeholder="Email Address *" required />
+                  <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-email-error">Please enter a valid email address</span>
+                </div>
+
+                <!-- Field 3: Phone -->
+                <div>
+                  <div class="flex items-center">
+                    <span class="inline-flex items-center px-3.5 h-11 sm:h-12 bg-purple-100/90 border border-r-0 border-purple-200/80 rounded-l text-slate-700 text-sm font-bold select-none shrink-0">+91</span>
+                    <input type="tel" id="generic-lg__phone" name="lg__phone" maxlength="10" inputmode="numeric" class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded-r text-slate-900 text-sm sm:text-base font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all" placeholder="Phone number *" required />
+                  </div>
+                  <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-lg__phone-error">Phone number must be exactly 10 digits</span>
+                </div>
+
+                <!-- Field 4: Software -->
+                <div>
+                  <select id="generic-which_accounting_tool_do_you_use" name="which_accounting_tool_do_you_use" class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm sm:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" required>
+                    <option value="" disabled selected>Which accounting tool do you use? *</option>
+                    <option value="Tally">Tally</option>
+                    <option value="Both">Both</option>
+                    <option value="Zoho Books">Zoho Books</option>
+                    <option value="Others">Others</option>
+                  </select>
+                  <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-which_accounting_tool_do_you_use-error">Please select your accounting tool</span>
+                </div>
+
+                <!-- NEW Field: Tally Setup -->
+                <div id="generic-tally_setup-container" style="display: none;">
+                  <select id="generic-tally_setup" name="tally_setup" class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm sm:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" disabled>
+                    <option value="" selected>Is your Tally on cloud or local?</option>
+                    <option value="cloud-hosted">Cloud-hosted</option>
+                    <option value="offline">Offline (local system)</option>
+                    <option value="not-sure">Not sure</option>
+                  </select>
+                  <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-tally_setup-error">Please select an option</span>
+                </div>
+
+                <!-- Field 5: Team Size -->
+                <div>
+                  <select id="generic-accounting_team_size" name="accounting_team_size" class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm sm:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" required>
+                    <option value="" disabled selected>Accounting Team size *</option>
+                    <option value="0">0</option>
+                    <option value="1-3">1-3</option>
+                    <option value="3-5">3-5</option>
+                    <option value="5-10">5-10</option>
+                    <option value="10+">10+</option>
+                  </select>
+                  <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-accounting_team_size-error">Please select team size</span>
+                </div>
+
+                <!-- Field 6: Role -->
+                <div>
+                  <select id="generic-which_best_describes_you" name="which_best_describes_you" class="w-full h-11 sm:h-12 px-3.5 bg-purple-50/70 border border-purple-200/80 rounded text-slate-700 text-sm sm:text-base font-semibold focus:outline-none focus:border-purple-600 focus:bg-white focus:ring-2 focus:ring-purple-600/20 transition-all cursor-pointer" required>
+                    <option value="" disabled selected>Which best describes you? *</option>
+                    <option value="CA firm: automating my clients' books">CA firm: automating my clients' books</option>
+                    <option value="Business owner: automating my company's accounting">Business owner: automating my company's accounting</option>
+                    <option value="Finance team: looking to automate our books">Finance team: looking to automate our books</option>
+                    <option value="Channel partner: looking to resell AiA">Channel partner: looking to resell AiA</option>
+                  </select>
+                  <span class="text-xs font-semibold text-[#dc2626] hidden mt-1" id="generic-which_best_describes_you-error">Please select your role</span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="Tally-Automation" class="w-full h-12 sm:h-13 mt-2 bg-slate-950 hover:bg-black text-white font-extrabold text-base lg:text-lg rounded border border-slate-950 shadow-sm transition-all cursor-pointer flex items-center justify-center tracking-wide">
+                  Submit
+                </button>
+                <span id="generic-general-error" class="text-xs font-semibold text-[#dc2626] hidden mt-2 text-center block">
+                  Couldn't save your details. Please try again.
+                </span>
+                
+                <p class="text-[10px] sm:text-xs text-slate-500 text-center pt-1 leading-tight font-medium">
+                  By submitting this form, you agree to our <a href="https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/6a44d5f5042f7ab8d58990ad_Privacy%20Policy_AIA_6.0_300626%20%201%20(1).pdf" target="_blank" rel="noopener" class="text-purple-700 font-bold underline hover:text-purple-900">Privacy Policy</a>.
+                </p>
+              </form>
+
+              <div id="genericSuccessMessage" class="hidden text-center py-6">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full inline-flex items-center justify-center mb-2">
+                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3 class="text-lg font-black text-slate-950 mb-1">You're All Set!</h3>
+                <p class="text-slate-600 text-xs sm:text-sm font-semibold">
+                  Thank you for requesting a free trial. Our team will contact you shortly.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- End Inlined Hero Section -->
+
     <LogosWall />
     <Testimonials />
     <CtaBanner ctaText="Book a Free Trial" />
   </main>
   <Footer />
 </Layout>
+
+<script>
+  // --- Start inlined leadForm logic tailored for ta-dgen ---
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("genericLeadForm");
+    if (!form) return;
+
+    // Configuration
+    const config = {
+      contactSource: "GAds-TA-dgen",
+      defaultRouterId: "6506",
+      channelPartnerRouterId: "6273",
+      webhookUrl: "https://aiacc.app.n8n.cloud/webhook/ce246056-bdd0-4199-b363-3b44ed255f96",
+      blockedTools: ["Zoho Books", "Others"],
+      tallyOfflineRedirectUrl: "https://app.aiaccountant.com/sign-up",
+    };
+
+    const nameInput = document.getElementById("generic-first_name");
+    const emailInput = document.getElementById("generic-email");
+    const phoneInput = document.getElementById("generic-lg__phone");
+    const toolSelect = document.getElementById("generic-which_accounting_tool_do_you_use");
+    const tallySetupSelect = document.getElementById("generic-tally_setup");
+    const tallySetupContainer = document.getElementById("generic-tally_setup-container");
+    const generalErr = document.getElementById("generic-general-error");
+    const successMsg = document.getElementById("genericSuccessMessage");
+    const trigger = document.getElementById("Tally-Automation");
+
+    // Conditional visibility logic
+    toolSelect?.addEventListener("change", (e) => {
+      const val = (e.target.value || "").toLowerCase();
+      if (val.includes("tally") || val.includes("both")) {
+        tallySetupContainer.style.display = "block";
+        tallySetupSelect.disabled = false;
+        tallySetupSelect.required = true;
+      } else {
+        tallySetupContainer.style.display = "none";
+        tallySetupSelect.disabled = true;
+        tallySetupSelect.required = false;
+        tallySetupSelect.value = "";
+        setFieldError(tallySetupSelect, false);
+      }
+    });
+
+    // Formatting
+    phoneInput?.addEventListener("input", () => {
+      phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+    });
+
+    const setFieldError = (field, isError, message) => {
+      if (!field) return;
+      field.style.border = isError ? "2px solid #dc2626" : "";
+      field.style.borderRadius = isError ? "6px" : "";
+      
+      let span = document.getElementById(`${field.id}-error-msg`) || document.getElementById(`${field.id}-error`);
+      if (isError) {
+        if (!span) {
+          span = document.createElement("span");
+          span.id = `${field.id}-error-msg`;
+          span.className = "text-xs font-semibold text-[#dc2626] block mt-1";
+          field.parentNode.insertBefore(span, field.nextSibling);
+        }
+        span.textContent = message || "Please select an option";
+        span.style.display = "block";
+        span.classList.remove("hidden");
+      } else if (span) {
+        span.style.display = "none";
+        span.classList.add("hidden");
+      }
+    };
+
+    const clearOn = (field) => {
+      if (!field) return;
+      const clear = () => {
+        setFieldError(field, false);
+        generalErr?.classList.add("hidden");
+      };
+      field.addEventListener("input", clear);
+      field.addEventListener("change", clear);
+    };
+
+    clearOn(nameInput);
+    clearOn(emailInput);
+    clearOn(phoneInput);
+    form.querySelectorAll("select").forEach(select => clearOn(select));
+
+    const validate = () => {
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const nameVal = nameInput?.value.trim() || "";
+      const emailVal = emailInput?.value.trim() || "";
+      const digits = (phoneInput?.value || "").replace(/\D/g, "");
+
+      const checks = [
+        { field: nameInput, message: "Please enter your name", ok: Boolean(nameVal) },
+        { field: emailInput, message: !emailVal ? "Please enter a valid email address" : "Invalid email format", ok: Boolean(emailVal) && EMAIL_RE.test(emailVal) },
+        { field: phoneInput, message: "Phone number must be exactly 10 digits", ok: digits.length === 10 },
+      ];
+
+      Array.from(form.querySelectorAll("select[required]")).forEach((select) => {
+        checks.push({ field: select, message: "Please select an option", ok: Boolean(select.value) });
+      });
+
+      const firstBad = checks.find((c) => !c.ok);
+      checks.forEach((c) => setFieldError(c.field, c === firstBad, c.message));
+
+      if (firstBad?.field) {
+        firstBad.field.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstBad.field.focus({ preventScroll: true });
+      }
+      return !firstBad;
+    };
+
+    // Attribution
+    const captureAttribution = (dataObj) => {
+      const params = new URLSearchParams(window.location.search);
+      const CLICK_ID_MAP = { gclid: "hs_google_click_id", fbclid: "hs_facebook_click_id", li_fat_id: "hs_linkedin_click_id" };
+      const UTM_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "placements", "utm_device", "gclid"];
+      
+      const clickIdStorageKey = "__clickids";
+      let storedClickIds = {};
+      try { storedClickIds = JSON.parse(sessionStorage.getItem(clickIdStorageKey) || "{}"); } catch (e) {}
+
+      Object.entries(CLICK_ID_MAP).forEach(([urlParam, hsInputName]) => {
+        const fromUrl = params.get(urlParam);
+        if (fromUrl) {
+          storedClickIds[hsInputName] = fromUrl;
+          dataObj[hsInputName] = fromUrl;
+        } else if (storedClickIds[hsInputName]) {
+          dataObj[hsInputName] = storedClickIds[hsInputName];
+        }
+      });
+      try { sessionStorage.setItem(clickIdStorageKey, JSON.stringify(storedClickIds)); } catch (e) {}
+
+      UTM_PARAMS.forEach((param) => {
+        const value = params.get(param);
+        if (value) dataObj[param] = value;
+      });
+      dataObj.contact_source = config.contactSource;
+      return dataObj;
+    };
+
+    const postWebhook = (payload, eventName) =>
+      fetch(config.webhookUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify({ ...payload, __page: window.location.href, __event: eventName }),
+        keepalive: true,
+      });
+
+    // RevenueHero loader
+    let schedulerPromise = null;
+    const loadScheduler = () => {
+      if (window.RevenueHero) return Promise.resolve(true);
+      if (schedulerPromise) return schedulerPromise;
+      schedulerPromise = new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = "https://assets.revenuehero.io/scheduler.min.js";
+        script.async = true;
+        script.onload = () => resolve(Boolean(window.RevenueHero));
+        script.onerror = () => resolve(false);
+        document.head.appendChild(script);
+      });
+      return schedulerPromise;
+    };
+    loadScheduler();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      generalErr?.classList.add("hidden");
+
+      if (!validate()) return;
+
+      const payload = {};
+      new FormData(form).forEach((value, key) => {
+        const str = value.toString().trim();
+        if (str) payload[key] = str;
+      });
+      captureAttribution(payload);
+
+      const tool = (payload.which_accounting_tool_do_you_use || "").trim().toLowerCase();
+      const role = (payload.which_best_describes_you || "").trim().toLowerCase();
+      const setup = (payload.tally_setup || "").trim().toLowerCase();
+      
+      const isChannelPartner = role.startsWith("channel partner");
+      const isBlocked = config.blockedTools.some(blocked => blocked.toLowerCase() === tool);
+      
+      const setBtnLoading = (loading) => {
+        if (!trigger) return;
+        if (loading) {
+          trigger.dataset.origText = trigger.textContent;
+          trigger.textContent = "Submitting...";
+          trigger.style.pointerEvents = "none";
+          trigger.style.opacity = "0.7";
+        } else {
+          trigger.textContent = trigger.dataset.origText || "Submit";
+          trigger.style.pointerEvents = "";
+          trigger.style.opacity = "";
+        }
+      };
+      
+      setBtnLoading(true);
+
+      /* --- 1. Blocked tools --- */
+      if (isBlocked) {
+        try {
+          await postWebhook(payload, "form_submit_blocked_tool");
+          form.style.display = "none";
+          successMsg?.classList.remove("hidden");
+        } catch (err) {
+          generalErr?.classList.remove("hidden");
+          setBtnLoading(false);
+        }
+        return;
+      }
+
+      /* --- 2. Channel partner --- */
+      let targetRouter = config.defaultRouterId;
+      if (isChannelPartner) {
+        targetRouter = config.channelPartnerRouterId;
+      }
+
+      /* --- 3 & 4. Tally setup gate --- */
+      let bypassRHForOffline = false;
+      if (!isChannelPartner) {
+        if (setup === "offline") {
+          bypassRHForOffline = true;
+        } else if (setup === "cloud-hosted" || setup === "not-sure") {
+          targetRouter = config.defaultRouterId;
+        }
+      }
+
+      if (bypassRHForOffline) {
+        try {
+          await postWebhook(payload, "form_submit_offline_redirect");
+          window.location.href = config.tallyOfflineRedirectUrl;
+        } catch (err) {
+          generalErr?.classList.remove("hidden");
+          setBtnLoading(false);
+        }
+        return;
+      }
+
+      /* --- 5. Default RevenueHero path --- */
+      if (!(await loadScheduler()) || !window.RevenueHero) {
+        generalErr?.classList.remove("hidden");
+        setBtnLoading(false);
+        return;
+      }
+
+      const RH = window.RevenueHero;
+      const hero = new RH({ routerId: String(targetRouter) });
+      
+      try {
+        const sessionData = await hero.submit(payload);
+        if (sessionData) {
+          hero.dialog.open(sessionData);
+        } else {
+          generalErr?.classList.remove("hidden");
+        }
+      } catch (err) {
+        generalErr?.classList.remove("hidden");
+      }
+      setBtnLoading(false);
+    });
+  });
+</script>
