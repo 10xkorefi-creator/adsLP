@@ -330,8 +330,7 @@ import Footer from "../../components/Footer.astro";
     const postWebhook = (payload, eventName) =>
       fetch(config.webhookUrl, {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...payload, __page: window.location.href, __event: eventName }),
         keepalive: true,
       });

@@ -243,8 +243,7 @@ export function initLeadForm(config: LeadFormConfig): void {
   const postWebhook = (payload: Record<string, string>, event: string) =>
     fetch(config.webhookUrl, {
       method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...payload,
         __page: window.location.href,
