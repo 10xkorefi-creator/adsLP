@@ -97,6 +97,22 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
         <span id="wa-accounting_tool-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select your accounting tool</span>
       </div>
 
+      <!-- Field 4.5: Tally Setup -->
+      <div id="wa-tally_setup-container" style="display: none;">
+        <select
+          id="wa-tally_setup"
+          name="tally_setup"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          disabled
+        >
+          <option value="" selected>Is your Tally on cloud or local?</option>
+          <option value="cloud-hosted">Cloud-hosted</option>
+          <option value="offline">Offline (local system)</option>
+          <option value="not-sure">Not sure</option>
+        </select>
+        <span id="wa-tally_setup-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select an option</span>
+      </div>
+
       <!-- Field 5: Team Size -->
       <div>
         <select
@@ -134,7 +150,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
 
       <div class="md:col-span-2">
         <button type="submit" id="wa-submit" class="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-xl py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1 mt-2 shadow-[#25D366]/20">
-          Join The Waitlist
+          Get Started
         </button>
         <span id="wa-general-error" class="hidden text-red-600 text-sm mt-2 text-center block font-semibold">Couldn't save your details. Please try again.</span>
         
@@ -148,10 +164,10 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
         <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </div>
       <h3 class="text-3xl font-black text-slate-900 mb-3 sm:mb-4">
-        You're In
+        You're All Set!
       </h3>
       <p class="text-base sm:text-lg text-slate-600 font-medium mb-8 sm:mb-8">
-        We will email you once the Bot is ready!
+        Our team will be in touch shortly.
       </p>
       {showTallyReadyMessage && (
         <p class="text-2xl sm:text-3xl font-black text-slate-900 mb-8 sm:mb-10 leading-tight">
@@ -206,12 +222,29 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
     const emailInput = document.getElementById('wa-email') as HTMLInputElement;
     const phoneInput = document.getElementById('wa-phone') as HTMLInputElement;
     const toolInput = document.getElementById('wa-accounting_tool') as HTMLSelectElement;
+    const tallySetupContainer = document.getElementById('wa-tally_setup-container') as HTMLElement;
+    const tallySetupInput = document.getElementById('wa-tally_setup') as HTMLSelectElement;
     const teamInput = document.getElementById('wa-team_size') as HTMLSelectElement;
     const roleInput = document.getElementById('wa-role') as HTMLSelectElement;
     
     const btn = document.getElementById('wa-submit') as HTMLButtonElement;
     const successMsg = document.getElementById('wa-success') as HTMLElement;
     const generalErr = document.getElementById('wa-general-error') as HTMLElement;
+
+    toolInput.addEventListener("change", (e) => {
+      const val = (e.target as HTMLSelectElement).value.toLowerCase();
+      if (val.includes("tally")) {
+        tallySetupContainer.style.display = "block";
+        tallySetupInput.disabled = false;
+        tallySetupInput.required = true;
+      } else {
+        tallySetupContainer.style.display = "none";
+        tallySetupInput.disabled = true;
+        tallySetupInput.required = false;
+        tallySetupInput.value = "";
+        showError('wa-tally_setup', false);
+      }
+    });
 
     // Phone format
     phoneInput.addEventListener("input", () => {
@@ -228,7 +261,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
       }
     };
 
-    [nameInput, emailInput, phoneInput, toolInput, teamInput, roleInput].forEach(el => {
+    [nameInput, emailInput, phoneInput, toolInput, tallySetupInput, teamInput, roleInput].forEach(el => {
       el.addEventListener('input', () => {
         showError(el.id, false);
         generalErr.classList.add('hidden');
@@ -253,6 +286,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
       // Validate in reverse order so the top-most error gets focus
       if (!roleInput.value) { isValid = false; showError('wa-role', true); firstBad = firstBad || roleInput; }
       if (!teamInput.value) { isValid = false; showError('wa-team_size', true); firstBad = firstBad || teamInput; }
+      if (tallySetupInput.required && !tallySetupInput.value) { isValid = false; showError('wa-tally_setup', true); firstBad = firstBad || tallySetupInput; }
       if (!toolInput.value) { isValid = false; showError('wa-accounting_tool', true); firstBad = firstBad || toolInput; }
       if (phone.length !== 10) { isValid = false; showError('wa-phone', true); firstBad = firstBad || phoneInput; }
       if (!email || !emailRe.test(email)) { isValid = false; showError('wa-email', true); firstBad = firstBad || emailInput; }
@@ -277,6 +311,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
         email: email,
         lg__phone: phone,
         which_accounting_tool_do_you_use: toolInput.value,
+        tally_setup: tallySetupInput.value,
         accounting_team_size: teamInput.value,
         which_best_describes_you: roleInput.value,
         campaign: "whatsapp-aiaccountant",
@@ -333,19 +368,63 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
           body: JSON.stringify(payload),
         }).catch(() => {});
 
-        // RevenueHero Submission in the background
-        if (window.RevenueHero) {
-          const hero = new window.RevenueHero({ routerId: '6563', showLoader: false });
-          // Submit to RH without opening the dialog (sends data to HubSpot silently)
-          await hero.submit(payload).catch(console.error);
+        const tool = toolInput.value.toLowerCase();
+        const role = roleInput.value.toLowerCase();
+        const setup = tallySetupInput.value.toLowerCase();
+
+        const isChannelPartner = role.startsWith("channel partner");
+        const isBlocked = tool === "zoho" || tool === "others";
+
+        let isOfflineFlow = false;
+        if (!isChannelPartner && setup === "offline") {
+          isOfflineFlow = true;
         }
 
-        // Show success state
-        form.style.display = "none";
-        successMsg.classList.remove("hidden");
-        const waHeader = document.getElementById('wa-header');
-        if (waHeader && form.getAttribute('data-hide-header') === 'true') {
-          waHeader.style.display = "none";
+        if (isBlocked) {
+          form.style.display = "none";
+          successMsg.classList.remove("hidden");
+          const waHeader = document.getElementById('wa-header');
+          if (waHeader && form.getAttribute('data-hide-header') === 'true') {
+            waHeader.style.display = "none";
+          }
+        } else {
+          // RevenueHero Submission
+          if (window.RevenueHero) {
+            const hero = new window.RevenueHero({ 
+              routerId: '6563', 
+              showLoader: !isOfflineFlow 
+            });
+
+            if (isOfflineFlow) {
+              const style = document.createElement('style');
+              style.textContent = `
+                div[id*="revenuehero"], iframe[src*="revenuehero"], div[class*="rh-"] {
+                  display: none !important;
+                  opacity: 0 !important;
+                  visibility: hidden !important;
+                  pointer-events: none !important;
+                }
+              `;
+              document.head.appendChild(style);
+            }
+
+            const sessionData = await hero.submit(payload).catch(console.error);
+            
+            if (isOfflineFlow) {
+              window.location.href = "https://app.aiaccountant.com/sign-up";
+              return;
+            } else if (sessionData) {
+              hero.dialog.open(sessionData);
+            }
+          }
+
+          // Show success state only if they close the dialog (we don't hook into close, so we just show it behind the dialog)
+          form.style.display = "none";
+          successMsg.classList.remove("hidden");
+          const waHeader = document.getElementById('wa-header');
+          if (waHeader && form.getAttribute('data-hide-header') === 'true') {
+            waHeader.style.display = "none";
+          }
         }
 
       } catch (err) {
