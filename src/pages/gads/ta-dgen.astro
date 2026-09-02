@@ -582,11 +582,12 @@ import Footer from "../../components/Footer.astro";
         .trim()
         .toLowerCase();
       const setup = (payload.tally_setup || "").trim().toLowerCase();
+      const teamSize = (payload.accounting_team_size || "").trim();
 
       const isChannelPartner = role.startsWith("channel partner");
       const isBlocked = config.blockedTools.some(
         (blocked) => blocked.toLowerCase() === tool,
-      );
+      ) || teamSize === "0";
 
       const setBtnLoading = (loading) => {
         if (!trigger) return;
@@ -624,13 +625,8 @@ import Footer from "../../components/Footer.astro";
       }
 
       /* --- 3 & 4. Tally setup gate --- */
-      let isOfflineFlow = false;
       if (!isChannelPartner) {
-        if (setup === "offline") {
-          isOfflineFlow = true;
-        } else if (setup === "cloud-hosted" || setup === "not-sure") {
-          targetRouter = config.defaultRouterId;
-        }
+        targetRouter = config.defaultRouterId;
       }
 
       /* --- 5. Default RevenueHero path --- */
@@ -650,33 +646,13 @@ import Footer from "../../components/Footer.astro";
       const RH = window.RevenueHero;
       const hero = new RH({ 
         routerId: String(targetRouter),
-        showLoader: !isOfflineFlow
+        showLoader: true
       });
-
-      if (isOfflineFlow) {
-        const style = document.createElement('style');
-        style.textContent = `
-          div[id*="revenuehero"], iframe[src*="revenuehero"], div[class*="rh-"] {
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-          }
-        `;
-        document.head.appendChild(style);
-      }
 
       try {
         const sessionData = await hero.submit(payload);
         if (sessionData) {
-          if (isOfflineFlow) {
-            try {
-              await postWebhook(payload, "form_submit_blocked_tool");
-            } catch (err) {}
-            window.location.href = config.tallyOfflineRedirectUrl;
-          } else {
-            hero.dialog.open(sessionData);
-          }
+          hero.dialog.open(sessionData);
         } else {
           generalErr?.classList.remove("hidden");
         }

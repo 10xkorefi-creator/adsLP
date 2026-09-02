@@ -357,28 +357,25 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
         if (value) payload[param] = value;
       });
 
+      const tool = toolInput.value.toLowerCase();
+      const role = roleInput.value.toLowerCase();
+      const setup = tallySetupInput.value.toLowerCase();
+      const teamSize = teamInput.value.trim();
+
+      const isChannelPartner = role.startsWith("channel partner");
+      const isBlocked = tool === "zoho" || tool === "others" || teamSize === "0";
+
       payload.__page = window.location.href;
-      payload.__event = "form_submit_whatsapp_waitlist";
+      payload.__event = isBlocked ? "form_submit_blocked_tool" : "form_submit_whatsapp_waitlist";
 
       try {
-        // Also fire the webhook for redundancy
-        fetch("https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
+        // Fire the webhook for redundancy (and blocked tools)
+        const webhookPromise = fetch("https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
-        }).catch(() => {});
-
-        const tool = toolInput.value.toLowerCase();
-        const role = roleInput.value.toLowerCase();
-        const setup = tallySetupInput.value.toLowerCase();
-
-        const isChannelPartner = role.startsWith("channel partner");
-        const isBlocked = tool === "zoho" || tool === "others";
-
-        let isOfflineFlow = false;
-        if (!isChannelPartner && setup === "offline") {
-          isOfflineFlow = true;
-        }
+          keepalive: true,
+        }).catch(console.error);
 
         if (isBlocked) {
           form.style.display = "none";
@@ -392,28 +389,12 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
           if (window.RevenueHero) {
             const hero = new window.RevenueHero({ 
               routerId: '6563', 
-              showLoader: !isOfflineFlow 
+              showLoader: true 
             });
-
-            if (isOfflineFlow) {
-              const style = document.createElement('style');
-              style.textContent = `
-                div[id*="revenuehero"], iframe[src*="revenuehero"], div[class*="rh-"] {
-                  display: none !important;
-                  opacity: 0 !important;
-                  visibility: hidden !important;
-                  pointer-events: none !important;
-                }
-              `;
-              document.head.appendChild(style);
-            }
 
             const sessionData = await hero.submit(payload).catch(console.error);
             
-            if (isOfflineFlow) {
-              window.location.href = "https://app.aiaccountant.com/sign-up";
-              return;
-            } else if (sessionData) {
+            if (sessionData) {
               hero.dialog.open(sessionData);
             }
           }

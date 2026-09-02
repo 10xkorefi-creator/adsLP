@@ -271,10 +271,11 @@ export function initLeadForm(config: LeadFormConfig): void {
 
     const tool = payload.which_accounting_tool_do_you_use || "";
     const role = payload.which_best_describes_you || "";
+    const teamSize = payload.accounting_team_size || "";
     const isChannelPartner = role.trim().toLowerCase().startsWith("channel partner");
     const isBlocked = config.blockedTools.some(
       (blocked) => blocked.toLowerCase() === tool.toLowerCase(),
-    );
+    ) || teamSize === "0";
 
     let trigger = document.querySelector<HTMLElement>(config.triggerSelector);
 
