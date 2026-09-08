@@ -363,7 +363,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
       const teamSize = teamInput.value.trim();
 
       const isChannelPartner = role.startsWith("channel partner");
-      const isBlocked = tool === "zoho" || tool === "others" || teamSize === "0";
+      const isBlocked = tool === "zoho" || tool === "others";
 
       payload.__page = window.location.href;
       payload.__event = isBlocked ? "form_submit_blocked_tool" : "form_submit_whatsapp_waitlist";
