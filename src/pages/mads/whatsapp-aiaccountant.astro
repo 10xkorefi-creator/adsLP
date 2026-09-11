@@ -6,7 +6,7 @@ import WhatsappValueProps from '../../components/whatsapp/WhatsappValueProps.ast
 import WhatsappHowItWorks from '../../components/whatsapp/WhatsappHowItWorks.astro';
 import WhatsappWhy from '../../components/whatsapp/WhatsappWhy.astro';
 import WhatsappFAQ from '../../components/whatsapp/WhatsappFAQ.astro';
-import WhatsappWaitlistForm from '../../components/whatsapp/WhatsappWaitlistForm.astro';
+import MadsWhatsappWaitlistForm from '../../components/whatsapp/MadsWhatsappWaitlistForm.astro';
 import WhatsappStickyBanner from '../../components/whatsapp/WhatsappStickyBanner.astro';
 
 const title = "Chat with your accounting data on WhatsApp | AI Accountant";
@@ -21,7 +21,7 @@ const description = "Cash in hand, who owes you money, today's sales. Ask AI Acc
     <WhatsappHowItWorks />
     <WhatsappWhy />
     <WhatsappFAQ />
-    <WhatsappWaitlistForm contactSource="MAds-WA Bot" />
+    <MadsWhatsappWaitlistForm contactSource="MAds-WA Bot" hideTeamSize={true} hideRole={true} />
   </main>
   
   <Footer hideTestimonials={true} />

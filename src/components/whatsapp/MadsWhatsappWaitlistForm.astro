@@ -1,0 +1,590 @@
+---
+// WhatsappWaitlistForm.astro
+interface Props {
+  contactSource?: string;
+  showTallyReadyMessage?: boolean;
+  hideHeaderOnSuccess?: boolean;
+  hideTeamSize?: boolean;
+  hideRole?: boolean;
+}
+const { 
+  contactSource = "WA bot - LinkedIn ads", 
+  showTallyReadyMessage = true, 
+  hideHeaderOnSuccess = true,
+  hideTeamSize = false,
+  hideRole = false
+} = Astro.props;
+---
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  @keyframes expandDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-expand {
+    animation: expandDown 0.3s ease-out forwards;
+  }
+</style>
+
+<div id="waitlist-modal" class="fixed inset-0 z-[100] hidden flex-col items-center justify-center bg-slate-900/60 backdrop-blur-sm p-0 sm:p-4 opacity-0 transition-opacity duration-300">
+  <div class="bg-white rounded-none sm:rounded-[2rem] p-6 sm:p-8 shadow-2xl max-w-2xl w-full h-full sm:h-auto sm:max-h-[95vh] overflow-y-auto no-scrollbar relative transform scale-95 transition-transform duration-300 flex flex-col" id="waitlist-modal-content">
+    
+    <button onclick="closeWaitlistModal()" class="absolute top-4 right-4 sm:top-5 sm:right-5 text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full p-2 transition-colors z-10">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+    
+    <div id="wa-header" class="mb-4 sm:mb-6 text-center pt-2 mt-8 sm:mt-0 px-4">
+      <h2 class="text-base sm:text-lg font-bold text-slate-700 leading-tight">
+        Get started to get early access to AI Accountant.
+      </h2>
+    </div>
+
+    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow content-start" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()}>
+      <!-- Field 1: First Name -->
+      <div>
+        <input
+          type="text"
+          id="wa-first_name"
+          name="first_name"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+          placeholder="Full Name *"
+          required
+        />
+        <span id="wa-first_name-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter your name.</span>
+      </div>
+
+      <!-- Field 2: Email -->
+      <div>
+        <input
+          type="email"
+          id="wa-email"
+          name="email"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+          placeholder="Work Email *"
+          required
+        />
+        <span id="wa-email-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter a valid email.</span>
+      </div>
+
+      <!-- Field 3: Phone -->
+      <div>
+        <div class="flex items-center">
+          <span class="inline-flex items-center px-4 py-3 bg-slate-100 border border-r-0 border-slate-300 rounded-l-xl text-slate-700 text-base font-bold select-none shrink-0">
+            +91
+          </span>
+          <input
+            type="tel"
+            id="wa-phone"
+            name="lg__phone"
+            maxlength="10"
+            inputmode="numeric"
+            class="w-full px-5 py-3 rounded-r-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+            placeholder="WhatsApp Number *"
+            required
+          />
+        </div>
+        <span id="wa-phone-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter a valid 10-digit phone number.</span>
+      </div>
+
+      <!-- Field 4: Software -->
+      <div>
+        <select
+          id="wa-accounting_tool"
+          name="which_accounting_tool_do_you_use"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          required
+        >
+          <option value="" disabled selected>Which accounting tool do you use? *</option>
+          <option value="Zoho">Zoho</option>
+          <option value="Tally">Tally</option>
+          <option value="Zoho and Tally">Zoho and Tally</option>
+          <option value="Others">Others</option>
+        </select>
+        <span id="wa-accounting_tool-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select your accounting tool</span>
+      </div>
+
+      <!-- Field 4.5: Tally Setup -->
+      <div id="wa-tally_setup-container" class="animate-expand" style="display: none;">
+        <select
+          id="wa-tally_setup"
+          name="tally_setup"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          disabled
+        >
+          <option value="" selected>Is your Tally on cloud or local?</option>
+          <option value="cloud-hosted">Cloud-hosted</option>
+          <option value="offline">Offline (local system)</option>
+          <option value="not-sure">Not sure</option>
+        </select>
+        <span id="wa-tally_setup-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select an option</span>
+      </div>
+
+      <!-- Field 4.6: Who manages Tally? -->
+      <div id="wa-tally_manager-container" class="animate-expand" style="display: none;">
+        <select
+          id="wa-tally_manager"
+          name="tally_manager"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          disabled
+        >
+          <option value="" selected>Who manages Tally?</option>
+          <option value="myself">Myself</option>
+          <option value="my accountant">My accountant</option>
+        </select>
+        <span id="wa-tally_manager-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select an option</span>
+      </div>
+
+      <!-- Field 4.7 & 4.8: Accountant Details Wrapper -->
+      <div id="wa-accountant_wrapper" class="md:col-span-2 bg-slate-50/80 border border-slate-200 rounded-2xl p-4 sm:p-5 animate-expand" style="display: none;">
+        <h4 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          Accountant Details
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Accountant Name -->
+          <div>
+            <input
+              type="text"
+              id="wa-accountant_name"
+              name="accountant_name"
+              autocomplete="off"
+              class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400 bg-white"
+              placeholder="Accountant Name *"
+              disabled
+            />
+            <span id="wa-accountant_name-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter accountant name.</span>
+          </div>
+
+          <!-- Accountant Phone -->
+          <div>
+            <div class="flex items-center">
+              <span class="inline-flex items-center px-4 py-3 bg-white border border-r-0 border-slate-300 rounded-l-xl text-slate-700 text-base font-bold select-none shrink-0">
+                +91
+              </span>
+              <input
+                type="tel"
+                id="wa-accountant_phone"
+                name="accountant_phone"
+                maxlength="10"
+                inputmode="numeric"
+                autocomplete="off"
+                class="w-full px-5 py-3 rounded-r-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400 bg-white"
+                placeholder="WhatsApp Number *"
+                disabled
+              />
+            </div>
+            <span id="wa-accountant_phone-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter a valid 10-digit number.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Field 5: Team Size -->
+      {!hideTeamSize && (
+      <div>
+        <select
+          id="wa-team_size"
+          name="accounting_team_size"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          required
+        >
+          <option value="" disabled selected>Accounting Team size *</option>
+          <option value="0">0</option>
+          <option value="1-3">1-3</option>
+          <option value="3-5">3-5</option>
+          <option value="5-10">5-10</option>
+          <option value="10+">10+</option>
+        </select>
+        <span id="wa-team_size-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select team size</span>
+      </div>
+      )}
+
+      <!-- Field 6: Role -->
+      {!hideRole && (
+      <div>
+        <select
+          id="wa-role"
+          name="which_best_describes_you"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+          required
+        >
+          <option value="" disabled selected>Which best describes you? *</option>
+          <option value="CA firm: automating my clients' books">CA firm: automating my clients' books</option>
+          <option value="Business owner: automating my company's accounting">Business owner: automating my company's accounting</option>
+          <option value="Finance team: looking to automate our books">Finance team: looking to automate our books</option>
+          <option value="Channel partner: looking to resell AiA">Channel partner: looking to resell AiA</option>
+        </select>
+        <span id="wa-role-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select your role</span>
+      </div>
+      )}
+
+      <div class="md:col-span-2">
+        <button type="submit" id="wa-submit" class="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-xl py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1 mt-2 shadow-[#25D366]/20">
+          Get Started
+        </button>
+        <span id="wa-general-error" class="hidden text-red-600 text-sm mt-2 text-center block font-semibold">Couldn't save your details. Please try again.</span>
+        
+        <p class="text-xs text-center text-slate-500 mt-3 font-medium">We respect your privacy. No spam.</p>
+      </div>
+    </form>
+
+    <!-- Success Message -->
+    <div id="wa-success" class="hidden text-center py-8 sm:py-12 px-2 sm:px-0">
+      <div class="w-20 h-20 bg-emerald-100 text-[#25D366] rounded-full inline-flex items-center justify-center mb-6 shadow-inner mx-auto">
+        <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3 class="text-3xl font-black text-slate-900 mb-3 sm:mb-4">
+        You're All Set!
+      </h3>
+      <p class="text-base sm:text-lg text-slate-600 font-medium mb-8 sm:mb-8">
+        Our team will be in touch shortly.
+      </p>
+      {showTallyReadyMessage && (
+        <p class="text-2xl sm:text-3xl font-black text-slate-900 mb-8 sm:mb-10 leading-tight">
+          Please <span class="text-[#25D366]">have Tally ready</span> before the call for easy onboarding.
+        </p>
+      )}
+      <button onclick="closeWaitlistModal()" class="w-full sm:w-auto px-8 py-3.5 sm:py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Expose modal toggle functions globally so inline onclick works
+  window.openWaitlistModal = () => {
+    const modal = document.getElementById('waitlist-modal');
+    const content = document.getElementById('waitlist-modal-content');
+    if (!modal || !content) return;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    // small delay for transition
+    requestAnimationFrame(() => {
+      modal.classList.remove('opacity-0');
+      content.classList.remove('scale-95');
+    });
+  };
+
+  window.closeWaitlistModal = () => {
+    const modal = document.getElementById('waitlist-modal');
+    const content = document.getElementById('waitlist-modal-content');
+    if (!modal || !content) return;
+    
+    modal.classList.add('opacity-0');
+    content.classList.add('scale-95');
+    setTimeout(() => {
+      modal.classList.remove('flex');
+      modal.classList.add('hidden');
+    }, 300); // match transition duration
+  };
+
+  // Close modal on click outside
+  document.getElementById('waitlist-modal')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      window.closeWaitlistModal();
+    }
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('wa-form') as HTMLFormElement;
+    if(!form) return;
+    
+    const nameInput = document.getElementById('wa-first_name') as HTMLInputElement;
+    const emailInput = document.getElementById('wa-email') as HTMLInputElement;
+    const phoneInput = document.getElementById('wa-phone') as HTMLInputElement;
+    const toolInput = document.getElementById('wa-accounting_tool') as HTMLSelectElement;
+    const tallySetupContainer = document.getElementById('wa-tally_setup-container') as HTMLElement;
+    const tallySetupInput = document.getElementById('wa-tally_setup') as HTMLSelectElement;
+    const tallyManagerContainer = document.getElementById('wa-tally_manager-container') as HTMLElement;
+    const tallyManagerInput = document.getElementById('wa-tally_manager') as HTMLSelectElement;
+    const accountantWrapper = document.getElementById('wa-accountant_wrapper') as HTMLElement;
+    const accountantNameInput = document.getElementById('wa-accountant_name') as HTMLInputElement;
+    const accountantPhoneInput = document.getElementById('wa-accountant_phone') as HTMLInputElement;
+    const teamInput = document.getElementById('wa-team_size') as HTMLSelectElement | null;
+    const roleInput = document.getElementById('wa-role') as HTMLSelectElement | null;
+    
+    const btn = document.getElementById('wa-submit') as HTMLButtonElement;
+    const successMsg = document.getElementById('wa-success') as HTMLElement;
+    const generalErr = document.getElementById('wa-general-error') as HTMLElement;
+
+    const updateDynamicFields = () => {
+      const toolVal = toolInput.value.toLowerCase();
+      const isTally = toolVal.includes("tally");
+      const setupVal = tallySetupInput.value.toLowerCase();
+      const managerVal = tallyManagerInput.value.toLowerCase();
+
+      // Tally setup
+      if (isTally) {
+        tallySetupContainer.style.display = "block";
+        tallySetupInput.disabled = false;
+        tallySetupInput.required = true;
+      } else {
+        tallySetupContainer.style.display = "none";
+        tallySetupInput.disabled = true;
+        tallySetupInput.required = false;
+        tallySetupInput.value = "";
+        showError('wa-tally_setup', false);
+      }
+
+      // Tally manager
+      if (isTally && (setupVal === "offline" || setupVal === "not-sure")) {
+        tallyManagerContainer.style.display = "block";
+        tallyManagerInput.disabled = false;
+        tallyManagerInput.required = true;
+      } else {
+        tallyManagerContainer.style.display = "none";
+        tallyManagerInput.disabled = true;
+        tallyManagerInput.required = false;
+        tallyManagerInput.value = "";
+        showError('wa-tally_manager', false);
+      }
+
+      // Accountant details
+      if (tallyManagerContainer.style.display === "block" && managerVal === "my accountant") {
+        accountantWrapper.style.display = "block";
+        accountantNameInput.disabled = false;
+        accountantNameInput.required = true;
+        
+        accountantPhoneInput.disabled = false;
+        accountantPhoneInput.required = true;
+      } else {
+        accountantWrapper.style.display = "none";
+        accountantNameInput.disabled = true;
+        accountantNameInput.required = false;
+        accountantNameInput.value = "";
+        showError('wa-accountant_name', false);
+        
+        accountantPhoneInput.disabled = true;
+        accountantPhoneInput.required = false;
+        accountantPhoneInput.value = "";
+        showError('wa-accountant_phone', false);
+      }
+    };
+
+    toolInput.addEventListener("change", updateDynamicFields);
+    tallySetupInput.addEventListener("change", updateDynamicFields);
+    tallyManagerInput.addEventListener("change", updateDynamicFields);
+
+    // Phone format
+    phoneInput.addEventListener("input", () => {
+      phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+    });
+    accountantPhoneInput.addEventListener("input", () => {
+      accountantPhoneInput.value = accountantPhoneInput.value.replace(/\D/g, "").slice(0, 10);
+    });
+
+    const showError = (id: string, show: boolean) => {
+      const el = document.getElementById(id);
+      const err = document.getElementById(`${id}-error`);
+      if (el) el.style.borderColor = show ? '#dc2626' : '';
+      if (err) {
+        if (show) err.classList.remove('hidden');
+        else err.classList.add('hidden');
+      }
+    };
+
+    [nameInput, emailInput, phoneInput, toolInput, tallySetupInput, tallyManagerInput, accountantNameInput, accountantPhoneInput, teamInput, roleInput].forEach(el => {
+      if (el) {
+        el.addEventListener('input', () => {
+          showError(el.id, false);
+          generalErr.classList.add('hidden');
+        });
+        el.addEventListener('change', () => {
+          showError(el.id, false);
+          generalErr.classList.add('hidden');
+        });
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      let isValid = true;
+      let firstBad = null;
+
+      // Validate in reverse order so the top-most error gets focus
+      if (roleInput && !roleInput.value) { isValid = false; showError('wa-role', true); firstBad = firstBad || roleInput; }
+      if (teamInput && !teamInput.value) { isValid = false; showError('wa-team_size', true); firstBad = firstBad || teamInput; }
+      
+      if (accountantPhoneInput.required && accountantPhoneInput.value.length !== 10) { isValid = false; showError('wa-accountant_phone', true); firstBad = firstBad || accountantPhoneInput; }
+      if (accountantNameInput.required && !accountantNameInput.value.trim()) { isValid = false; showError('wa-accountant_name', true); firstBad = firstBad || accountantNameInput; }
+      if (tallyManagerInput.required && !tallyManagerInput.value) { isValid = false; showError('wa-tally_manager', true); firstBad = firstBad || tallyManagerInput; }
+
+      if (tallySetupInput.required && !tallySetupInput.value) { isValid = false; showError('wa-tally_setup', true); firstBad = firstBad || tallySetupInput; }
+      if (!toolInput.value) { isValid = false; showError('wa-accounting_tool', true); firstBad = firstBad || toolInput; }
+      if (phone.length !== 10) { isValid = false; showError('wa-phone', true); firstBad = firstBad || phoneInput; }
+      if (!email || !emailRe.test(email)) { isValid = false; showError('wa-email', true); firstBad = firstBad || emailInput; }
+      if (!name) { isValid = false; showError('wa-first_name', true); firstBad = firstBad || nameInput; }
+
+      if (!isValid) {
+        if (firstBad) {
+          firstBad.scrollIntoView({ behavior: "smooth", block: "center" });
+          firstBad.focus();
+        }
+        return;
+      }
+
+      btn.textContent = "Submitting...";
+      btn.style.opacity = "0.7";
+      btn.style.pointerEvents = "none";
+      
+      const contactSource = form.getAttribute('data-contact-source') || "WA bot - LinkedIn ads";
+      
+      const payload: Record<string, string> = {
+        first_name: name,
+        email: email,
+        lg__phone: phone,
+        which_accounting_tool_do_you_use: toolInput.value,
+        tally_setup: tallySetupInput.value,
+        who_manages_tally: tallyManagerInput.value,
+        accountant_name: accountantNameInput.value,
+        accountant_number: accountantPhoneInput.value,
+        campaign: "whatsapp-aiaccountant",
+        contact_source: contactSource,
+        routerId: "6563"
+      };
+
+      if (teamInput) payload.accounting_team_size = teamInput.value;
+      if (roleInput) payload.which_best_describes_you = roleInput.value;
+
+      // Gather Attribution
+      const params = new URLSearchParams(window.location.search);
+      const CLICK_ID_MAP: Record<string, string> = {
+        gclid: "hs_google_click_id",
+        fbclid: "hs_facebook_click_id",
+        li_fat_id: "hs_linkedin_click_id",
+      };
+      const UTM_PARAMS = [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_term",
+        "utm_content",
+        "placements",
+        "utm_device",
+        "gclid",
+      ];
+      
+      const clickIdStorageKey = "__clickids";
+      let storedClickIds: Record<string, string> = {};
+      try { storedClickIds = JSON.parse(sessionStorage.getItem(clickIdStorageKey) || "{}"); } catch(e){}
+      
+      Object.entries(CLICK_ID_MAP).forEach(([urlParam, hsInputName]) => {
+        const fromUrl = params.get(urlParam);
+        if (fromUrl) {
+          storedClickIds[hsInputName] = fromUrl;
+          payload[hsInputName] = fromUrl;
+        } else if (storedClickIds[hsInputName]) {
+          payload[hsInputName] = storedClickIds[hsInputName];
+        }
+      });
+      try { sessionStorage.setItem(clickIdStorageKey, JSON.stringify(storedClickIds)); } catch(e){}
+      
+      UTM_PARAMS.forEach((param) => {
+        const value = params.get(param);
+        if (value) payload[param] = value;
+      });
+
+      const tool = toolInput.value.toLowerCase();
+      const role = roleInput ? roleInput.value.toLowerCase() : "";
+      const setup = tallySetupInput.value.toLowerCase();
+      const manager = tallyManagerInput.value.toLowerCase();
+      const teamSize = teamInput ? teamInput.value.trim() : "";
+
+      const isChannelPartner = role.startsWith("channel partner");
+      const isBlocked = tool === "zoho" || tool === "others";
+
+      let submitFlow = "revenuehero"; // default for cloud-hosted and other paths
+      if (isBlocked) {
+        submitFlow = "blocked";
+      } else if (setup === "offline" || setup === "not-sure") {
+        if (manager === "myself") {
+          submitFlow = "redirect_signup";
+        } else if (manager === "my accountant") {
+          submitFlow = "thank_you_only";
+        }
+      }
+
+      payload.__page = window.location.href;
+      payload.__event = isBlocked ? "form_submit_blocked_tool" : "form_submit_whatsapp_waitlist";
+
+      try {
+        // Fire the webhook for redundancy
+        const webhookPromise = fetch("https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          keepalive: true,
+        }).catch(console.error);
+
+        if (submitFlow === "blocked") {
+          form.style.display = "none";
+          successMsg.classList.remove("hidden");
+          const waHeader = document.getElementById('wa-header');
+          if (waHeader && form.getAttribute('data-hide-header') === 'true') {
+            waHeader.style.display = "none";
+          }
+        } else {
+          // Submit to RevenueHero for all non-blocked paths
+          let sessionData = null;
+          let hero = null;
+          
+          if (window.RevenueHero) {
+            hero = new window.RevenueHero({ 
+              routerId: '6563', 
+              showLoader: submitFlow === 'revenuehero'
+            });
+            sessionData = await hero.submit(payload).catch(console.error);
+          }
+
+          // Handle the subsequent UI action based on the flow
+          if (submitFlow === "redirect_signup") {
+            window.location.href = "https://app.aiaccountant.com/sign-up";
+          } else if (submitFlow === "thank_you_only") {
+            form.style.display = "none";
+            successMsg.classList.remove("hidden");
+            const waHeader = document.getElementById('wa-header');
+            if (waHeader && form.getAttribute('data-hide-header') === 'true') {
+              waHeader.style.display = "none";
+            }
+          } else if (submitFlow === "revenuehero") {
+            // Open RH dialog only for the cloud-hosted / default path
+            if (sessionData && hero) {
+              hero.dialog.open(sessionData);
+            }
+            
+            form.style.display = "none";
+            successMsg.classList.remove("hidden");
+            const waHeader = document.getElementById('wa-header');
+            if (waHeader && form.getAttribute('data-hide-header') === 'true') {
+              waHeader.style.display = "none";
+            }
+          }
+        }
+
+      } catch (err) {
+        console.error("Submit Error:", err);
+        generalErr.classList.remove("hidden");
+        btn.textContent = "Get Started";
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+      }
+    });
+  });
+</script>
+<script type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
