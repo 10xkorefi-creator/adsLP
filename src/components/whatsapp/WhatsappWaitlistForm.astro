@@ -389,17 +389,13 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
           if (window.RevenueHero) {
             const hero = new window.RevenueHero({ 
               routerId: '6563', 
-              showLoader: true 
+              showLoader: false 
             });
 
-            const sessionData = await hero.submit(payload).catch(console.error);
-            
-            if (sessionData) {
-              hero.dialog.open(sessionData);
-            }
+            await hero.submit(payload).catch(console.error);
           }
 
-          // Show success state only if they close the dialog (we don't hook into close, so we just show it behind the dialog)
+          // Show success state
           form.style.display = "none";
           successMsg.classList.remove("hidden");
           const waHeader = document.getElementById('wa-header');

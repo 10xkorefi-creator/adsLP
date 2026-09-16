@@ -541,33 +541,18 @@ const {
           }
         } else {
           // Submit to RevenueHero for all non-blocked paths
-          let sessionData = null;
-          let hero = null;
-          
           if (window.RevenueHero) {
-            hero = new window.RevenueHero({ 
+            const hero = new window.RevenueHero({ 
               routerId: '6563', 
-              showLoader: submitFlow === 'revenuehero'
+              showLoader: false
             });
-            sessionData = await hero.submit(payload).catch(console.error);
+            await hero.submit(payload).catch(console.error);
           }
 
           // Handle the subsequent UI action based on the flow
           if (submitFlow === "redirect_signup") {
             window.location.href = "https://app.aiaccountant.com/sign-up";
-          } else if (submitFlow === "thank_you_only") {
-            form.style.display = "none";
-            successMsg.classList.remove("hidden");
-            const waHeader = document.getElementById('wa-header');
-            if (waHeader && form.getAttribute('data-hide-header') === 'true') {
-              waHeader.style.display = "none";
-            }
-          } else if (submitFlow === "revenuehero") {
-            // Open RH dialog only for the cloud-hosted / default path
-            if (sessionData && hero) {
-              hero.dialog.open(sessionData);
-            }
-            
+          } else if (submitFlow === "thank_you_only" || submitFlow === "revenuehero") {
             form.style.display = "none";
             successMsg.classList.remove("hidden");
             const waHeader = document.getElementById('wa-header');
