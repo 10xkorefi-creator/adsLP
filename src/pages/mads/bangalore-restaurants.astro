@@ -1,0 +1,43 @@
+---
+// src/pages/mads/bangalore-restaurants.astro
+import Layout from "../../layouts/Layout.astro";
+import BangaloreHero from "../../components/bangalore/BangaloreHero.astro";
+import ThreeNumbers from "../../components/bangalore/ThreeNumbers.astro";
+import WhatWeFind from "../../components/bangalore/WhatWeFind.astro";
+import HowItWorks from "../../components/bangalore/HowItWorks.astro";
+import WhoIsChecking from "../../components/bangalore/WhoIsChecking.astro";
+import FreeCheckForm from "../../components/bangalore/FreeCheckForm.astro";
+import CommonQuestions from "../../components/bangalore/CommonQuestions.astro";
+
+// Optional: if they want to hide global navigation/footer on ads pages,
+// we can either modify the Layout to accept a hideNav prop or we can just render the page.
+// In `books-health-check.astro`, they just imported Layout and Footer.
+// For a clean ad page, we will use the standard layout, but they can easily change it.
+---
+
+<Layout 
+  title="Bangalore Restaurants - Recover Wrong Charges | AI Accountant"
+  description="Get a free payment check for your Bangalore restaurant. We find wrongly charged commissions, penalties, and unapproved discounts from Swiggy & Zomato."
+>
+  <main class="scroll-smooth font-sans antialiased bg-slate-50">
+    <BangaloreHero />
+    <ThreeNumbers />
+    <WhatWeFind />
+    <HowItWorks />
+    <WhoIsChecking />
+    <FreeCheckForm />
+    <CommonQuestions />
+  </main>
+  
+  <!-- Since it's an ads page, you could optionally omit standard Footer 
+       but for consistency with `books-health-check.astro` we'll skip importing it 
+       unless we really want to. Actually, it's safer to keep the page clean as 
+       requested in the plan (standalone clean ad page). If standard Layout injects Nav/Footer, 
+       then it's already there. -->
+</Layout>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

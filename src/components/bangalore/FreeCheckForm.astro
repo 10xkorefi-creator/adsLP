@@ -1,0 +1,161 @@
+---
+// src/components/bangalore/FreeCheckForm.astro
+---
+<section id="free-check" class="py-24 bg-emerald-50 w-full">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-[2rem] shadow-xl p-8 sm:p-12 border border-slate-100">
+      
+      <div class="text-center mb-10">
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-4">
+          Get your free check
+        </h2>
+        <p class="text-lg text-slate-600 font-medium max-w-2xl mx-auto">
+          Takes under a minute. We will call you and collect the documents.
+        </p>
+      </div>
+
+      <form id="bangalore-restaurant-form" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Restaurant Name -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Restaurant name *</label>
+            <input 
+              type="text" 
+              id="blr_restaurant_name"
+              required 
+              placeholder="Hotel Shanthi Sagar"
+              class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+            />
+          </div>
+
+          <!-- Your Name -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Your name *</label>
+            <input 
+              type="text" 
+              id="blr_your_name"
+              required 
+              placeholder="Full Name"
+              class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+            />
+          </div>
+
+          <!-- Phone Number -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Phone number *</label>
+            <div class="flex items-center">
+              <span class="inline-flex items-center px-4 py-3 bg-slate-100 border border-r-0 border-slate-300 rounded-l-xl text-slate-700 text-base font-bold select-none shrink-0">
+                +91
+              </span>
+              <input 
+                type="tel" 
+                id="blr_phone"
+                required 
+                maxlength="10"
+                inputmode="numeric"
+                placeholder="10-digit mobile number"
+                class="w-full px-5 py-3 rounded-r-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+              />
+            </div>
+            <p class="text-xs text-slate-500 mt-2 font-medium">We will call within one working day.</p>
+          </div>
+
+          <!-- Outlets -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">How many outlets? *</label>
+            <select 
+              id="blr_outlets"
+              required
+              class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+            >
+              <option value="" disabled selected>Select option...</option>
+              <option value="1">1</option>
+              <option value="2 to 3">2 to 3</option>
+              <option value="4 to 5">4 to 5</option>
+              <option value="More than 5">More than 5</option>
+            </select>
+          </div>
+
+          <!-- Apps -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Which apps do you sell on? *</label>
+            <select 
+              id="blr_apps"
+              required
+              class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+            >
+              <option value="" disabled selected>Select option...</option>
+              <option value="Swiggy">Swiggy</option>
+              <option value="Zomato">Zomato</option>
+              <option value="Both">Both</option>
+            </select>
+          </div>
+
+          <!-- Optional Check -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Anything you want us to check? (optional)</label>
+            <input 
+              type="text" 
+              id="blr_optional_check"
+              placeholder="e.g. specific penalty issue"
+              class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400"
+            />
+          </div>
+          
+        </div>
+
+        <div class="mt-8">
+          <button 
+            type="submit" 
+            id="blr_submit"
+            class="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold text-xl py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1 shadow-[#25D366]/20"
+          >
+            Send me my free check
+          </button>
+          <p class="text-center text-slate-500 font-medium text-sm mt-4">
+            We take 20 restaurants at a time. No payment, no commitment.
+          </p>
+        </div>
+
+        <div id="blr_success" class="hidden text-center py-6">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-500 mb-4">
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h3 class="text-2xl font-bold text-slate-900 mb-2">Thank you!</h3>
+          <p class="text-slate-600 font-medium">We will call you within one working day.</p>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('bangalore-restaurant-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('blr_submit') as HTMLButtonElement;
+    const successMsg = document.getElementById('blr_success') as HTMLElement;
+
+    if(form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Mock submission
+        submitBtn.textContent = 'Submitting...';
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
+
+        // Simulate API call
+        setTimeout(() => {
+          // Hide form inputs and button, show success
+          const inputs = form.querySelectorAll('div.grid, div.mt-8');
+          inputs.forEach((el) => {
+            (el as HTMLElement).style.display = 'none';
+          });
+          successMsg.classList.remove('hidden');
+        }, 1500);
+      });
+    }
+  });
+</script>

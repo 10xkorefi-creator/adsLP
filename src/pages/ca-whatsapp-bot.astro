@@ -1,0 +1,32 @@
+---
+// src/pages/ca-whatsapp-bot.astro
+import Layout from "../layouts/Layout.astro";
+import CaBotHero from "../components/ca-bot/CaBotHero.astro";
+import CaBotProblemSolution from "../components/ca-bot/CaBotProblemSolution.astro";
+import CaBotCapabilities from "../components/ca-bot/CaBotCapabilities.astro";
+import CaBotHowItWorks from "../components/ca-bot/CaBotHowItWorks.astro";
+import CaBotBenefits from "../components/ca-bot/CaBotBenefits.astro";
+import CaBotFaq from "../components/ca-bot/CaBotFaq.astro";
+import CaBotLeadForm from "../components/ca-bot/CaBotLeadForm.astro";
+---
+
+<Layout 
+  title="WhatsApp Bot for CA Firms | AI Accountant"
+  description="Give your clients instant answers about their Tally books directly on WhatsApp. Free for your CA firm and free for them."
+>
+  <main class="scroll-smooth font-sans antialiased bg-slate-50">
+    <CaBotHero />
+    <CaBotProblemSolution />
+    <CaBotCapabilities />
+    <CaBotHowItWorks />
+    <CaBotBenefits />
+    <CaBotFaq />
+    <CaBotLeadForm />
+  </main>
+</Layout>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

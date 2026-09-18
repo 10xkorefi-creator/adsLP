@@ -1,0 +1,57 @@
+---
+// src/components/bangalore/HowItWorks.astro
+---
+<section class="py-24 bg-white w-full">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-4">
+        How it works
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+      <!-- Connection Line (Desktop only) -->
+      <div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-emerald-100 via-emerald-300 to-emerald-100 z-0"></div>
+
+      <!-- Step 1 -->
+      <div class="relative z-10 text-center">
+        <div class="w-24 h-24 bg-white rounded-full border-4 border-emerald-100 flex items-center justify-center mx-auto mb-6 shadow-xl text-3xl font-black text-emerald-500">
+          1
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">You send us one month</h3>
+        <p class="text-slate-600 font-medium">
+          Your payment reports, your order data, and the bank statement for that account. That is all.
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative z-10 text-center">
+        <div class="w-24 h-24 bg-white rounded-full border-4 border-emerald-300 flex items-center justify-center mx-auto mb-6 shadow-xl text-3xl font-black text-emerald-500">
+          2
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">We go through it line by line</h3>
+        <p class="text-slate-600 font-medium mb-2">
+          Every order matched to the payment. Every payment matched to your bank.
+        </p>
+        <p class="text-sm text-slate-500 font-bold uppercase tracking-wider bg-slate-100 inline-block px-3 py-1 rounded-full">
+          Done by our CA team, not by a tool.
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative z-10 text-center">
+        <div class="w-24 h-24 bg-emerald-500 rounded-full border-4 border-emerald-100 flex items-center justify-center mx-auto mb-6 shadow-xl text-3xl font-black text-white transform hover:scale-105 transition-transform">
+          3
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">You get a clear list back</h3>
+        <p class="text-slate-600 font-medium mb-3">
+          Every wrong charge, with the order number next to it.
+        </p>
+        <p class="text-emerald-700 font-bold bg-emerald-50 px-4 py-2 rounded-xl inline-block border border-emerald-200">
+          We raise the complaint for whatever should not have gone.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
