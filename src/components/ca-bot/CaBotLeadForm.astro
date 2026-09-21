@@ -1,11 +1,19 @@
 ---
 // src/components/ca-bot/CaBotLeadForm.astro
 ---
+<style>
+  @keyframes expandDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-expand { animation: expandDown 0.3s ease-out forwards; }
+</style>
+
 <section id="demo" class="py-24 bg-white w-full border-t border-slate-200">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-slate-50 rounded-[2rem] shadow-xl p-8 sm:p-12 border border-slate-200">
       
-      <div class="text-center mb-10">
+      <div id="ca-header" class="text-center mb-10">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#25D366]/10 text-[#25D366] mb-6">
           <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
         </div>
@@ -14,48 +22,94 @@
         </h2>
       </div>
 
-      <form id="ca-bot-form" class="space-y-6">
+      <form id="ca-bot-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source="CA WhatsApp Bot Page" data-page-key="ca-wa-bot">
+        <!-- Field 1: First Name -->
         <div>
-          <label class="block text-sm font-bold text-slate-700 mb-2">Name *</label>
-          <input 
-            type="text" 
-            id="ca_name"
-            required 
-            placeholder="Full Name"
+          <input
+            type="text"
+            id="ca_first_name"
             class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400 bg-white"
+            placeholder="Full Name *"
+            required
           />
+          <span id="ca_first_name-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter your name.</span>
         </div>
 
+        <!-- Field 2: Email -->
         <div>
-          <label class="block text-sm font-bold text-slate-700 mb-2">Firm name *</label>
-          <input 
-            type="text" 
+          <input
+            type="email"
+            id="ca_email"
+            class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400 bg-white"
+            placeholder="Work Email *"
+            required
+          />
+          <span id="ca_email-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter a valid email.</span>
+        </div>
+
+        <!-- Field 3: Firm Name -->
+        <div>
+          <input
+            type="text"
             id="ca_firm_name"
-            required 
-            placeholder="Your CA Firm"
             class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400 bg-white"
+            placeholder="Your CA Firm *"
+            required
           />
+          <span id="ca_firm_name-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter your firm name.</span>
         </div>
 
+        <!-- Field 4: Phone -->
         <div>
-          <label class="block text-sm font-bold text-slate-700 mb-2">WhatsApp number *</label>
           <div class="flex items-center">
             <span class="inline-flex items-center px-4 py-3 bg-slate-100 border border-r-0 border-slate-300 rounded-l-xl text-slate-700 text-base font-bold select-none shrink-0">
               +91
             </span>
-            <input 
-              type="tel" 
+            <input
+              type="tel"
               id="ca_phone"
-              required 
               maxlength="10"
               inputmode="numeric"
-              placeholder="10-digit mobile number"
               class="w-full px-5 py-3 rounded-r-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400 bg-white"
+              placeholder="WhatsApp Number *"
+              required
             />
           </div>
+          <span id="ca_phone-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter a valid 10-digit number.</span>
         </div>
-        
-        <div class="pt-4">
+
+        <!-- Field 5: Software -->
+        <div>
+          <select
+            id="ca_accounting_tool"
+            class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+            required
+          >
+            <option value="" disabled selected>Which accounting tool do you use? *</option>
+            <option value="Zoho">Zoho</option>
+            <option value="Tally">Tally</option>
+            <option value="Zoho and Tally">Zoho and Tally</option>
+            <option value="Others">Others</option>
+          </select>
+          <span id="ca_accounting_tool-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select your tool.</span>
+        </div>
+
+        <!-- Field 6: Tally Setup -->
+        <div id="ca_tally_setup-container" class="animate-expand" style="display: none;">
+          <select
+            id="ca_tally_setup"
+            class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
+            disabled
+          >
+            <option value="" selected>Is your Tally on cloud or local?</option>
+            <option value="cloud-hosted">Cloud-hosted</option>
+            <option value="offline">Offline (local system)</option>
+            <option value="not-sure">Not sure</option>
+          </select>
+          <span id="ca_tally_setup-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please select an option.</span>
+        </div>
+
+        <div class="md:col-span-2 pt-4">
           <button 
             type="submit" 
             id="ca_submit"
@@ -63,48 +117,202 @@
           >
             See AiA Bot in action
           </button>
-        </div>
-
-        <div id="ca_success" class="hidden text-center py-6">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mb-4">
-            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          </div>
-          <h3 class="text-2xl font-bold text-slate-900 mb-2">Request Received!</h3>
-          <p class="text-slate-600 font-medium">Our team will reach out to your WhatsApp shortly to show you the demo.</p>
+          <span id="ca-general-error" class="hidden text-red-600 text-sm mt-2 text-center block font-semibold">Couldn't save your details. Please try again.</span>
+          <p class="text-xs text-center text-slate-500 mt-4 font-medium">We respect your privacy. No spam.</p>
         </div>
       </form>
+
+      <!-- Success Message -->
+      <div id="ca_success" class="hidden text-center py-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-[#25D366] mb-4 shadow-inner">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 class="text-3xl font-black text-slate-900 mb-3">You're All Set!</h3>
+        <p class="text-slate-600 font-medium">Our team will be in touch shortly to show you the demo.</p>
+      </div>
 
     </div>
   </div>
 </section>
 
 <script>
+  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
+
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('ca-bot-form') as HTMLFormElement;
-    const submitBtn = document.getElementById('ca_submit') as HTMLButtonElement;
+    if(!form) return;
+    
+    const nameInput = document.getElementById('ca_first_name') as HTMLInputElement;
+    const emailInput = document.getElementById('ca_email') as HTMLInputElement;
+    const firmInput = document.getElementById('ca_firm_name') as HTMLInputElement;
+    const phoneInput = document.getElementById('ca_phone') as HTMLInputElement;
+    const toolInput = document.getElementById('ca_accounting_tool') as HTMLSelectElement;
+    const tallySetupContainer = document.getElementById('ca_tally_setup-container') as HTMLElement;
+    const tallySetupInput = document.getElementById('ca_tally_setup') as HTMLSelectElement;
+    
+    const btn = document.getElementById('ca_submit') as HTMLButtonElement;
     const successMsg = document.getElementById('ca_success') as HTMLElement;
+    const generalErr = document.getElementById('ca-general-error') as HTMLElement;
+    const header = document.getElementById('ca-header') as HTMLElement;
 
-    if(form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Mock submission
-        submitBtn.textContent = 'Submitting...';
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.7';
+    const updateDynamicFields = () => {
+      const toolVal = toolInput.value.toLowerCase();
+      const isTally = toolVal.includes("tally");
 
-        // Simulate API call
-        setTimeout(() => {
-          // Hide form inputs and button, show success
-          const inputs = form.querySelectorAll('div:not(#ca_success):not(.inline-flex)');
-          inputs.forEach((el) => {
-            if((el as HTMLElement).id !== 'ca-bot-form') {
-               (el as HTMLElement).style.display = 'none';
-            }
-          });
-          successMsg.classList.remove('hidden');
-        }, 1200);
+      if (isTally) {
+        tallySetupContainer.style.display = "block";
+        tallySetupInput.disabled = false;
+        tallySetupInput.required = true;
+      } else {
+        tallySetupContainer.style.display = "none";
+        tallySetupInput.disabled = true;
+        tallySetupInput.required = false;
+        tallySetupInput.value = "";
+        showError('ca_tally_setup', false);
+      }
+    };
+
+    toolInput.addEventListener("change", updateDynamicFields);
+
+    // Phone format
+    phoneInput.addEventListener("input", () => {
+      phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+    });
+
+    const showError = (id: string, show: boolean) => {
+      const el = document.getElementById(id);
+      const err = document.getElementById(`${id}-error`);
+      if (el) el.style.borderColor = show ? '#dc2626' : '';
+      if (err) {
+        if (show) err.classList.remove('hidden');
+        else err.classList.add('hidden');
+      }
+    };
+
+    [nameInput, emailInput, firmInput, phoneInput, toolInput, tallySetupInput].forEach(el => {
+      if (el) {
+        el.addEventListener('input', () => { showError(el.id, false); generalErr.classList.add('hidden'); });
+        el.addEventListener('change', () => { showError(el.id, false); generalErr.classList.add('hidden'); });
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const firm = firmInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      let isValid = true;
+      let firstBad = null;
+
+      if (tallySetupInput.required && !tallySetupInput.value) { isValid = false; showError('ca_tally_setup', true); firstBad = firstBad || tallySetupInput; }
+      if (!toolInput.value) { isValid = false; showError('ca_accounting_tool', true); firstBad = firstBad || toolInput; }
+      if (phone.length !== 10) { isValid = false; showError('ca_phone', true); firstBad = firstBad || phoneInput; }
+      if (!firm) { isValid = false; showError('ca_firm_name', true); firstBad = firstBad || firmInput; }
+      if (!email || !emailRe.test(email)) { isValid = false; showError('ca_email', true); firstBad = firstBad || emailInput; }
+      if (!name) { isValid = false; showError('ca_first_name', true); firstBad = firstBad || nameInput; }
+
+      if (!isValid) {
+        if (firstBad) {
+          firstBad.scrollIntoView({ behavior: "smooth", block: "center" });
+          firstBad.focus();
+        }
+        return;
+      }
+
+      btn.textContent = "Submitting...";
+      btn.style.opacity = "0.7";
+      btn.style.pointerEvents = "none";
+      
+      const contactSource = form.getAttribute('data-contact-source') || "CA WhatsApp Bot Page";
+      
+      const payload: Record<string, string> = {
+        first_name: name,
+        email: email,
+        lg__phone: phone,
+        company: firm,
+        company_name: firm,
+        which_accounting_tool_do_you_use: toolInput.value,
+        tally_setup: tallySetupInput.value,
+        campaign: "ca-whatsapp-bot",
+        contact_source: contactSource,
+        routerId: "6563"
+      };
+
+      // Gather Attribution
+      const params = new URLSearchParams(window.location.search);
+      const CLICK_ID_MAP: Record<string, string> = {
+        gclid: "hs_google_click_id",
+        fbclid: "hs_facebook_click_id",
+        li_fat_id: "hs_linkedin_click_id",
+      };
+      const UTM_PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "placements", "utm_device", "gclid"];
+      
+      const clickIdStorageKey = "__clickids";
+      let storedClickIds: Record<string, string> = {};
+      try { storedClickIds = JSON.parse(sessionStorage.getItem(clickIdStorageKey) || "{}"); } catch(e){}
+      
+      Object.entries(CLICK_ID_MAP).forEach(([urlParam, hsInputName]) => {
+        const fromUrl = params.get(urlParam);
+        if (fromUrl) { storedClickIds[hsInputName] = fromUrl; payload[hsInputName] = fromUrl; }
+        else if (storedClickIds[hsInputName]) { payload[hsInputName] = storedClickIds[hsInputName]; }
       });
-    }
+      try { sessionStorage.setItem(clickIdStorageKey, JSON.stringify(storedClickIds)); } catch(e){}
+      
+      UTM_PARAMS.forEach((param) => {
+        const value = params.get(param);
+        if (value) payload[param] = value;
+      });
+
+      const tool = toolInput.value.toLowerCase();
+      const setup = tallySetupInput.value.toLowerCase();
+      const isBlocked = tool === "zoho" || tool === "others";
+
+      payload.__page = window.location.href;
+      payload.__event = isBlocked ? "form_submit_blocked_tool" : "form_submit_ca_bot";
+
+      const showSuccessState = () => {
+        form.style.display = "none";
+        header.style.display = "none";
+        successMsg.classList.remove("hidden");
+      };
+
+      try {
+        fetch("https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload), keepalive: true,
+        }).catch(console.error);
+
+        if (isBlocked) {
+          showSuccessState();
+        } else {
+          showLoading();
+          const utm: Record<string, string> = {};
+          ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach((k) => { if (payload[k]) utm[k] = payload[k]; });
+          const clickIds: Record<string, string> = {};
+          ["hs_google_click_id", "hs_facebook_click_id", "hs_linkedin_click_id", "gclid"].forEach((k) => { if (payload[k]) clickIds[k] = payload[k]; });
+          
+          const result = await routeLead({
+            pageKey: form.getAttribute('data-page-key') || "ca-wa-bot",
+            email, name, phone, fields: payload, utm, clickIds,
+          });
+          
+          sendToRouterWebhook(payload, result);
+          showSuccessState();
+          
+          const selfSetup = setup === "offline";
+          showResult(result, name, { selfSetup });
+        }
+      } catch (err) {
+        console.error("Submit Error:", err);
+        generalErr.classList.remove("hidden");
+        btn.textContent = "See AiA Bot in action";
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+      }
+    });
   });
 </script>

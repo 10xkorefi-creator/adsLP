@@ -150,6 +150,13 @@
         payload.__page = window.location.href;
         payload.__event = "form_submit_bangalore_restaurant";
         
+        // Duplicate the company name to other common keys to ensure n8n/HubSpot picks it up 
+        // depending on how the webhook node is mapped
+        if (payload.company) {
+          payload.company_name = payload.company;
+          payload.restaurant_name = payload.company;
+        }
+        
         console.log("Submitting payload to n8n:", payload);
 
         try {
