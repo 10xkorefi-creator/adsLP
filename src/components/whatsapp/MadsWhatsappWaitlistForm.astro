@@ -6,13 +6,15 @@ interface Props {
   hideHeaderOnSuccess?: boolean;
   hideTeamSize?: boolean;
   hideRole?: boolean;
+  pageKey?: string;
 }
 const { 
   contactSource = "WA bot - LinkedIn ads", 
   showTallyReadyMessage = true, 
   hideHeaderOnSuccess = true,
   hideTeamSize = false,
-  hideRole = false
+  hideRole = false,
+  pageKey = "mads-wa-bot"
 } = Astro.props;
 ---
 <style>
@@ -51,7 +53,7 @@ const {
       </h2>
     </div>
 
-    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow content-start" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()}>
+    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow content-start" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()} data-page-key={pageKey}>
       <!-- Field 1: First Name -->
       <div>
         <input
@@ -261,6 +263,7 @@ const {
 </div>
 
 <script>
+  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
   // Expose modal toggle functions globally so inline onclick works
   window.openWaitlistModal = () => {
     const modal = document.getElementById('waitlist-modal');
@@ -509,59 +512,44 @@ const {
       const isChannelPartner = role.startsWith("channel partner");
       const isBlocked = tool === "zoho" || tool === "others";
 
-      let submitFlow = "revenuehero"; // default for cloud-hosted and other paths
-      if (isBlocked) {
-        submitFlow = "blocked";
-      } else if (setup === "offline" || setup === "not-sure") {
-        if (manager === "myself") {
-          submitFlow = "redirect_signup";
-        } else if (manager === "my accountant") {
-          submitFlow = "thank_you_only";
-        }
-      }
-
       payload.__page = window.location.href;
       payload.__event = isBlocked ? "form_submit_blocked_tool" : "form_submit_whatsapp_waitlist";
-
+      const showSuccessState = () => {
+        form.style.display = "none";
+        successMsg.classList.remove("hidden");
+        const waHeader = document.getElementById('wa-header');
+        if (waHeader && form.getAttribute('data-hide-header') === 'true') {
+          waHeader.style.display = "none";
+        }
+      };
       try {
-        // Fire the webhook for redundancy
-        const webhookPromise = fetch("https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
+        // Contact creation backup (Form Part 1): unchanged, fires for every lead
+        fetch("https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
           keepalive: true,
         }).catch(console.error);
-
-        if (submitFlow === "blocked") {
-          form.style.display = "none";
-          successMsg.classList.remove("hidden");
-          const waHeader = document.getElementById('wa-header');
-          if (waHeader && form.getAttribute('data-hide-header') === 'true') {
-            waHeader.style.display = "none";
-          }
+        if (isBlocked) {
+          // Zoho / Others: thank-you only, no routing (unchanged)
+          showSuccessState();
         } else {
-          // Submit to RevenueHero for all non-blocked paths
-          if (window.RevenueHero) {
-            const hero = new window.RevenueHero({ 
-              routerId: '6563', 
-              showLoader: false
-            });
-            await hero.submit(payload).catch(console.error);
-          }
-
-          // Handle the subsequent UI action based on the flow
-          if (submitFlow === "redirect_signup") {
-            window.location.href = "https://app.aiaccountant.com/sign-up";
-          } else if (submitFlow === "thank_you_only" || submitFlow === "revenuehero") {
-            form.style.display = "none";
-            successMsg.classList.remove("hidden");
-            const waHeader = document.getElementById('wa-header');
-            if (waHeader && form.getAttribute('data-hide-header') === 'true') {
-              waHeader.style.display = "none";
-            }
-          }
+          // Lead router: pick the GM/CS person (cloud -> CS, offline / not sure -> GM), then HubSpot with owner
+          showLoading();
+          const utm: Record<string, string> = {};
+          ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach((k) => { if (payload[k]) utm[k] = payload[k]; });
+          const clickIds: Record<string, string> = {};
+          ["hs_google_click_id", "hs_facebook_click_id", "hs_linkedin_click_id", "gclid"].forEach((k) => { if (payload[k]) clickIds[k] = payload[k]; });
+          const result = await routeLead({
+            pageKey: form.getAttribute('data-page-key') || "mads-wa-bot",
+            email, name, phone, fields: payload, utm, clickIds,
+          });
+          sendToRouterWebhook(payload, result);
+          showSuccessState();
+          // MAds: self-setup button for offline, and for "not sure" when they manage Tally themselves
+          const selfSetup = setup === "offline" || (setup === "not-sure" && manager === "myself");
+          showResult(result, name, { selfSetup });
         }
-
       } catch (err) {
         console.error("Submit Error:", err);
         generalErr.classList.remove("hidden");
@@ -572,4 +560,3 @@ const {
     });
   });
 </script>
-<script type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
