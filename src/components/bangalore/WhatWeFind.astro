@@ -1,69 +1,72 @@
 ---
 // src/components/bangalore/WhatWeFind.astro
 ---
-<section class="py-24 bg-slate-50 w-full border-y border-slate-200">
+<section class="py-24 bg-white w-full border-y border-slate-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-3xl mx-auto mb-16">
       <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-4">
         What we usually find
       </h2>
-      <p class="text-lg text-slate-600 font-medium">
+      <p class="text-lg text-slate-900 font-bold bg-amber-400 inline-block px-4 py-2 border border-slate-300 rounded shadow-lg">
         None of these is big on its own. That is why they go unnoticed for months.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
       
-      <!-- Finding 1 -->
-      <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
-        <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center shrink-0">
+      <!-- Finding 1 (NEW) -->
+      <div class="bg-white p-8 rounded-md border border-slate-200 shadow-xl flex flex-col sm:flex-row gap-6 items-start">
+        <div class="w-14 h-14 bg-purple-600 text-white rounded-md flex items-center justify-center shrink-0 border border-slate-300">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-black text-slate-900 mb-2">Offers you never approved</h3>
+          <p class="text-slate-800 font-bold mb-3">
+            Offers get switched on for your menu. The cost comes out of your payment.
+          </p>
+          <div class="bg-purple-600 px-4 py-2 rounded text-sm font-bold text-white inline-block border border-slate-300">
+            Swiggy has agreed to refund these for Bengaluru restaurants.
+          </div>
+        </div>
+      </div>
+
+      <!-- Finding 2 (Old 1) -->
+      <div class="bg-white p-8 rounded-md border border-slate-200 shadow-xl flex flex-col sm:flex-row gap-6 items-start">
+        <div class="w-14 h-14 bg-amber-400 text-slate-900 rounded-md flex items-center justify-center shrink-0 border border-slate-300">
           <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2">An offer that ran longer than you approved</h3>
-          <p class="text-slate-600 font-medium mb-3">
+          <h3 class="text-xl font-black text-slate-900 mb-2">An offer that ran longer than you approved</h3>
+          <p class="text-slate-800 font-bold mb-3">
             One Bangalore restaurant approved a Buy One Get One for 15 days. It ran for 30.
           </p>
-          <div class="bg-slate-50 px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 inline-block border border-slate-200">
+          <div class="bg-amber-400 px-4 py-2 rounded text-sm font-bold text-slate-900 inline-block border border-slate-300">
             They paid for all 30. They got it back only because somebody checked.
           </div>
         </div>
       </div>
 
-      <!-- Finding 2 -->
-      <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
-        <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center shrink-0">
+      <!-- Finding 3 (Old 2) -->
+      <div class="bg-white p-8 rounded-md border border-slate-200 shadow-xl flex flex-col sm:flex-row gap-6 items-start">
+        <div class="w-14 h-14 bg-rose-600 text-white rounded-md flex items-center justify-center shrink-0 border border-slate-300">
           <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2">Penalties nobody claimed back</h3>
-          <p class="text-slate-600 font-medium">
+          <h3 class="text-xl font-black text-slate-900 mb-2">Penalties nobody claimed back</h3>
+          <p class="text-slate-800 font-bold">
             Complaints and late deliveries get charged to you. Almost nobody checks them.
           </p>
         </div>
       </div>
 
-      <!-- Finding 3 -->
-      <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
-        <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center shrink-0">
-          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2">Discounts you never agreed to fund</h3>
-          <p class="text-slate-600 font-medium">
-            Sale and festival offers get applied to your menu. Your share comes out of your payment.
-          </p>
-        </div>
-      </div>
-
       <!-- Finding 4 -->
-      <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
-        <div class="w-14 h-14 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center shrink-0">
+      <div class="bg-white p-8 rounded-md border border-slate-200 shadow-xl flex flex-col sm:flex-row gap-6 items-start">
+        <div class="w-14 h-14 bg-blue-600 text-white rounded-md flex items-center justify-center shrink-0 border border-slate-300">
           <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2">Orders that never got paid</h3>
-          <p class="text-slate-600 font-medium">
+          <h3 class="text-xl font-black text-slate-900 mb-2">Orders that never got paid</h3>
+          <p class="text-slate-800 font-bold">
             The order went out. The money never came in. One missing order inside one weekly number is very hard to spot.
           </p>
         </div>
