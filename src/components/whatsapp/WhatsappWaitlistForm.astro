@@ -4,8 +4,11 @@ interface Props {
   contactSource?: string;
   showTallyReadyMessage?: boolean;
   hideHeaderOnSuccess?: boolean;
+  /** true = assign a GM/CS person via the lead router (no RevenueHero). Off by default so other pages keep working as today. */
+  leadRouter?: boolean;
+  pageKey?: string;
 }
-const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, hideHeaderOnSuccess = true } = Astro.props;
+const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, hideHeaderOnSuccess = true, leadRouter = false, pageKey = "" } = Astro.props;
 ---
 <style>
   .no-scrollbar::-webkit-scrollbar {
@@ -33,7 +36,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
       </p>
     </div>
 
-    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()}>
+    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()} data-lead-router={leadRouter ? "true" : "false"} data-page-key={pageKey}>
       <!-- Field 1: First Name -->
       <div>
         <input
@@ -180,6 +183,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
 </div>
 
 <script>
+  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
   // Expose modal toggle functions globally so inline onclick works
   window.openWaitlistModal = () => {
     const modal = document.getElementById('waitlist-modal');
@@ -385,8 +389,22 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
             waHeader.style.display = "none";
           }
         } else {
-          // RevenueHero Submission
-          if (window.RevenueHero) {
+          if (form.getAttribute('data-lead-router') === 'true') {
+            // Lead router: pick the GM/CS person (cloud -> CS, offline / not sure -> GM), then HubSpot with owner
+            showLoading();
+            const utm: Record<string, string> = {};
+            ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach((k) => { if (payload[k]) utm[k] = payload[k]; });
+            const clickIds: Record<string, string> = {};
+            ["hs_google_click_id", "hs_facebook_click_id", "hs_linkedin_click_id", "gclid"].forEach((k) => { if (payload[k]) clickIds[k] = payload[k]; });
+            const result = await routeLead({
+              pageKey: form.getAttribute('data-page-key') || "wa-bot-organic",
+              email, name, phone, fields: payload, utm, clickIds,
+            });
+            sendToRouterWebhook(payload, result);
+            showResult(result, name);
+          }
+          // RevenueHero Submission (only pages that have not switched to the lead router)
+          else if (window.RevenueHero) {
             const hero = new window.RevenueHero({ 
               routerId: '6563', 
               showLoader: false 
@@ -414,4 +432,4 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
     });
   });
 </script>
-<script type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>
+{!leadRouter && <script is:inline type="text/javascript" src="https://assets.revenuehero.io/scheduler.min.js"></script>}
