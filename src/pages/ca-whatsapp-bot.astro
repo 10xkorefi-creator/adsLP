@@ -7,7 +7,8 @@ import CaBotCapabilities from "../components/ca-bot/CaBotCapabilities.astro";
 import CaBotHowItWorks from "../components/ca-bot/CaBotHowItWorks.astro";
 import CaBotBenefits from "../components/ca-bot/CaBotBenefits.astro";
 import CaBotFaq from "../components/ca-bot/CaBotFaq.astro";
-import CaBotLeadForm from "../components/ca-bot/CaBotLeadForm.astro";
+import WhatsappWaitlistForm from "../components/whatsapp/WhatsappWaitlistForm.astro";
+import WhatsappStickyBanner from "../components/whatsapp/WhatsappStickyBanner.astro";
 ---
 
 <Layout 
@@ -15,13 +16,14 @@ import CaBotLeadForm from "../components/ca-bot/CaBotLeadForm.astro";
   description="Give your clients instant answers about their Tally books directly on WhatsApp. Free for your CA firm and free for them."
 >
   <main class="scroll-smooth font-sans antialiased bg-slate-50">
+    <WhatsappStickyBanner />
     <CaBotHero />
     <CaBotProblemSolution />
     <CaBotCapabilities />
     <CaBotHowItWorks />
     <CaBotBenefits />
     <CaBotFaq />
-    <CaBotLeadForm />
+    <WhatsappWaitlistForm contactSource="CA WA bot" hideTeamSize={true} hideRole={true} />
   </main>
 </Layout>
 
