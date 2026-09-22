@@ -533,7 +533,10 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
               email, name, phone, fields: payload, utm, clickIds,
             });
             sendToRouterWebhook(payload, result);
-            showResult(result, name);
+            // Self-setup CTA: offline, or not sure + "I manage Tally myself" (same rule as the MAds page)
+            const mgr = (tallyManagerInput.value || "").toLowerCase();
+            const selfSetup = setup === "offline" || (setup === "not-sure" && mgr === "myself");
+            showResult(result, name, { selfSetup });
           }
           // RevenueHero Submission (only pages that have not switched to the lead router)
           else if (window.RevenueHero) {
