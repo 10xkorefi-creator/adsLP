@@ -187,11 +187,13 @@ function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterRes
       + `<p class="ft">Can't talk right now? ${willCap} call you within 30 minutes.</p>`
       + (showSelf ? `<div class="sub"><p>Prefer to set it up yourself?</p>${selfLink("sb")}</div>` : "");
   } else {
+    // Off hours: WhatsApp is the only action on every page (no Call), callback promise stays
+    const waOff = ph ? `<a class="b1" href="https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : "";
     actions = (ph ? `<p class="no">${esc(ph.show)}</p>` : "")
       + `<div class="info">${ICON_CLOCK}<span>${willCap} call you ${esc(when)}</span></div>`
-      + (showSelf
-          ? `${selfLink("pm")}<p class="hint">Don't want to wait? Set it up yourself now.</p><button class="btn dn">Done</button>`
-          : `<button class="btn">Done</button>`);
+      + waOff
+      + (showSelf ? `<div class="sub"><p>Prefer to set it up yourself?</p>${selfLink("sb")}</div>` : "")
+      + `<button class="btn dn">Done</button>`;
   }
   return `<div class="grab" aria-hidden="true"></div>
 <p class="ok">${ICON_OK}${hi}</p>
