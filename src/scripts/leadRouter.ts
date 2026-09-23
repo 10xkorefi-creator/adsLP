@@ -228,16 +228,42 @@ function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterRes
 ${actions}`;
 }
 
-const fallbackHTML = () => `<h2 id="lr-h">Your request is in</h2><p>Our team will call you shortly to set up your free trial.</p><button class="btn">Done</button>`;
-const loadingHTML = () => `<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Finding your product specialist</h2><p>This takes a second.</p>`;
+// VA Bangalore restaurants: no "Meet your", no Call button, number as text + WhatsApp, same in and off hours
+function vaBlrHTML(gm: Gm, firstName: string) {
+  const initials = (gm.full_name || gm.name || "?").split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+  const av = gm.photo_url ? `<img src="${esc(gm.photo_url)}" alt="">` : esc(initials);
+  const first = String(firstName || "").trim().split(/\s+/)[0];
+  const hi = first ? `Thanks, ${esc(first.charAt(0).toUpperCase() + first.slice(1))}.` : "Thanks.";
+  const name = esc(gm.name);
+  const ph = fmtPhone(gm.phone);
+  const waText = encodeURIComponent(`Hi ${gm.name}, I just asked for the free payment check for my restaurant.`);
+  return `<div class="grab" aria-hidden="true"></div>
+<p class="ok">${ICON_OK}${hi}</p>
+<div class="av" style="margin-top:14px">${av}</div>
+<h2 id="lr-h" class="nm">${esc(gm.full_name || gm.name)}</h2>
+<p class="ctx">${name} will call you soon to collect the documents for your free check.</p>
+${ph ? `<p class="no">${esc(ph.show)}</p><a class="b1" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : ""}
+<button class="btn dn">Done</button>`;
+}
 
-export const showLoading = () => showModal(loadingHTML());
+type Variant = "va_blr";
+const fallbackHTML = (variant?: Variant) => variant === "va_blr"
+  ? `<h2 id="lr-h">Thank you!</h2><p>We will call you within one working day.</p><button class="btn">Done</button>`
+  : `<h2 id="lr-h">Your request is in</h2><p>Our team will call you shortly to set up your free trial.</p><button class="btn">Done</button>`;
+const loadingHTML = (variant?: Variant) => variant === "va_blr"
+  ? `<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Sending your request</h2><p>This takes a second.</p>`
+  : `<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Finding your product specialist</h2><p>This takes a second.</p>`;
+
+export const showLoading = (variant?: Variant) => showModal(loadingHTML(variant));
 
 /** Swap the loader for the GM card (or the generic card if routing failed). */
-export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean; track?: boolean } = {}) {
+export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean; track?: boolean; variant?: Variant } = {}) {
   const ok = !!(result && result.ok && result.gm && result.token);
   const track = ok && opts.track === true; // opt-in per form: ca-wa-bot is not tracked
   lrToken = track ? result!.token! : ""; lrShownAt = track ? Date.now() : 0;
-  showModal(ok ? gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false) : fallbackHTML());
+  const card = !ok ? fallbackHTML(opts.variant)
+    : opts.variant === "va_blr" ? vaBlrHTML(result!.gm!, firstName)
+    : gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false);
+  showModal(card);
   if (track) lrTrack("popup_shown");
 }
