@@ -67,6 +67,21 @@ export function sendToRouterWebhook(payload: Record<string, string>, result: Rou
 let modalRoot: ShadowRoot | null = null;
 let hideTimer: ReturnType<typeof setTimeout> | undefined;
 let openedAt = 0;
+let lrToken = "";
+let lrShownAt = 0;
+
+/** Click tracking (lr_click_events via lr_log_click). Token-only, resolved server-side. Never throws. */
+function lrTrack(action: string) {
+  if (!lrToken) return;
+  const meta = {
+    device: matchMedia("(pointer: coarse)").matches ? "mobile" : "desktop",
+    seconds_since_shown: lrShownAt ? Math.round((Date.now() - lrShownAt) / 1000) : 0,
+  };
+  fetch(SUPABASE_URL + "/rest/v1/rpc/lr_log_click", {
+    method: "POST", headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
+    body: JSON.stringify({ p_token: lrToken, p_action: action, p_meta: meta }), keepalive: true,
+  }).catch(() => {});
+}
 
 function ensureModal(): ShadowRoot {
   if (modalRoot) return modalRoot;
@@ -136,6 +151,15 @@ function showModal(html: string) {
   clearTimeout(hideTimer);                                   // a close in progress must not hide new content
   if (!openedAt) openedAt = Date.now();
   (root.querySelector(".body") as HTMLElement).innerHTML = html;
+  root.querySelectorAll("a, .btn.dn").forEach((el) => {
+    const href = el.getAttribute("href") || "";
+    const act = href.startsWith("tel:") ? "call"
+      : href.includes("wa.me") ? "whatsapp"
+      : href === SELF_SETUP_URL ? "self_setup"
+      : el.classList.contains("dn") ? "done"
+      : "";
+    if (act) el.addEventListener("click", () => lrTrack(act));
+  });
   const ov = root.querySelector(".ov") as HTMLElement;
   ov.style.display = "flex";
   requestAnimationFrame(() => ov.classList.add("on"));
@@ -210,7 +234,10 @@ const loadingHTML = () => `<div class="sp" aria-hidden="true"></div><h2 id="lr-h
 export const showLoading = () => showModal(loadingHTML());
 
 /** Swap the loader for the GM card (or the generic card if routing failed). */
-export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean } = {}) {
+export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean; track?: boolean } = {}) {
   const ok = !!(result && result.ok && result.gm && result.token);
+  const track = ok && opts.track === true; // opt-in per form: ca-wa-bot is not tracked
+  lrToken = track ? result!.token! : ""; lrShownAt = track ? Date.now() : 0;
   showModal(ok ? gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false) : fallbackHTML());
+  if (track) lrTrack("popup_shown");
 }
