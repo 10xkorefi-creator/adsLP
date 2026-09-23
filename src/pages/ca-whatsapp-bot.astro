@@ -7,7 +7,7 @@ import CaBotCapabilities from "../components/ca-bot/CaBotCapabilities.astro";
 import CaBotHowItWorks from "../components/ca-bot/CaBotHowItWorks.astro";
 import CaBotBenefits from "../components/ca-bot/CaBotBenefits.astro";
 import CaBotFaq from "../components/ca-bot/CaBotFaq.astro";
-import WhatsappWaitlistForm from "../components/whatsapp/WhatsappWaitlistForm.astro";
+import CaBotWaitlistModal from "../components/ca-bot/CaBotWaitlistModal.astro";
 import WhatsappStickyBanner from "../components/whatsapp/WhatsappStickyBanner.astro";
 ---
 
@@ -23,7 +23,7 @@ import WhatsappStickyBanner from "../components/whatsapp/WhatsappStickyBanner.as
     <CaBotHowItWorks />
     <CaBotBenefits />
     <CaBotFaq />
-    <WhatsappWaitlistForm contactSource="VA WA Bot" hideTeamSize={true} hideRole={true} />
+    <CaBotWaitlistModal contactSource="VA WA Bot" />
   </main>
 </Layout>
 
