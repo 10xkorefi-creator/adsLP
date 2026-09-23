@@ -141,6 +141,8 @@
 </section>
 
 <script>
+  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
+
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('bangalore-restaurant-form') as HTMLFormElement;
     const submitBtn = document.getElementById('blr_submit') as HTMLButtonElement;
@@ -156,7 +158,8 @@
         submitBtn.style.opacity = '0.7';
 
         const formData = new FormData(form);
-        const payload = Object.fromEntries(formData.entries());
+        const payload: Record<string, string> = {};
+        formData.forEach((v, k) => { payload[k] = String(v); });
         
         // Add additional attribution details
         payload.contact_source = "VA Bangalore restaurants";
@@ -170,14 +173,34 @@
           payload.restaurant_name = payload.company;
         }
         
-        console.log("Submitting payload to n8n:", payload);
+        // Attribution (UTMs + click ids), same keys as the other LPs
+        const params = new URLSearchParams(window.location.search);
+        const utm: Record<string, string> = {};
+        ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach((k) => {
+          const v = params.get(k); if (v) { utm[k] = v; payload[k] = v; }
+        });
+        const clickIds: Record<string, string> = {};
+        ([["gclid", "hs_google_click_id"], ["fbclid", "hs_facebook_click_id"], ["li_fat_id", "hs_linkedin_click_id"]] as const).forEach(([u, hs]) => {
+          const v = params.get(u); if (v) { clickIds[hs] = v; payload[hs] = v; }
+        });
 
         try {
-          await fetch(webhookUrl, {
+          // Form Part 1 stays as the backup path (never blocks the popup)
+          fetch(webhookUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
+            keepalive: true,
+          }).catch(console.error);
+
+          // Lead router: isolated pool R (Raghav), then HubSpot contact with owner
+          showLoading("va_blr");
+          const result = await routeLead({
+            pageKey: "va-blr-restaurants",
+            email: payload.email || "", name: payload.first_name || "", phone: payload.lg__phone || "",
+            fields: payload, utm, clickIds,
           });
+          sendToRouterWebhook(payload, result);
 
           // Hide form inputs and button, show success
           const inputs = form.querySelectorAll('div.grid, div.mt-8');
@@ -185,6 +208,7 @@
             (el as HTMLElement).style.display = 'none';
           });
           successMsg.classList.remove('hidden');
+          showResult(result, payload.first_name || "", { variant: "va_blr", track: true });
         } catch (error) {
           console.error("Error submitting form:", error);
           submitBtn.textContent = 'Send me my free check';
