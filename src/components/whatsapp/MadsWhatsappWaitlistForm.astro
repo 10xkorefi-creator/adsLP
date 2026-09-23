@@ -548,7 +548,7 @@ const {
           showSuccessState();
           // MAds: self-setup button for offline, and for "not sure" when they manage Tally themselves
           const selfSetup = setup === "offline" || (setup === "not-sure" && manager === "myself");
-          showResult(result, name, { selfSetup });
+          showResult(result, name, { selfSetup, track: true });
         }
       } catch (err) {
         console.error("Submit Error:", err);
