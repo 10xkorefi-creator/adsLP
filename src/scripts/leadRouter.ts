@@ -67,6 +67,21 @@ export function sendToRouterWebhook(payload: Record<string, string>, result: Rou
 let modalRoot: ShadowRoot | null = null;
 let hideTimer: ReturnType<typeof setTimeout> | undefined;
 let openedAt = 0;
+let lrToken = "";
+let lrShownAt = 0;
+
+/** Click tracking (lr_click_events via lr_log_click). Token-only, resolved server-side. Never throws. */
+function lrTrack(action: string) {
+  if (!lrToken) return;
+  const meta = {
+    device: matchMedia("(pointer: coarse)").matches ? "mobile" : "desktop",
+    seconds_since_shown: lrShownAt ? Math.round((Date.now() - lrShownAt) / 1000) : 0,
+  };
+  fetch(SUPABASE_URL + "/rest/v1/rpc/lr_log_click", {
+    method: "POST", headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
+    body: JSON.stringify({ p_token: lrToken, p_action: action, p_meta: meta }), keepalive: true,
+  }).catch(() => {});
+}
 
 function ensureModal(): ShadowRoot {
   if (modalRoot) return modalRoot;
@@ -136,6 +151,15 @@ function showModal(html: string) {
   clearTimeout(hideTimer);                                   // a close in progress must not hide new content
   if (!openedAt) openedAt = Date.now();
   (root.querySelector(".body") as HTMLElement).innerHTML = html;
+  root.querySelectorAll("a, .btn.dn").forEach((el) => {
+    const href = el.getAttribute("href") || "";
+    const act = href.startsWith("tel:") ? "call"
+      : href.includes("wa.me") ? "whatsapp"
+      : href === SELF_SETUP_URL ? "self_setup"
+      : el.classList.contains("dn") ? "done"
+      : "";
+    if (act) el.addEventListener("click", () => lrTrack(act));
+  });
   const ov = root.querySelector(".ov") as HTMLElement;
   ov.style.display = "flex";
   requestAnimationFrame(() => ov.classList.add("on"));
@@ -204,13 +228,42 @@ function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterRes
 ${actions}`;
 }
 
-const fallbackHTML = () => `<h2 id="lr-h">Your request is in</h2><p>Our team will call you shortly to set up your free trial.</p><button class="btn">Done</button>`;
-const loadingHTML = () => `<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Finding your product specialist</h2><p>This takes a second.</p>`;
+// VA Bangalore restaurants: no "Meet your", no Call button, number as text + WhatsApp, same in and off hours
+function vaBlrHTML(gm: Gm, firstName: string) {
+  const initials = (gm.full_name || gm.name || "?").split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+  const av = gm.photo_url ? `<img src="${esc(gm.photo_url)}" alt="">` : esc(initials);
+  const first = String(firstName || "").trim().split(/\s+/)[0];
+  const hi = first ? `Thanks, ${esc(first.charAt(0).toUpperCase() + first.slice(1))}.` : "Thanks.";
+  const name = esc(gm.name);
+  const ph = fmtPhone(gm.phone);
+  const waText = encodeURIComponent(`Hi ${gm.name}, I just asked for the free payment check for my restaurant.`);
+  return `<div class="grab" aria-hidden="true"></div>
+<p class="ok">${ICON_OK}${hi}</p>
+<div class="av" style="margin-top:14px">${av}</div>
+<h2 id="lr-h" class="nm">${esc(gm.full_name || gm.name)}</h2>
+<p class="ctx">${name} will call you soon to collect the documents for your free check.</p>
+${ph ? `<p class="no">${esc(ph.show)}</p><a class="b1" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : ""}
+<button class="btn dn">Done</button>`;
+}
 
-export const showLoading = () => showModal(loadingHTML());
+type Variant = "va_blr";
+const fallbackHTML = (variant?: Variant) => variant === "va_blr"
+  ? `<h2 id="lr-h">Thank you!</h2><p>We will call you within one working day.</p><button class="btn">Done</button>`
+  : `<h2 id="lr-h">Your request is in</h2><p>Our team will call you shortly to set up your free trial.</p><button class="btn">Done</button>`;
+const loadingHTML = (variant?: Variant) => variant === "va_blr"
+  ? `<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Sending your request</h2><p>This takes a second.</p>`
+  : `<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Finding your product specialist</h2><p>This takes a second.</p>`;
+
+export const showLoading = (variant?: Variant) => showModal(loadingHTML(variant));
 
 /** Swap the loader for the GM card (or the generic card if routing failed). */
-export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean } = {}) {
+export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean; track?: boolean; variant?: Variant } = {}) {
   const ok = !!(result && result.ok && result.gm && result.token);
-  showModal(ok ? gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false) : fallbackHTML());
+  const track = ok && opts.track === true; // opt-in per form: ca-wa-bot is not tracked
+  lrToken = track ? result!.token! : ""; lrShownAt = track ? Date.now() : 0;
+  const card = !ok ? fallbackHTML(opts.variant)
+    : opts.variant === "va_blr" ? vaBlrHTML(result!.gm!, firstName)
+    : gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false);
+  showModal(card);
+  if (track) lrTrack("popup_shown");
 }
