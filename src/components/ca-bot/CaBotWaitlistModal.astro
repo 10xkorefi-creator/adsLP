@@ -171,6 +171,9 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
 </div>
 
 <script>
+  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
+
+  // Expose modal toggle functions globally so inline onclick works
   // Expose modal toggle functions globally so inline onclick works
   window.openWaitlistModal = () => {
     const modal = document.getElementById('waitlist-modal');
