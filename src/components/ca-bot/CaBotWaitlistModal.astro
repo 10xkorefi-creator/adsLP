@@ -363,12 +363,34 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
       payload.__page = window.location.href;
       payload.__event = "form_submit_whatsapp_ca_waitlist";
 
+            // Lead router: Tally / Both go to the GM round robin; Zoho Books / Other keep the old path (no GM)
+      const tool = toolInput.value.toLowerCase();
+      const useRouter = form.getAttribute('data-lead-router') === 'true' && tool !== "zoho books" && tool !== "other";
+
       try {
-        await fetch("https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
+        const backup = fetch("https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
+          keepalive: true,
         });
+
+        if (useRouter) {
+          backup.catch(console.error); // Form Part 1 stays the backup path, never blocks the popup
+          showLoading();
+          const utm: Record<string, string> = {};
+          ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach((k) => { if (payload[k]) utm[k] = payload[k]; });
+          const clickIds: Record<string, string> = {};
+          ["hs_google_click_id", "hs_facebook_click_id", "hs_linkedin_click_id"].forEach((k) => { if (payload[k]) clickIds[k] = payload[k]; });
+          const result = await routeLead({
+            pageKey: form.getAttribute('data-page-key') || "ca-wa-bot",
+            email, name, phone, fields: payload, utm, clickIds,
+          });
+          sendToRouterWebhook(payload, result);
+          showResult(result, name, { selfSetup: false, track: true });
+        } else {
+          await backup;
+        }
 
         // Show success state
         form.style.display = "none";
