@@ -110,7 +110,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
       <div id="wa-tally_location-container" class="md:col-span-2 animate-expand" style="display: none;">
         <select
           id="wa-tally_location"
-          name="tally_owner"
+          name="clients_tally_location"
           class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium cursor-pointer bg-white"
           disabled
         >
@@ -316,7 +316,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
       };
 
       if (tallyLocationInput.value) {
-        payload.tally_owner = tallyLocationInput.value;
+        payload.clients_tally_location = tallyLocationInput.value;
       }
 
       // Gather Attribution
