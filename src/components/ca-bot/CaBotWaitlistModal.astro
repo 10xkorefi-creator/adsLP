@@ -56,6 +56,19 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
         <span id="wa-first_name-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter your name.</span>
       </div>
 
+      <!-- Field 1.5: Company Name -->
+      <div>
+        <input
+          type="text"
+          id="wa-company"
+          name="company"
+          class="w-full px-5 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#25D366] focus:border-[#25D366] outline-none transition-all text-base font-medium placeholder-slate-400 bg-white"
+          placeholder="CA Firm Name *"
+          required
+        />
+        <span id="wa-company-error" class="hidden text-red-600 text-xs mt-1 font-semibold">Please enter your firm name.</span>
+      </div>
+
       <!-- Field 2: Email -->
       <div>
         <input
@@ -214,6 +227,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
     if(!form) return;
     
     const nameInput = document.getElementById('wa-first_name') as HTMLInputElement;
+    const companyInput = document.getElementById('wa-company') as HTMLInputElement;
     const emailInput = document.getElementById('wa-email') as HTMLInputElement;
     const phoneInput = document.getElementById('wa-phone') as HTMLInputElement;
     const toolInput = document.getElementById('wa-accounting_tool') as HTMLSelectElement;
@@ -261,7 +275,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
       }
     };
 
-    [nameInput, emailInput, phoneInput, toolInput, tallyLocationInput, clientsInput].forEach(el => {
+    [nameInput, companyInput, emailInput, phoneInput, toolInput, tallyLocationInput, clientsInput].forEach(el => {
       if (el) {
         el.addEventListener('input', () => {
           showError(el.id, false);
@@ -278,6 +292,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
       e.preventDefault();
       
       const name = nameInput.value.trim();
+      const company = companyInput.value.trim();
       const email = emailInput.value.trim();
       const phone = phoneInput.value.trim();
       const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -291,6 +306,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
       if (!toolInput.value) { isValid = false; showError('wa-accounting_tool', true); firstBad = firstBad || toolInput; }
       if (phone.length !== 10) { isValid = false; showError('wa-phone', true); firstBad = firstBad || phoneInput; }
       if (!email || !emailRe.test(email)) { isValid = false; showError('wa-email', true); firstBad = firstBad || emailInput; }
+      if (!company) { isValid = false; showError('wa-company', true); firstBad = firstBad || companyInput; }
       if (!name) { isValid = false; showError('wa-first_name', true); firstBad = firstBad || nameInput; }
 
       if (!isValid) {
@@ -309,6 +325,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
       
       const payload: Record<string, string> = {
         first_name: name,
+        company: company,
         email: email,
         lg__phone: phone,
         which_accounting_tool_do_you_use: toolInput.value,
