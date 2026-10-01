@@ -141,7 +141,7 @@ import Footer from "../../components/Footer.astro";
                       >+91</span
                     >
                     <input
-                      type="tel"
+                      type="tel" minlength="10" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number"
                       id="generic-lg__phone"
                       name="lg__phone"
                       maxlength="10"
