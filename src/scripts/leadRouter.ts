@@ -117,7 +117,9 @@ function ensureModal(): ShadowRoot {
 .b1{background:#314DD0;color:#fff;border:0;margin-bottom:10px}
 .b2{background:#fff;color:#000;border:1px solid #d9dbe3;margin-bottom:10px}
 .b1 svg,.b2 svg{width:20px;height:20px;flex:none}
-.b2 svg{color:#1faa55}
+.b2 svg{color:#314DD0}
+.wa{background:#128C7E;color:#fff;border:0}
+.wa svg{color:#fff}
 .btn{background:#f2f3f7;color:#000;border:0}
 .info{display:flex;align-items:center;justify-content:center;gap:8px;background:#f2f3f7;border-radius:12px;padding:14px;font-size:15px;color:#000;margin-bottom:12px}
 .info svg{width:18px;height:18px;flex:none;color:#314DD0}
@@ -206,13 +208,14 @@ function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterRes
   let actions: string;
   if (inHours && ph) {
     const waText = encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`);
-    actions = `<a class="b1" href="tel:${ph.tel}">${ICON_PHONE}Call ${name} now</a>`
-      + (whatsapp ? `<a class="b2" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : "")
+    // v1.7: WhatsApp first (green primary), Call second (outline)
+    actions = (whatsapp ? `<a class="b1 wa" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : "")
+      + `<a class="b2" href="tel:${ph.tel}">${ICON_PHONE}Call ${name} now</a>`
       + `<p class="ft">Can't talk right now? ${willCap} call you within 30 minutes.</p>`
       + (showSelf ? `<div class="sub"><p>Prefer to set it up yourself?</p>${selfLink("sb")}</div>` : "");
   } else {
     // Off hours: WhatsApp is the only action on every page (no Call), callback promise stays
-    const waOff = ph ? `<a class="b1" href="https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : "";
+    const waOff = ph ? `<a class="b1 wa" href="https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : "";
     actions = (ph ? `<p class="no">${esc(ph.show)}</p>` : "")
       + `<div class="info">${ICON_CLOCK}<span>${willCap} call you ${esc(when)}</span></div>`
       + waOff
@@ -242,7 +245,7 @@ function vaBlrHTML(gm: Gm, firstName: string) {
 <div class="av" style="margin-top:14px">${av}</div>
 <h2 id="lr-h" class="nm">${esc(gm.full_name || gm.name)}</h2>
 <p class="ctx">${name} will call you soon to collect the documents for your free check.</p>
-${ph ? `<p class="no">${esc(ph.show)}</p><a class="b1" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : ""}
+${ph ? `<p class="no">${esc(ph.show)}</p><a class="b1 wa" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : ""}
 <button class="btn dn">Done</button>`;
 }
 
