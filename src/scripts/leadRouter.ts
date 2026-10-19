@@ -9,6 +9,9 @@ const ROUTER_WEBHOOK = "https://n8n.aiaccountant.com/webhook/lead-router-hs";
 const ROUTER_TIMEOUT_MS = 4000;
 const SELF_SETUP_URL = "https://app.aiaccountant.com/";
 const LIVE_HOST = "lp.aiaccountant.com";
+// Instant demo: live Teams call with the GM straight from the popup (opt-in per form, backend decides availability)
+const INSTANT_DEMO_WEBHOOK = "https://n8n.aiaccountant.com/webhook/instant-demo";
+const INSTANT_DEMO_TIMEOUT_MS = 15000;
 
 type Gm = { name: string; full_name?: string; title?: string; photo_url?: string | null; phone?: string; email?: string; pronoun?: string | null };
 export type RouterResult = {
@@ -17,7 +20,7 @@ export type RouterResult = {
 };
 
 // Anything not on the live domain (Vercel previews, localhost) is flagged as a test lead
-export const isTestHost = () => location.hostname !== LIVE_HOST;
+export const isTestHost = () => location.hostname !== LIVE_HOST || /[?&]lr_test=1(&|$)/.test(location.search);
 
 const newKey = () =>
   (crypto && (crypto as any).randomUUID) ? (crypto as any).randomUUID()
@@ -71,9 +74,10 @@ let lrToken = "";
 let lrShownAt = 0;
 
 /** Click tracking (lr_click_events via lr_log_click). Token-only, resolved server-side. Never throws. */
-function lrTrack(action: string) {
+function lrTrack(action: string, extra: Record<string, unknown> = {}) {
   if (!lrToken) return;
   const meta = {
+    ...extra,
     device: matchMedia("(pointer: coarse)").matches ? "mobile" : "desktop",
     seconds_since_shown: lrShownAt ? Math.round((Date.now() - lrShownAt) / 1000) : 0,
   };
@@ -133,6 +137,12 @@ function ensureModal(): ShadowRoot {
 .btn.dn{background:none;color:#666;padding:10px}
 h2{margin:0 0 6px;font-size:21px;line-height:1.25;font-weight:700}
 p{margin:0 0 16px;font-size:15px;line-height:1.5;color:#666}
+.idm{background:#534AB7;color:#fff;border:0}
+.idm svg{color:#fff}
+.idsub{margin:-4px 0 12px;font-size:13px;color:#666}
+.steps{list-style:none;padding:0;margin:0 auto 6px;max-width:270px;text-align:left;font-size:15px;line-height:2;color:#999}
+.steps .done{color:#1f7a3f}
+.steps .cur{color:#000;font-weight:700}
 .sp{width:28px;height:28px;border:3px solid #e6e9f8;border-top-color:#314DD0;border-radius:50%;animation:r .8s linear infinite;margin:6px auto 16px}
 @keyframes r{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.ov,.card{transition:none}.sp{animation-duration:2s}}
@@ -182,6 +192,7 @@ const ICON_PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 const ICON_WA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"/></svg>';
 const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2l4 -4"/></svg>';
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+const ICON_VIDEO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10l4.55 -2.28a1 1 0 0 1 1.45 .9v6.76a1 1 0 0 1 -1.45 .9l-4.55 -2.28v-4z"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg>';
 const ICON_PLUG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z"/><path d="M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5z"/><path d="M3 21l2.5 -2.5"/><path d="M18.5 5.5l2.5 -2.5"/><path d="M10 11l-2 2"/><path d="M13 14l-2 2"/></svg>';
 
 function fmtPhone(p?: string) {
@@ -259,8 +270,84 @@ const loadingHTML = (variant?: Variant) => variant === "va_blr"
 
 export const showLoading = (variant?: Variant) => showModal(loadingHTML(variant));
 
+// ── Instant demo ──
+// After the GM card renders (business hours only), ask the backend if anyone is free right now.
+// If yes, add the "Instant Demo" button on top. Click: loader -> backend creates a Teams meeting -> same tab goes to the join link.
+// Anything slow, failed or busy ends on the fallback card (WhatsApp), never a dead end.
+async function offerInstantDemo(token: string, gm: Gm) {
+  let available = false;
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 3000);
+    const res = await fetch(SUPABASE_URL + "/rest/v1/rpc/lr_instant_demo_available", {
+      method: "POST", headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
+      body: JSON.stringify({ p_token: token }), signal: ctrl.signal,
+    });
+    clearTimeout(timer);
+    if (res.ok) { const j = await res.json(); available = !!(j && j.available); }
+  } catch { available = false; }
+  if (!available || !modalRoot) return;
+  const body = modalRoot.querySelector(".body") as HTMLElement | null;
+  const anchor = body && (body.querySelector(".b1, .b2, .info") as HTMLElement | null);
+  if (!body || !anchor) return; // card was closed or replaced
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `<button type="button" class="b1 idm">${ICON_VIDEO}Instant Demo</button><p class="idsub">Free now · 30-min video call with ${esc(gm.name)}</p>`;
+  anchor.parentNode!.insertBefore(wrap, anchor);
+  (wrap.querySelector(".idm") as HTMLElement).addEventListener("click", () => startInstantDemo(token, gm));
+  lrTrack("instant_demo_shown");
+}
+
+async function startInstantDemo(token: string, gm: Gm) {
+  lrTrack("instant_demo_click");
+  const steps = ["Finding a product specialist", "Creating your video call", `Inviting ${gm.name}`];
+  const loader = (i: number) => `<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Setting up your live demo</h2>
+<ul class="steps">${steps.map((s, k) => `<li class="${k < i ? "done" : k === i ? "cur" : ""}">${k < i ? "&#10003;" : k === i ? "&#8230;" : "&#9675;"} ${esc(s)}</li>`).join("")}</ul>`;
+  showModal(loader(0));
+  let step = 0;
+  const tick = setInterval(() => { if (step < steps.length - 1) { step++; showModal(loader(step)); } }, 1200);
+  let data: any = null;
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), INSTANT_DEMO_TIMEOUT_MS);
+    const res = await fetch(INSTANT_DEMO_WEBHOOK, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }), signal: ctrl.signal,
+    });
+    clearTimeout(timer);
+    if (res.ok) data = await res.json();
+  } catch { data = null; }
+  clearInterval(tick);
+
+  const joinUrl = data && data.status === "ready" ? String(data.join_url || "") : "";
+  if (/^https:\/\/teams\.microsoft\.com\//.test(joinUrl)) {
+    const who = String(data.gm_name || gm.name);
+    lrTrack("instant_demo_ready", { gm: who, switched: !!data.gm_switched, existing: !!data.existing });
+    showModal(`<div class="grab" aria-hidden="true"></div>
+<p class="ok">${ICON_OK}Your call is ready</p>
+<h2 id="lr-h" class="nm" style="font-size:22px">Your call with ${esc(who)} is ready</h2>
+<p class="ctx">Taking you there now&#8230;</p>
+<a class="b1 idm" href="${esc(joinUrl)}" rel="noopener">${ICON_VIDEO}Join video call</a>
+<p class="ft">Opens in Microsoft Teams. We've also emailed you the link.</p>`);
+    let gone = false;
+    const go = (auto: boolean) => { if (gone) return; gone = true; lrTrack("instant_demo_join", { auto }); };
+    modalRoot?.querySelector(".idm")?.addEventListener("click", () => go(false));
+    setTimeout(() => { if (!gone) { go(true); location.href = joinUrl; } }, 1500);
+    return;
+  }
+
+  lrTrack("instant_demo_unavailable", { reason: (data && data.reason) || "error" });
+  const ph = fmtPhone(gm.phone);
+  const name = esc(gm.name);
+  const waText = encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`);
+  showModal(`<div class="grab" aria-hidden="true"></div>
+<h2 id="lr-h">All our product specialists are on calls right now</h2>
+<p>${name} will call you within 30 minutes.</p>
+${ph ? `<a class="b1 wa" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : ""}
+<button class="btn dn">Done</button>`);
+}
+
 /** Swap the loader for the GM card (or the generic card if routing failed). */
-export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean; track?: boolean; variant?: Variant } = {}) {
+export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean; track?: boolean; variant?: Variant; instantDemo?: boolean } = {}) {
   const ok = !!(result && result.ok && result.gm && result.token);
   const track = ok && opts.track === true; // opt-in per form: ca-wa-bot is not tracked
   lrToken = track ? result!.token! : ""; lrShownAt = track ? Date.now() : 0;
@@ -269,4 +356,8 @@ export function showResult(result: RouterResult | null, firstName: string, opts:
     : gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false);
   showModal(card);
   if (track) lrTrack("popup_shown");
+  // Instant demo: opt-in per form, business hours only, the backend decides if anyone is free
+  if (ok && opts.instantDemo && opts.variant !== "va_blr" && result!.callback && result!.callback.in_hours) {
+    offerInstantDemo(result!.token!, result!.gm!);
+  }
 }
