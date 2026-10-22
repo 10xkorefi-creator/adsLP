@@ -8,6 +8,10 @@ const SUPABASE_KEY = "sb_publishable_AIvKMuiGgEsMokWZCT4IDw_T9DRnNYx";
 const ROUTER_WEBHOOK = "https://n8n.aiaccountant.com/webhook/lead-router-hs";
 const ROUTER_TIMEOUT_MS = 4000;
 const SELF_SETUP_URL = "https://app.aiaccountant.com/";
+// v2.0: "Create account" opens a WhatsApp chat with the AiA bot (self-setup), with this pre-filled text
+const BOT_WA_NUMBER = "916366575567";
+const BOT_WA_TEXT = "I want to sign up";
+const BOT_WA_URL = `https://wa.me/${BOT_WA_NUMBER}?text=${encodeURIComponent(BOT_WA_TEXT)}`;
 const LIVE_HOST = "lp.aiaccountant.com";
 // Instant demo: live Teams call with the GM straight from the popup (opt-in per form, backend decides availability)
 const INSTANT_DEMO_WEBHOOK = "https://n8n.aiaccountant.com/webhook/instant-demo";
@@ -98,7 +102,7 @@ function ensureModal(): ShadowRoot {
 :host{all:initial}
 .ov{position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;opacity:0;transition:opacity .18s ease}
 .ov.on{opacity:1}
-.card{background:#fff;color:#000;width:100%;max-width:380px;max-height:calc(100vh - 32px);overflow-y:auto;border-radius:18px;padding:26px 22px 20px;box-shadow:0 24px 64px rgba(0,0,0,.25);transform:translateY(8px);transition:transform .22s ease;position:relative;text-align:center;outline:none}
+.card{background:#fff;color:#000;width:100%;max-width:440px;max-height:calc(100vh - 32px);overflow-y:auto;border-radius:18px;padding:26px 22px 20px;box-shadow:0 24px 64px rgba(0,0,0,.25);transform:translateY(8px);transition:transform .22s ease;position:relative;text-align:center;outline:none}
 .ov.on .card{transform:none}
 .grab{display:none;width:40px;height:4px;border-radius:2px;background:#d9dbe3;margin:-12px auto 14px}
 @media (max-width:600px){.ov{align-items:flex-end;padding:0}.card{max-width:none;border-radius:20px 20px 0 0;padding:22px 20px calc(20px + env(safe-area-inset-bottom,0px));transform:translateY(40px)}.grab{display:block}}
@@ -145,6 +149,37 @@ p{margin:0 0 16px;font-size:15px;line-height:1.5;color:#666}
 .steps .cur{color:#000;font-weight:700}
 .sp{width:28px;height:28px;border:3px solid #e6e9f8;border-top-color:#314DD0;border-radius:50%;animation:r .8s linear infinite;margin:6px auto 16px}
 @keyframes r{to{transform:rotate(360deg)}}
+/* v2.0 popup: WhatsApp chat mock */
+.wc{display:block;text-decoration:none;color:inherit;text-align:left;border:1px solid #dcdcdc;border-radius:16px;overflow:hidden;margin:18px 0 0;-webkit-tap-highlight-color:transparent}
+.wc-hd{background:#008069;color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 8px;min-height:56px;box-sizing:border-box}
+.wc-hd svg{width:20px;height:20px;flex:none}
+.wc-av{width:36px;height:36px;border-radius:50%;background:#3446d6;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+.wc-av img{width:100%;height:100%;object-fit:cover}
+.wc-who{flex:1;min-width:0;line-height:1.2}
+h2.wc-nm{display:block;margin:0;font-size:15.5px;font-weight:700;color:#fff;line-height:1.2}
+.wc-sub{display:block;font-size:12px;color:#d4efe8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wc-ic{display:flex;align-items:center;gap:16px}
+.wc-bd{background-color:#efeae2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23d2c9b9' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 3.5c-3 0-5.5 2.3-5.5 5.2 0 3.8 5.5 8.8 5.5 8.8s5.5-5 5.5-8.8c0-2.9-2.5-5.2-5.5-5.2z'/%3E%3Ccircle cx='43' cy='9' r='5'/%3E%3Cpath d='M26 25l3-2.5 3 2.5'/%3E%3Cpath d='M11 48V36M6 41l5-5 5 5'/%3E%3Crect x='37' y='39' width='12' height='9' rx='1.5'/%3E%3Cpath d='M40.5 39v-2.5h5V39'/%3E%3Ccircle cx='57' cy='55' r='1.8'/%3E%3C/g%3E%3C/svg%3E");padding:12px 14px 14px}
+.wc-pill{display:table;margin:0 auto 9px;background:#fff;color:#54656f;border-radius:8px;font-size:12.5px;padding:5px 12px;box-shadow:0 1px .5px rgba(11,20,26,.13)}
+.wc-enc{display:table;margin:0 auto 12px;background:#ffeecd;color:#54656f;border-radius:8px;font-size:12px;line-height:1.3;padding:6px 12px;box-shadow:0 1px .5px rgba(11,20,26,.1)}
+.wc-enc svg{width:13px;height:13px;vertical-align:-2px;margin-right:6px}
+.wc-bub{position:relative;background:#fff;border-radius:0 8px 8px 8px;padding:9px 11px 5px;font-size:15.5px;line-height:1.42;color:#111b21;max-width:82%;margin-left:8px;box-shadow:0 1px .5px rgba(11,20,26,.13)}
+.wc-bub::before{content:"";position:absolute;left:-8px;top:0;border-top:9px solid #fff;border-left:9px solid transparent}
+.wc-tm{display:block;text-align:right;font-size:11px;color:#667781;margin-top:4px}
+.wc-in{background:#f0f2f5;padding:8px 10px;display:flex;gap:9px;align-items:center}
+.wc-fld{flex:1;min-width:0;background:#fff;border-radius:24px;height:40px;padding:0 14px;display:flex;align-items:center;gap:11px;color:#8696a0;font-size:15.5px}
+.wc-fld svg{width:21px;height:21px;color:#54656f;flex:none}
+.wc-sp{flex:1}
+.wc-mic{width:40px;height:40px;border-radius:50%;background:#00a884;color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.wc-mic svg{width:20px;height:20px}
+.b1.wcta{background:#3e8e7e;color:#fff;border:0;margin:16px 0 0;padding:19px 14px;font-size:17px}
+.b1.wcta svg{width:22px;height:22px;color:#fff}
+.wsub{margin:20px 0 0;padding-top:20px;border-top:1px solid #e6e6e6}
+.wsub p{margin:0 0 14px;font-size:16px;color:#333}
+.wsb{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;box-sizing:border-box;border:1.5px solid #2f3fc7;color:#2f3fc7;background:#fff;border-radius:12px;padding:17.5px 14px;font:700 17px/1.1 "Helvetica Neue",Helvetica,Arial,sans-serif;text-decoration:none;white-space:nowrap}
+.wsb svg{width:20px;height:20px;flex:none}
+.wc:focus-visible,.wsb:focus-visible{outline:2px solid #314DD0;outline-offset:2px}
+@media (max-width:600px){.wc{margin-top:14px}.wc-bd{padding:10px 12px 12px}.wc-ic{gap:14px}.wc-dots{display:none}.b1.wcta{padding:17px 12px;font-size:16px}.wsub{margin-top:16px;padding-top:16px}.wsb{padding:15.5px 12px;font-size:16px}.wsub p{font-size:15px;margin-bottom:12px}}
 @media (prefers-reduced-motion:reduce){.ov,.card{transition:none}.sp{animation-duration:2s}}
 </style>
 <div class="ov" role="dialog" aria-modal="true" aria-labelledby="lr-h"><div class="card" tabindex="-1"><button class="x" aria-label="Close">&times;</button><div class="body"></div></div></div>`;
@@ -166,11 +201,14 @@ function showModal(html: string) {
   root.querySelectorAll("a, .btn.dn").forEach((el) => {
     const href = el.getAttribute("href") || "";
     const act = href.startsWith("tel:") ? "call"
+      : el.classList.contains("wsb") || href.includes("wa.me/" + BOT_WA_NUMBER) ? "self_setup"
       : href.includes("wa.me") ? "whatsapp"
       : href === SELF_SETUP_URL ? "self_setup"
       : el.classList.contains("dn") ? "done"
       : "";
-    if (act) el.addEventListener("click", () => lrTrack(act));
+    // v2.0: tag which WhatsApp element was tapped (chat mock vs button)
+    const via = el.classList.contains("wc") ? { via: "chat_mock" } : el.classList.contains("wcta") ? { via: "button" } : {};
+    if (act) el.addEventListener("click", () => lrTrack(act, via));
   });
   const ov = root.querySelector(".ov") as HTMLElement;
   ov.style.display = "flex";
@@ -193,6 +231,17 @@ const ICON_WA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2l4 -4"/></svg>';
 const ICON_CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
 const ICON_VIDEO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10l4.55 -2.28a1 1 0 0 1 1.45 .9v6.76a1 1 0 0 1 -1.45 .9l-4.55 -2.28v-4z"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg>';
+const svgI = (paths: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+const ICON_BACK = svgI('<path d="M15 6l-6 6l6 6"/>');
+const ICON_CAMVID = svgI('<path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z"/><rect x="3" y="6" width="12" height="12" rx="2"/>');
+const ICON_DOTS = svgI('<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>');
+const ICON_LOCK = svgI('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/>');
+const ICON_SMILE = svgI('<circle cx="12" cy="12" r="9"/><path d="M9 10l.01 0"/><path d="M15 10l.01 0"/><path d="M9.5 15a3.5 3.5 0 0 0 5 0"/>');
+const ICON_CLIP = svgI('<path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5"/>');
+const ICON_CAM = svgI('<path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2"/><circle cx="12" cy="13" r="3"/>');
+const ICON_MIC = svgI('<rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M8 21l8 0"/><path d="M12 17l0 4"/>');
+const ICON_MSG = svgI('<path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1"/>');
+const ICON_USERPLUS = svgI('<path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M16 19h6"/><path d="M19 16v6"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4"/>');
 const ICON_PLUG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z"/><path d="M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5z"/><path d="M3 21l2.5 -2.5"/><path d="M18.5 5.5l2.5 -2.5"/><path d="M10 11l-2 2"/><path d="M13 14l-2 2"/></svg>';
 
 function fmtPhone(p?: string) {
@@ -200,46 +249,31 @@ function fmtPhone(p?: string) {
   return d.length === 10 ? { show: "+91 " + d.slice(0, 5) + " " + d.slice(5), tel: "+91" + d, wa: "91" + d } : null;
 }
 
-// Same popup as the Webflow pages (v1.4). AiA bot pages show Call + "Text <name> on WhatsApp" in business hours.
+// v2.0 popup (Oct 2026): WhatsApp chat mock with the GM, one WhatsApp CTA, optional "Create account".
+// Same layout in and out of business hours; no Call button, no callback line. The WhatsApp default text is unchanged (WA MQL scan matches it).
 function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterResult["callback"], selfSetup?: boolean, whatsapp = true) {
+  void firstName; void callback;
   const initials = (gm.full_name || gm.name || "?").split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
-  const inHours = !!(callback && callback.in_hours);
-  const av = (gm.photo_url ? `<img src="${esc(gm.photo_url)}" alt="">` : esc(initials)) + (inHours ? `<span class="dot" aria-hidden="true"></span>` : "");
-  const first = String(firstName || "").trim().split(/\s+/)[0];
-  const role = esc(gm.title || "Product Specialist");
-  const hi = first ? `Thanks, ${esc(first.charAt(0).toUpperCase() + first.slice(1))}.` : "Thanks.";
+  const av = gm.photo_url ? `<img src="${esc(gm.photo_url)}" alt="">` : esc(initials);
   const name = esc(gm.name);
-  // "She'll" / "He'll" when the pronoun is set in lr_gms, otherwise the person's name
-  const pr = gm.pronoun === "she" ? "She" : gm.pronoun === "he" ? "He" : "";
-  const willCap = pr ? `${pr}'ll` : `${name} will`;
-  const when = (callback && callback.text) || "shortly";
+  const role = esc(gm.title || "Product Specialist");
   const ph = fmtPhone(gm.phone);
-  const showSelf = selfSetup !== undefined ? selfSetup : bucket === "offline"; // default: offline only
-  const selfLink = (cls: string) => `<a class="${cls}" href="${SELF_SETUP_URL}" target="_blank" rel="noopener">${ICON_PLUG}Continue integration on my own</a>`;
-  let actions: string;
-  if (inHours && ph) {
-    const waText = encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`);
-    // v1.7: WhatsApp first (green primary), Call second (outline)
-    actions = (whatsapp ? `<a class="b1 wa" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : "")
-      + `<a class="b2" href="tel:${ph.tel}">${ICON_PHONE}Call ${name} now</a>`
-      + `<p class="ft">Can't talk right now? ${willCap} call you within 30 minutes.</p>`
-      + (showSelf ? `<div class="sub"><p>Prefer to set it up yourself?</p>${selfLink("sb")}</div>` : "");
-  } else {
-    // Off hours: WhatsApp is the only action on every page (no Call), callback promise stays
-    const waOff = ph ? `<a class="b1 wa" href="https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : "";
-    actions = (ph ? `<p class="no">${esc(ph.show)}</p>` : "")
-      + `<div class="info">${ICON_CLOCK}<span>${willCap} call you ${esc(when)}</span></div>`
-      + waOff
-      + (showSelf ? `<div class="sub"><p>Prefer to set it up yourself?</p>${selfLink("sb")}</div>` : "")
-      + `<button class="btn dn">Done</button>`;
-  }
-  return `<div class="grab" aria-hidden="true"></div>
-<p class="ok">${ICON_OK}${hi}</p>
-<p class="meet">Meet your <span class="tag">${role}</span></p>
-<div class="av">${av}</div>
-<h2 id="lr-h" class="nm">${esc(gm.full_name || gm.name)}</h2>
-<p class="ctx">${willCap} answer your questions and connect AI Accountant to your Tally.</p>
-${actions}`;
+  void selfSetup; void bucket;
+  const showSelf = true; // v2.0 (Oct 2026): "Create account" shown to everyone
+  const waHref = ph && whatsapp ? `https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}` : "";
+  const mock = `<div class="wc-hd">${ICON_BACK}<span class="wc-av">${av}</span><span class="wc-who"><h2 id="lr-h" class="wc-nm">${esc(gm.full_name || gm.name)}</h2><span class="wc-sub">${role}, AI Accountant</span></span><span class="wc-ic">${ICON_CAMVID}${ICON_PHONE}<span class="wc-dots">${ICON_DOTS}</span></span></div>
+<div class="wc-bd"><span class="wc-pill">Today</span><span class="wc-enc">${ICON_LOCK}Messages are end-to-end encrypted</span><div class="wc-bub">Let's continue this conversation on WhatsApp<span class="wc-tm">now</span></div></div>
+<div class="wc-in"><span class="wc-fld">${ICON_SMILE}Message<span class="wc-sp"></span>${ICON_CLIP}${ICON_CAM}</span><span class="wc-mic">${ICON_MIC}</span></div>`;
+  const chat = waHref
+    ? `<a class="wc" href="${waHref}" target="_blank" rel="noopener" aria-label="Chat with ${name} on WhatsApp">${mock}</a>`
+    : `<div class="wc">${mock}</div>`;
+  const cta = waHref
+    ? `<a class="b1 wcta" href="${waHref}" target="_blank" rel="noopener">${ICON_MSG}Chat with ${name} on WhatsApp</a>`
+    : ph ? `<a class="b1 wcta" href="tel:${ph.tel}">${ICON_PHONE}Call ${name}</a>` : `<p class="ft">${name} will reach out to you shortly.</p>`;
+  const self = showSelf
+    ? `<div class="wsub"><p>Prefer to set it up yourself?</p><a class="wsb" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_USERPLUS}Create account</a></div>`
+    : "";
+  return `<div class="grab" aria-hidden="true"></div>${chat}${cta}${self}`;
 }
 
 // VA Bangalore restaurants: no "Meet your", no Call button, number as text + WhatsApp, same in and off hours
