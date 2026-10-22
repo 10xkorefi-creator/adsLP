@@ -355,17 +355,23 @@ async function startInstantDemo(token: string, gm: Gm) {
   const joinUrl = data && data.status === "ready" ? String(data.join_url || "") : "";
   if (/^https:\/\/teams\.microsoft\.com\//.test(joinUrl)) {
     const who = String(data.gm_name || gm.name);
-    lrTrack("instant_demo_ready", { gm: who, switched: !!data.gm_switched, existing: !!data.existing });
+    // v2.1: phones join in the browser on our page (Azure ACS guest, no Teams app); desktop keeps Teams. ?ild=1 forces the page (testing).
+    const pageUrl = /^https:\/\/www\.aiaccountant\.com\/instant-live-demo\?d=[0-9a-f-]{36}$/i.test(String(data.page_url || "")) ? String(data.page_url) : "";
+    const ua = navigator.userAgent || "";
+    const phone = /Android|iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const usePage = !!pageUrl && (phone || /[?&]ild=1\b/.test(location.search));
+    const target = usePage ? pageUrl : joinUrl;
+    lrTrack("instant_demo_ready", { gm: who, switched: !!data.gm_switched, existing: !!data.existing, via: usePage ? "page" : "teams" });
     showModal(`<div class="grab" aria-hidden="true"></div>
 <p class="ok">${ICON_OK}Your call is ready</p>
 <h2 id="lr-h" class="nm" style="font-size:22px">Your call with ${esc(who)} is ready</h2>
 <p class="ctx">Taking you there now&#8230;</p>
-<a class="b1 idm" href="${esc(joinUrl)}" rel="noopener">${ICON_VIDEO}Join video call</a>
-<p class="ft">Opens in Microsoft Teams. We've also emailed you the link.</p>`);
+<a class="b1 idm" href="${esc(target)}" rel="noopener">${ICON_VIDEO}Join video call</a>
+<p class="ft">${usePage ? "Opens right here in your browser. No app needed." : "Opens in Microsoft Teams. We've also emailed you the link."}</p>`);
     let gone = false;
     const go = (auto: boolean) => { if (gone) return; gone = true; lrTrack("instant_demo_join", { auto }); };
     modalRoot?.querySelector(".idm")?.addEventListener("click", () => go(false));
-    setTimeout(() => { if (!gone) { go(true); location.href = joinUrl; } }, 1500);
+    setTimeout(() => { if (!gone) { go(true); location.href = target; } }, 1500);
     return;
   }
 
