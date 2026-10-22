@@ -141,9 +141,34 @@ function ensureModal(): ShadowRoot {
 .btn.dn{background:none;color:#666;padding:10px}
 h2{margin:0 0 6px;font-size:21px;line-height:1.25;font-weight:700}
 p{margin:0 0 16px;font-size:15px;line-height:1.5;color:#666}
-.idm{background:#534AB7;color:#fff;border:0}
+.idm{background:#314DD0;color:#fff;border:0}
 .idm svg{color:#fff}
-.idsub{margin:-4px 0 12px;font-size:13px;color:#666}
+/* v2.2 instant demo: Available-now card, Calling screen, Connecting screen */
+.idpill{display:inline-flex;align-items:center;gap:7px;background:#e8f6ee;color:#17693a;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;margin:2px 0 16px}
+.idpill i{width:8px;height:8px;border-radius:50%;background:#1faa55;box-shadow:0 0 0 3px rgba(31,170,85,.18)}
+.idgm{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid #e3e5ec;border-radius:14px;padding:12px 14px;margin:0 0 18px}
+.idav{width:48px;height:48px;border-radius:50%;background:#314DD0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex:none;overflow:hidden;position:relative}
+.idav img{width:100%;height:100%;object-fit:cover}
+h2.idnm{margin:0;font-size:17px;line-height:1.25;color:#000}
+.idrole{display:block;font-size:13px;color:#666;margin-top:2px}
+.idh{margin:0 0 14px;font-size:21px;line-height:1.3;font-weight:700;color:#000}
+.b1.idgo{padding:18px 14px;font-size:17px;margin-bottom:8px}
+.idnote{margin:0;font-size:13px;line-height:1.45;color:#666}
+.idcall{display:flex;justify-content:center;margin:10px 0 18px}
+.idav.big{width:96px;height:96px;font-size:32px}
+.idav.pulse::before,.idav.pulse::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #314DD0;animation:idp 1.8s ease-out infinite}
+.idav.pulse::after{animation-delay:.9s}
+.idav.pulse{overflow:visible}
+@keyframes idp{from{transform:scale(1);opacity:.6}to{transform:scale(1.6);opacity:0}}
+.idswap{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0 18px}
+.idswap .idav.old{width:44px;height:44px;font-size:15px;background:#c9cdda}
+.idswap svg{width:20px;height:20px;color:#999}
+.iddots{display:flex;justify-content:center;gap:6px;margin:4px 0 18px}
+.iddots i{width:8px;height:8px;border-radius:50%;background:#314DD0;opacity:.25;animation:idd 1.2s infinite}
+.iddots i:nth-child(2){animation-delay:.2s}.iddots i:nth-child(3){animation-delay:.4s}
+@keyframes idd{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.idcx{display:block;width:100%;background:none;border:0;color:#666;font:700 15px/1.1 "Helvetica Neue",Helvetica,Arial,sans-serif;padding:12px;cursor:pointer}
+.idcx:focus-visible,.idgo:focus-visible{outline:2px solid #314DD0;outline-offset:2px}
 .steps{list-style:none;padding:0;margin:0 auto 6px;max-width:270px;text-align:left;font-size:15px;line-height:2;color:#999}
 .steps .done{color:#1f7a3f}
 .steps .cur{color:#000;font-weight:700}
@@ -180,7 +205,7 @@ h2.wc-nm{display:block;margin:0;font-size:15.5px;font-weight:700;color:#fff;line
 .wsb svg{width:20px;height:20px;flex:none}
 .wc:focus-visible,.wsb:focus-visible{outline:2px solid #314DD0;outline-offset:2px}
 @media (max-width:600px){.wc{margin-top:14px}.wc-bd{padding:10px 12px 12px}.wc-ic{gap:14px}.wc-dots{display:none}.b1.wcta{padding:17px 12px;font-size:16px}.wsub{margin-top:16px;padding-top:16px}.wsb{padding:15.5px 12px;font-size:16px}.wsub p{font-size:15px;margin-bottom:12px}}
-@media (prefers-reduced-motion:reduce){.ov,.card{transition:none}.sp{animation-duration:2s}}
+@media (prefers-reduced-motion:reduce){.ov,.card{transition:none}.sp{animation-duration:2s}.idav.pulse::before,.idav.pulse::after,.iddots i{animation:none}}
 </style>
 <div class="ov" role="dialog" aria-modal="true" aria-labelledby="lr-h"><div class="card" tabindex="-1"><button class="x" aria-label="Close">&times;</button><div class="body"></div></div></div>`;
   const ov = modalRoot.querySelector(".ov") as HTMLElement;
@@ -304,12 +329,16 @@ const loadingHTML = (variant?: Variant) => variant === "va_blr"
 
 export const showLoading = (variant?: Variant) => showModal(loadingHTML(variant));
 
-// ── Instant demo ──
-// After the GM card renders (business hours only), ask the backend if anyone is free right now.
-// If yes, add the "Instant Demo" button on top. Click: loader -> backend creates a Teams meeting -> same tab goes to the join link.
-// Anything slow, failed or busy ends on the fallback card (WhatsApp), never a dead end.
-async function offerInstantDemo(token: string, gm: Gm) {
-  let available = false;
+// ── Instant demo ── (v2.2, Oct 2026 design)
+// When instant demo is on for the form and someone is free, the popup opens on an "Available now" card instead of the
+// WhatsApp card. Tap -> "Calling <GM>..." while the backend creates the Teams meeting -> if another specialist takes it,
+// "Connecting you to an available specialist" -> the call. Cancel goes back to the normal WhatsApp card.
+const ICON_ARROW = svgI('<path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/>');
+const initialsOf = (n?: string) => String(n || "?").trim().split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+const avHTML = (g: { name?: string; full_name?: string; photo_url?: string | null }, cls = "") =>
+  `<span class="idav ${cls}">${g.photo_url ? `<img src="${esc(g.photo_url)}" alt="">` : esc(initialsOf(g.full_name || g.name))}</span>`;
+
+async function instantDemoAvailable(token: string): Promise<boolean> {
   try {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 3000);
@@ -318,30 +347,43 @@ async function offerInstantDemo(token: string, gm: Gm) {
       body: JSON.stringify({ p_token: token }), signal: ctrl.signal,
     });
     clearTimeout(timer);
-    if (res.ok) { const j = await res.json(); available = !!(j && j.available); }
-  } catch { available = false; }
-  if (!available || !modalRoot) return;
-  const body = modalRoot.querySelector(".body") as HTMLElement | null;
-  const anchor = body && (body.querySelector(".b1, .b2, .info") as HTMLElement | null);
-  if (!body || !anchor) return; // card was closed or replaced
-  const wrap = document.createElement("div");
-  wrap.innerHTML = `<button type="button" class="b1 idm">${ICON_VIDEO}Instant Demo</button><p class="idsub">Free now · 30-min video call with ${esc(gm.name)}</p>`;
-  anchor.parentNode!.insertBefore(wrap, anchor);
-  (wrap.querySelector(".idm") as HTMLElement).addEventListener("click", () => startInstantDemo(token, gm));
-  lrTrack("instant_demo_shown");
+    if (!res.ok) return false;
+    const j = await res.json();
+    return !!(j && j.available);
+  } catch { return false; }
 }
 
-async function startInstantDemo(token: string, gm: Gm) {
+function instantCardHTML(gm: Gm) {
+  const name = esc(gm.name);
+  return `<div class="grab" aria-hidden="true"></div>
+<span class="idpill"><i aria-hidden="true"></i>Available now</span>
+<div class="idgm">${avHTML(gm)}<div><h2 id="lr-h" class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
+<p class="idh">Get a live demo right now</p>
+<button type="button" class="b1 idm idgo">${ICON_VIDEO}Start instant demo</button>
+<p class="idnote">A 30-min video call with ${name}. If ${name} is busy, the next available specialist joins.</p>
+<div class="wsub"><p>Prefer to set it up yourself?</p><a class="wsb" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_USERPLUS}Create account</a></div>`;
+}
+
+async function startInstantDemo(token: string, gm: Gm, backToCard: () => void) {
   lrTrack("instant_demo_click");
-  const steps = ["Finding a product specialist", "Creating your video call", `Inviting ${gm.name}`];
-  const loader = (i: number) => `<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Setting up your live demo</h2>
-<ul class="steps">${steps.map((s, k) => `<li class="${k < i ? "done" : k === i ? "cur" : ""}">${k < i ? "&#10003;" : k === i ? "&#8230;" : "&#9675;"} ${esc(s)}</li>`).join("")}</ul>`;
-  showModal(loader(0));
-  let step = 0;
-  const tick = setInterval(() => { if (step < steps.length - 1) { step++; showModal(loader(step)); } }, 1200);
+  let cancelled = false;
+  const ctrl = new AbortController();
+  const wireCancel = () => modalRoot?.querySelector(".idcx")?.addEventListener("click", () => {
+    if (cancelled) return;
+    cancelled = true; ctrl.abort();
+    lrTrack("instant_demo_cancel");
+    backToCard();
+  });
+  showModal(`<div class="grab" aria-hidden="true"></div>
+<div class="idcall">${avHTML(gm, "big pulse")}</div>
+<h2 id="lr-h" class="idh" style="margin-bottom:6px">Calling ${esc(gm.name)}&#8230;</h2>
+<p>Keep this page open. It takes a few seconds.</p>
+<div class="iddots" aria-hidden="true"><i></i><i></i><i></i></div>
+<button type="button" class="idcx">Cancel</button>`);
+  wireCancel();
+
   let data: any = null;
   try {
-    const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), INSTANT_DEMO_TIMEOUT_MS);
     const res = await fetch(INSTANT_DEMO_WEBHOOK, {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -350,28 +392,40 @@ async function startInstantDemo(token: string, gm: Gm) {
     clearTimeout(timer);
     if (res.ok) data = await res.json();
   } catch { data = null; }
-  clearInterval(tick);
+  if (cancelled) return;
 
   const joinUrl = data && data.status === "ready" ? String(data.join_url || "") : "";
   if (/^https:\/\/teams\.microsoft\.com\//.test(joinUrl)) {
     const who = String(data.gm_name || gm.name);
-    // v2.1: phones join in the browser on our page (Azure ACS guest, no Teams app); desktop keeps Teams. ?ild=1 forces the page (testing).
+    const switched = !!data.gm_switched && who !== gm.name;
+    // phones join in the browser on our page (Azure ACS guest, no Teams app); desktop keeps Teams. ?ild=1 forces the page (testing).
     const pageUrl = /^https:\/\/www\.aiaccountant\.com\/instant-live-demo\?d=[0-9a-f-]{36}$/i.test(String(data.page_url || "")) ? String(data.page_url) : "";
     const ua = navigator.userAgent || "";
     const phone = /Android|iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     const usePage = !!pageUrl && (phone || /[?&]ild=1\b/.test(location.search));
     const target = usePage ? pageUrl : joinUrl;
-    lrTrack("instant_demo_ready", { gm: who, switched: !!data.gm_switched, existing: !!data.existing, via: usePage ? "page" : "teams" });
-    showModal(`<div class="grab" aria-hidden="true"></div>
-<p class="ok">${ICON_OK}Your call is ready</p>
-<h2 id="lr-h" class="nm" style="font-size:22px">Your call with ${esc(who)} is ready</h2>
-<p class="ctx">Taking you there now&#8230;</p>
-<a class="b1 idm" href="${esc(target)}" rel="noopener">${ICON_VIDEO}Join video call</a>
-<p class="ft">${usePage ? "Opens right here in your browser. No app needed." : "Opens in Microsoft Teams. We've also emailed you the link."}</p>`);
+    lrTrack("instant_demo_ready", { gm: who, switched, existing: !!data.existing, via: usePage ? "page" : "teams" });
+    const joinLink = `<a class="b1 idm" href="${esc(target)}" rel="noopener">${ICON_VIDEO}Join call with ${esc(who)}</a>`;
+    if (switched) {
+      showModal(`<div class="grab" aria-hidden="true"></div>
+<div class="idswap">${avHTML(gm, "old")}${ICON_ARROW}${avHTML({ name: who }, "big")}</div>
+<h2 id="lr-h" class="idh" style="margin-bottom:6px">Connecting you to an available specialist</h2>
+<p>${esc(gm.name)} is on another call, so ${esc(who)} will take your demo.</p>
+${joinLink}
+<button type="button" class="idcx">Cancel</button>`);
+    } else {
+      showModal(`<div class="grab" aria-hidden="true"></div>
+<div class="idcall">${avHTML({ ...gm, name: who }, "big pulse")}</div>
+<h2 id="lr-h" class="idh" style="margin-bottom:6px">${esc(who)} is ready</h2>
+<p>Joining your call&#8230;</p>
+${joinLink}
+<button type="button" class="idcx">Cancel</button>`);
+    }
+    wireCancel();
     let gone = false;
-    const go = (auto: boolean) => { if (gone) return; gone = true; lrTrack("instant_demo_join", { auto }); };
-    modalRoot?.querySelector(".idm")?.addEventListener("click", () => go(false));
-    setTimeout(() => { if (!gone) { go(true); location.href = target; } }, 1500);
+    const go = (auto: boolean) => { if (gone || cancelled) return; gone = true; lrTrack("instant_demo_join", { auto }); };
+    modalRoot?.querySelector("a.idm")?.addEventListener("click", () => go(false));
+    setTimeout(() => { if (!gone && !cancelled) { go(true); location.href = target; } }, switched ? 2500 : 1200);
     return;
   }
 
@@ -394,10 +448,18 @@ export function showResult(result: RouterResult | null, firstName: string, opts:
   const card = !ok ? fallbackHTML(opts.variant)
     : opts.variant === "va_blr" ? vaBlrHTML(result!.gm!, firstName)
     : gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false);
+  // Instant demo: opt-in per form, business hours only, the backend decides if anyone is free (loader stays up, max 3s)
+  if (ok && opts.instantDemo && opts.variant !== "va_blr" && result!.callback && result!.callback.in_hours) {
+    const gm = result!.gm!, token = result!.token!;
+    const backToCard = () => showModal(card);
+    instantDemoAvailable(token).then((available) => {
+      if (!available) { showModal(card); if (track) lrTrack("popup_shown"); return; }
+      showModal(instantCardHTML(gm));
+      if (track) { lrTrack("popup_shown", { variant: "instant_demo" }); lrTrack("instant_demo_shown"); }
+      modalRoot?.querySelector(".idgo")?.addEventListener("click", () => startInstantDemo(token, gm, backToCard));
+    });
+    return;
+  }
   showModal(card);
   if (track) lrTrack("popup_shown");
-  // Instant demo: opt-in per form, business hours only, the backend decides if anyone is free
-  if (ok && opts.instantDemo && opts.variant !== "va_blr" && result!.callback && result!.callback.in_hours) {
-    offerInstantDemo(result!.token!, result!.gm!);
-  }
 }
