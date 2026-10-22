@@ -143,32 +143,44 @@ h2{margin:0 0 6px;font-size:21px;line-height:1.25;font-weight:700}
 p{margin:0 0 16px;font-size:15px;line-height:1.5;color:#666}
 .idm{background:#314DD0;color:#fff;border:0}
 .idm svg{color:#fff}
-/* v2.2 instant demo: Available-now card, Calling screen, Connecting screen */
-.idpill{display:inline-flex;align-items:center;gap:7px;background:#e8f6ee;color:#17693a;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;margin:2px 0 16px}
-.idpill i{width:8px;height:8px;border-radius:50%;background:#1faa55;box-shadow:0 0 0 3px rgba(31,170,85,.18)}
-.idgm{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid #e3e5ec;border-radius:14px;padding:12px 14px;margin:0 0 18px}
-.idav{width:48px;height:48px;border-radius:50%;background:#314DD0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex:none;overflow:hidden;position:relative}
+/* v2.3 instant demo (matches the Oct 2026 design): Available-now panel, Calling screen, Connecting screen */
+.idpanel{background:#f5f6fe;border:1px solid #e4e7f8;border-radius:16px;padding:18px 18px 20px;text-align:left;margin:32px 0 0}
+.idpill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #e4e7f0;color:#17693a;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:700;margin:0 0 12px}
+.idpill i{width:8px;height:8px;border-radius:50%;background:#1faa55}
+.idgm{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.idav{width:44px;height:44px;border-radius:50%;background:#3446d6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex:none;overflow:hidden;position:relative;box-sizing:border-box}
 .idav img{width:100%;height:100%;object-fit:cover}
-h2.idnm{margin:0;font-size:17px;line-height:1.25;color:#000}
-.idrole{display:block;font-size:13px;color:#666;margin-top:2px}
-.idh{margin:0 0 14px;font-size:21px;line-height:1.3;font-weight:700;color:#000}
-.b1.idgo{padding:18px 14px;font-size:17px;margin-bottom:8px}
-.idnote{margin:0;font-size:13px;line-height:1.45;color:#666}
-.idcall{display:flex;justify-content:center;margin:10px 0 18px}
-.idav.big{width:96px;height:96px;font-size:32px}
-.idav.pulse::before,.idav.pulse::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #314DD0;animation:idp 1.8s ease-out infinite}
-.idav.pulse::after{animation-delay:.9s}
-.idav.pulse{overflow:visible}
-@keyframes idp{from{transform:scale(1);opacity:.6}to{transform:scale(1.6);opacity:0}}
-.idswap{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0 18px}
-.idswap .idav.old{width:44px;height:44px;font-size:15px;background:#c9cdda}
-.idswap svg{width:20px;height:20px;color:#999}
-.iddots{display:flex;justify-content:center;gap:6px;margin:4px 0 18px}
-.iddots i{width:8px;height:8px;border-radius:50%;background:#314DD0;opacity:.25;animation:idd 1.2s infinite}
-.iddots i:nth-child(2){animation-delay:.2s}.iddots i:nth-child(3){animation-delay:.4s}
-@keyframes idd{0%,80%,100%{opacity:.25}40%{opacity:1}}
-.idcx{display:block;width:100%;background:none;border:0;color:#666;font:700 15px/1.1 "Helvetica Neue",Helvetica,Arial,sans-serif;padding:12px;cursor:pointer}
-.idcx:focus-visible,.idgo:focus-visible{outline:2px solid #314DD0;outline-offset:2px}
+.idav.ring{width:62px;height:62px;font-size:21px;border:3px solid #fff;box-shadow:0 0 0 2px #1faa55}
+h2.idnm{margin:0;font-size:20px;line-height:1.2;font-weight:700;color:#000}
+.idrole{display:block;font-size:14.5px;color:#444;margin-top:3px}
+.idh{margin:0 0 14px;font-size:22px;line-height:1.25;font-weight:700;color:#000;text-align:left}
+.b1.idgo{background:#3446d6;padding:18px 14px;font-size:17px;margin:0 0 12px;border-radius:12px}
+.idnote{margin:0;font-size:13px;line-height:1.5;color:#555;text-align:center}
+.idsub{margin:18px 0 0;padding-top:18px;border-top:1px solid #e6e6e6;text-align:center}
+.idsub p{margin:0 0 10px;font-size:16px;color:#333}
+.idca{display:inline-flex;align-items:center;gap:8px;border:1.5px solid #3446d6;color:#3446d6;background:#fff;border-radius:10px;padding:9px 22px;font:700 16px/1.1 "Helvetica Neue",Helvetica,Arial,sans-serif;text-decoration:none}
+.idca svg{width:18px;height:18px;flex:none}
+.idwait{padding:26px 4px 6px;text-align:center}
+.idhalo{position:relative;width:200px;height:200px;margin:0 auto 22px;display:flex;align-items:center;justify-content:center}
+.idhalo::before{content:"";position:absolute;inset:0;border-radius:50%;background:#eef0fc;animation:idbr 2.4s ease-in-out infinite}
+.idhalo::after{content:"";position:absolute;inset:24px;border-radius:50%;background:#e2e6fa}
+.idhalo .idav{width:100px;height:100px;font-size:34px;z-index:1;box-shadow:0 0 0 5px #c9d0f4}
+@keyframes idbr{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.idswap{display:flex;align-items:center;justify-content:center;gap:16px;margin:0 auto 22px}
+.idswap .idav.old{width:60px;height:60px;font-size:20px;background:#c9ccd6;color:#fff}
+.idswap svg{width:34px;height:34px;color:#8b95e6;flex:none}
+.idswap .idhalo{width:160px;height:160px;margin:0}
+.idswap .idhalo::after{inset:20px}
+.idswap .idhalo .idav{width:92px;height:92px;font-size:30px}
+.idkick{margin:0 0 6px;font-size:16px;color:#444}
+.idwait h2{margin:0 0 10px;font-size:25px;line-height:1.25;font-weight:700;color:#000}
+.idwait p.idmsg{margin:0 auto 18px;max-width:330px;font-size:16px;line-height:1.5;color:#333}
+.iddots{display:flex;justify-content:center;gap:9px;margin:4px 0 22px}
+.iddots i{width:9px;height:9px;border-radius:50%;animation:idd 1.2s infinite}
+.iddots i:nth-child(1){background:#3446d6}.iddots i:nth-child(2){background:#8b95e6;animation-delay:.2s}.iddots i:nth-child(3){background:#c9d0f4;animation-delay:.4s}
+@keyframes idd{0%,80%,100%{opacity:1}40%{opacity:.35}}
+.idcx{display:block;margin:0 auto;background:none;border:0;color:#444;font:700 16px/1.1 "Helvetica Neue",Helvetica,Arial,sans-serif;padding:12px 24px;cursor:pointer}
+.idcx:focus-visible,.idgo:focus-visible,.idca:focus-visible{outline:2px solid #314DD0;outline-offset:2px}
 .steps{list-style:none;padding:0;margin:0 auto 6px;max-width:270px;text-align:left;font-size:15px;line-height:2;color:#999}
 .steps .done{color:#1f7a3f}
 .steps .cur{color:#000;font-weight:700}
@@ -205,7 +217,7 @@ h2.wc-nm{display:block;margin:0;font-size:15.5px;font-weight:700;color:#fff;line
 .wsb svg{width:20px;height:20px;flex:none}
 .wc:focus-visible,.wsb:focus-visible{outline:2px solid #314DD0;outline-offset:2px}
 @media (max-width:600px){.wc{margin-top:14px}.wc-bd{padding:10px 12px 12px}.wc-ic{gap:14px}.wc-dots{display:none}.b1.wcta{padding:17px 12px;font-size:16px}.wsub{margin-top:16px;padding-top:16px}.wsb{padding:15.5px 12px;font-size:16px}.wsub p{font-size:15px;margin-bottom:12px}}
-@media (prefers-reduced-motion:reduce){.ov,.card{transition:none}.sp{animation-duration:2s}.idav.pulse::before,.idav.pulse::after,.iddots i{animation:none}}
+@media (prefers-reduced-motion:reduce){.ov,.card{transition:none}.sp{animation-duration:2s}.idhalo::before,.iddots i{animation:none}}
 </style>
 <div class="ov" role="dialog" aria-modal="true" aria-labelledby="lr-h"><div class="card" tabindex="-1"><button class="x" aria-label="Close">&times;</button><div class="body"></div></div></div>`;
   const ov = modalRoot.querySelector(".ov") as HTMLElement;
@@ -353,15 +365,20 @@ async function instantDemoAvailable(token: string): Promise<boolean> {
   } catch { return false; }
 }
 
+const ICON_LINK = svgI('<path d="M9 15l6 -6"/><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"/><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"/>');
+const heOrName = (gm: Gm) => { const p = String(gm.pronoun || "").toLowerCase(); return p === "he" || p === "she" ? p : gm.name; };
+
 function instantCardHTML(gm: Gm) {
   const name = esc(gm.name);
   return `<div class="grab" aria-hidden="true"></div>
+<div class="idpanel">
 <span class="idpill"><i aria-hidden="true"></i>Available now</span>
-<div class="idgm">${avHTML(gm)}<div><h2 id="lr-h" class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
+<div class="idgm">${avHTML(gm, "ring")}<div><h2 id="lr-h" class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
 <p class="idh">Get a live demo right now</p>
 <button type="button" class="b1 idm idgo">${ICON_VIDEO}Start instant demo</button>
-<p class="idnote">A 30-min video call with ${name}. If ${name} is busy, the next available specialist joins.</p>
-<div class="wsub"><p>Prefer to set it up yourself?</p><a class="wsb" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_USERPLUS}Create account</a></div>`;
+<p class="idnote">Opens a Microsoft Teams video call. If ${name} is on another call, the next available specialist will join you.</p>
+</div>
+<div class="idsub"><p>Prefer to set it up yourself?</p><a class="idca" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_LINK}Create account</a></div>`;
 }
 
 async function startInstantDemo(token: string, gm: Gm, backToCard: () => void) {
@@ -374,12 +391,13 @@ async function startInstantDemo(token: string, gm: Gm, backToCard: () => void) {
     lrTrack("instant_demo_cancel");
     backToCard();
   });
-  showModal(`<div class="grab" aria-hidden="true"></div>
-<div class="idcall">${avHTML(gm, "big pulse")}</div>
-<h2 id="lr-h" class="idh" style="margin-bottom:6px">Calling ${esc(gm.name)}&#8230;</h2>
-<p>Keep this page open. It takes a few seconds.</p>
+  const waitHTML = (title: string, msg: string) => `<div class="grab" aria-hidden="true"></div><div class="idwait">
+<div class="idhalo">${avHTML(gm)}</div>
+<h2 id="lr-h">${title}</h2>
+<p class="idmsg">${msg}</p>
 <div class="iddots" aria-hidden="true"><i></i><i></i><i></i></div>
-<button type="button" class="idcx">Cancel</button>`);
+<button type="button" class="idcx">Cancel</button></div>`;
+  showModal(waitHTML(`Calling ${esc(gm.name)}&#8230;`, `Keep this page open. You'll be able to join the video call as soon as ${esc(heOrName(gm))} picks up.`));
   wireCancel();
 
   let data: any = null;
@@ -405,26 +423,19 @@ async function startInstantDemo(token: string, gm: Gm, backToCard: () => void) {
     const usePage = !!pageUrl && (phone || /[?&]ild=1\b/.test(location.search));
     const target = usePage ? pageUrl : joinUrl;
     lrTrack("instant_demo_ready", { gm: who, switched, existing: !!data.existing, via: usePage ? "page" : "teams" });
-    const joinLink = `<a class="b1 idm" href="${esc(target)}" rel="noopener">${ICON_VIDEO}Join call with ${esc(who)}</a>`;
     if (switched) {
-      showModal(`<div class="grab" aria-hidden="true"></div>
-<div class="idswap">${avHTML(gm, "old")}${ICON_ARROW}${avHTML({ name: who }, "big")}</div>
-<h2 id="lr-h" class="idh" style="margin-bottom:6px">Connecting you to an available specialist</h2>
-<p>${esc(gm.name)} is on another call, so ${esc(who)} will take your demo.</p>
-${joinLink}
-<button type="button" class="idcx">Cancel</button>`);
+      showModal(`<div class="grab" aria-hidden="true"></div><div class="idwait">
+<div class="idswap">${avHTML(gm, "old")}${ICON_ARROW}<div class="idhalo">${avHTML({ name: who })}</div></div>
+<p class="idkick">${esc(gm.name)} is on another call</p>
+<h2 id="lr-h" style="margin-bottom:22px">Connecting you to an available specialist</h2>
+<div class="iddots" aria-hidden="true"><i></i><i></i><i></i></div>
+<button type="button" class="idcx">Cancel</button></div>`);
     } else {
-      showModal(`<div class="grab" aria-hidden="true"></div>
-<div class="idcall">${avHTML({ ...gm, name: who }, "big pulse")}</div>
-<h2 id="lr-h" class="idh" style="margin-bottom:6px">${esc(who)} is ready</h2>
-<p>Joining your call&#8230;</p>
-${joinLink}
-<button type="button" class="idcx">Cancel</button>`);
+      showModal(waitHTML(`${esc(who)} picked up`, `Joining your video call&#8230;`));
     }
     wireCancel();
     let gone = false;
     const go = (auto: boolean) => { if (gone || cancelled) return; gone = true; lrTrack("instant_demo_join", { auto }); };
-    modalRoot?.querySelector("a.idm")?.addEventListener("click", () => go(false));
     setTimeout(() => { if (!gone && !cancelled) { go(true); location.href = target; } }, switched ? 2500 : 1200);
     return;
   }
