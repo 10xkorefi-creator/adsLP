@@ -7,10 +7,11 @@ interface Props {
   /** true = assign a GM/CS person via the lead router (no RevenueHero). Off by default so other pages keep working as today. */
   leadRouter?: boolean;
   pageKey?: string;
+  instantDemo?: boolean;
   hideTeamSize?: boolean;
   hideRole?: boolean;
 }
-const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, hideHeaderOnSuccess = true, leadRouter = false, pageKey = "", hideTeamSize = false, hideRole = false } = Astro.props;
+const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, hideHeaderOnSuccess = true, leadRouter = false, pageKey = "", instantDemo = false, hideTeamSize = false, hideRole = false } = Astro.props;
 ---
 <style>
   .no-scrollbar::-webkit-scrollbar {
@@ -45,7 +46,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
       </p>
     </div>
 
-    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()} data-lead-router={leadRouter ? "true" : "false"} data-page-key={pageKey}>
+    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()} data-lead-router={leadRouter ? "true" : "false"} data-page-key={pageKey} data-instant-demo={instantDemo ? "true" : "false"}>
       <!-- Field 1: First Name -->
       <div>
         <input
@@ -553,7 +554,7 @@ const { contactSource = "WA bot - LinkedIn ads", showTallyReadyMessage = true, h
             // Self-setup CTA: offline, or not sure + "I manage Tally myself" (same rule as the MAds page)
             const mgr = (tallyManagerInput.value || "").toLowerCase();
             const selfSetup = setup === "offline" || (setup === "not-sure" && mgr === "myself");
-            showResult(result, name, { selfSetup, track: true });
+            showResult(result, name, { selfSetup, track: true, instantDemo: form.getAttribute('data-instant-demo') === "true" });
           }
           // RevenueHero Submission (only pages that have not switched to the lead router)
           else if (window.RevenueHero) {
