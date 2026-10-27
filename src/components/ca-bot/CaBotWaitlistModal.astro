@@ -6,8 +6,9 @@ interface Props {
   hideHeaderOnSuccess?: boolean;
   leadRouter?: boolean;
   pageKey?: string;
+  instantDemo?: boolean;
 }
-const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnSuccess = true, leadRouter = false, pageKey = "" } = Astro.props;
+const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnSuccess = true, leadRouter = false, pageKey = "", instantDemo = false } = Astro.props;
 ---
 <style>
   .no-scrollbar::-webkit-scrollbar {
@@ -42,7 +43,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
       </p>
     </div>
 
-    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()} data-lead-router={leadRouter ? "true" : "false"} data-page-key={pageKey}>
+    <form id="wa-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" data-contact-source={contactSource} data-hide-header={hideHeaderOnSuccess.toString()} data-lead-router={leadRouter ? "true" : "false"} data-page-key={pageKey} data-instant-demo={instantDemo ? "true" : "false"}>
       <!-- Field 1: First Name -->
       <div>
         <input
@@ -404,7 +405,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
             email, name, phone, fields: payload, utm, clickIds,
           });
           sendToRouterWebhook(payload, result);
-          showResult(result, name, { selfSetup: false, track: true });
+          showResult(result, name, { selfSetup: false, track: true, instantDemo: form.getAttribute('data-instant-demo') === "true" });
         } else {
           await backup;
         }
