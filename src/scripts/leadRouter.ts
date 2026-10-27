@@ -156,6 +156,10 @@ h2.idnm{margin:0;font-size:20px;line-height:1.2;font-weight:700;color:#000}
 .idh{margin:0 0 14px;font-size:22px;line-height:1.25;font-weight:700;color:#000;text-align:left}
 .b1.idgo{background:#3446d6;padding:18px 14px;font-size:17px;margin:0 0 12px;border-radius:12px}
 .idnote{margin:0;font-size:13px;line-height:1.5;color:#555;text-align:center}
+.idpanel.idwabox{background:#f2f8f6;border-color:#dcede7}
+.idav.big{width:62px;height:62px;font-size:21px}
+.b1.idwa{background:#0b7363;color:#fff;border:0;padding:18px 14px;font-size:17px;margin:0;border-radius:12px}
+.b1.idwa svg{color:#fff}
 .idsub{margin:18px 0 0;padding-top:18px;border-top:1px solid #e6e6e6;text-align:center}
 .idsub p{margin:0 0 10px;font-size:16px;color:#333}
 .idca{display:inline-flex;align-items:center;gap:8px;border:1.5px solid #3446d6;color:#3446d6;background:#fff;border-radius:10px;padding:9px 22px;font:700 16px/1.1 "Helvetica Neue",Helvetica,Arial,sans-serif;text-decoration:none}
@@ -369,14 +373,27 @@ const ICON_LINK = svgI('<path d="M9 15l6 -6"/><path d="M11 6l.463 -.536a5 5 0 0 
 const heOrName = (gm: Gm) => { const p = String(gm.pronoun || "").toLowerCase(); return p === "he" || p === "she" ? p : gm.name; };
 
 function instantCardHTML(gm: Gm) {
-  const name = esc(gm.name);
   return `<div class="grab" aria-hidden="true"></div>
 <div class="idpanel">
 <span class="idpill"><i aria-hidden="true"></i>Available now</span>
 <div class="idgm">${avHTML(gm, "ring")}<div><h2 id="lr-h" class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
 <p class="idh">Get a live demo right now</p>
 <button type="button" class="b1 idm idgo">${ICON_VIDEO}Start instant demo</button>
-<p class="idnote">Opens a Microsoft Teams video call. If ${name} is on another call, the next available specialist will join you.</p>
+</div>
+<div class="idsub"><p>Prefer to set it up yourself?</p><a class="idca" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_LINK}Create account</a></div>`;
+}
+
+// v2.3 (27 Oct 2026): WhatsApp version of the card, shown on instant-demo pages when nobody is free or outside demo hours (same as Webflow v2.2)
+function waCardHTML(gm: Gm, inHours: boolean, whatsapp = true) {
+  const name = esc(gm.name);
+  const ph = fmtPhone(gm.phone);
+  const waHref = ph && whatsapp ? `https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}` : "";
+  const title = waHref ? `${name} will message you on WhatsApp ${inHours ? "shortly" : "now"}` : `${name} will reach out to you shortly`;
+  return `<div class="grab" aria-hidden="true"></div>
+<div class="idpanel idwabox">
+<div class="idgm">${avHTML(gm, "big")}<div><h2 class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
+<p id="lr-h" class="idh">${title}</p>
+${waHref ? `<a class="b1 idwa" href="${waHref}" target="_blank" rel="noopener">${ICON_MSG}Chat with ${name} on WhatsApp</a>` : ""}
 </div>
 <div class="idsub"><p>Prefer to set it up yourself?</p><a class="idca" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_LINK}Create account</a></div>`;
 }
@@ -446,7 +463,7 @@ async function startInstantDemo(token: string, gm: Gm, backToCard: () => void) {
   const waText = encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`);
   showModal(`<div class="grab" aria-hidden="true"></div>
 <h2 id="lr-h">All our product specialists are on calls right now</h2>
-<p>${name} will call you within 30 minutes.</p>
+<p>${name} will message you on WhatsApp shortly.</p>
 ${ph ? `<a class="b1 wa" href="https://wa.me/${ph.wa}?text=${waText}" target="_blank" rel="noopener">${ICON_WA}Text ${name} on WhatsApp</a>` : ""}
 <button class="btn dn">Done</button>`);
 }
@@ -459,14 +476,18 @@ export function showResult(result: RouterResult | null, firstName: string, opts:
   const card = !ok ? fallbackHTML(opts.variant)
     : opts.variant === "va_blr" ? vaBlrHTML(result!.gm!, firstName)
     : gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false);
-  // Instant demo: opt-in per form, business hours only, the backend decides if anyone is free (loader stays up, max 3s)
-  if (ok && opts.instantDemo && opts.variant !== "va_blr" && result!.callback && result!.callback.in_hours) {
+  // Instant demo pages (opt-in per form) always use the card design: demo card when a GM is free in demo hours,
+  // otherwise the WhatsApp card. The backend decides if anyone is free (loader stays up, max 3s).
+  if (ok && opts.instantDemo && opts.variant !== "va_blr") {
     const gm = result!.gm!, token = result!.token!;
-    const backToCard = () => showModal(card);
-    instantDemoAvailable(token).then((available) => {
-      if (!available) { showModal(card); if (track) lrTrack("popup_shown"); return; }
+    const inHours = !!(result!.callback && result!.callback.in_hours);
+    const waCard = waCardHTML(gm, inHours, opts.whatsapp !== false);
+    const backToCard = () => showModal(waCard);
+    (inHours ? instantDemoAvailable(token) : Promise.resolve(false)).then((available) => {
+      if (lrToken && lrToken !== token) return; // replaced by a newer submit
+      if (!available) { showModal(waCard); if (track) lrTrack("popup_shown", { design: "card" }); return; }
       showModal(instantCardHTML(gm));
-      if (track) { lrTrack("popup_shown", { variant: "instant_demo" }); lrTrack("instant_demo_shown"); }
+      if (track) { lrTrack("popup_shown", { design: "card" }); lrTrack("instant_demo_shown", { design: "card" }); }
       modalRoot?.querySelector(".idgo")?.addEventListener("click", () => startInstantDemo(token, gm, backToCard));
     });
     return;
