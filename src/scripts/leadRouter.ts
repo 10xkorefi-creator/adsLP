@@ -300,8 +300,7 @@ function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterRes
   const role = esc(gm.title || "Product Specialist");
   const ph = fmtPhone(gm.phone);
   void selfSetup; void bucket;
-  const showSelf = true; // v2.0 (Oct 2026): "Create account" shown to everyone
-  const waHref = ph && whatsapp ? `https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}` : "";
+  const showSelf = false; // v2.4 (29 Oct 2026): "Create account" removed from all pages  const waHref = ph && whatsapp ? `https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}` : "";
   const mock = `<div class="wc-hd">${ICON_BACK}<span class="wc-av">${av}</span><span class="wc-who"><h2 id="lr-h" class="wc-nm">${esc(gm.full_name || gm.name)}</h2><span class="wc-sub">${role}, AI Accountant</span></span><span class="wc-ic">${ICON_CAMVID}${ICON_PHONE}<span class="wc-dots">${ICON_DOTS}</span></span></div>
 <div class="wc-bd"><span class="wc-pill">Today</span><span class="wc-enc">${ICON_LOCK}Messages are end-to-end encrypted</span><div class="wc-bub">Let's continue this conversation on WhatsApp<span class="wc-tm">now</span></div></div>
 <div class="wc-in"><span class="wc-fld">${ICON_SMILE}Message<span class="wc-sp"></span>${ICON_CLIP}${ICON_CAM}</span><span class="wc-mic">${ICON_MIC}</span></div>`;
@@ -379,8 +378,7 @@ function instantCardHTML(gm: Gm) {
 <div class="idgm">${avHTML(gm, "ring")}<div><h2 id="lr-h" class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
 <p class="idh">Get a live demo right now</p>
 <button type="button" class="b1 idm idgo">${ICON_VIDEO}Start instant demo</button>
-</div>
-<div class="idsub"><p>Prefer to set it up yourself?</p><a class="idca" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_LINK}Create account</a></div>`;
+</div>`;
 }
 
 // v2.3 (27 Oct 2026): WhatsApp version of the card, shown on instant-demo pages when nobody is free or outside demo hours (same as Webflow v2.2)
@@ -394,8 +392,7 @@ function waCardHTML(gm: Gm, inHours: boolean, whatsapp = true) {
 <div class="idgm">${avHTML(gm, "big")}<div><h2 class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
 <p id="lr-h" class="idh">${title}</p>
 ${waHref ? `<a class="b1 idwa" href="${waHref}" target="_blank" rel="noopener">${ICON_MSG}Chat with ${name} on WhatsApp</a>` : ""}
-</div>
-<div class="idsub"><p>Prefer to set it up yourself?</p><a class="idca" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_LINK}Create account</a></div>`;
+</div>`;
 }
 
 async function startInstantDemo(token: string, gm: Gm, backToCard: () => void) {
