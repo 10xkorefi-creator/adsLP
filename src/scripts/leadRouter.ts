@@ -26,6 +26,22 @@ export type RouterResult = {
 // Anything not on the live domain (Vercel previews, localhost) is flagged as a test lead
 export const isTestHost = () => location.hostname !== LIVE_HOST || /[?&]lr_test=1(&|$)/.test(location.search);
 
+// Desktop Instant Demo switch (3 Nov): on the two Instant Demo pages only, desktop visitors load a small server switch.
+// When the switch is ON it adds ?ild=1 to the address, which the popup already treats as "open our join page instead of Teams".
+// Switch OFF on the server = no change. Phones skip this entirely. Never blocks the page.
+if (typeof window !== "undefined" && /^\/(ca-whatsapp-bot|whatsapp-bot-aiaccountant)(\/|$)/.test(location.pathname)) {
+  try {
+    const ua0 = navigator.userAgent || "";
+    const phone0 = /Android|iPhone|iPad|iPod/i.test(ua0) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (!phone0) {
+      const s0 = document.createElement("script");
+      s0.async = true;
+      s0.src = "https://qmaphtslnvvifkzmbrvh.supabase.co/functions/v1/ild-desktop";
+      document.head.appendChild(s0);
+    }
+  } catch (_) { /* never block the page */ }
+}
+
 const newKey = () =>
   (crypto && (crypto as any).randomUUID) ? (crypto as any).randomUUID()
   : "k" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
