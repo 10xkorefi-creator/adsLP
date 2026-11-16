@@ -531,7 +531,7 @@ const {
       const teamSize = teamInput ? teamInput.value.trim() : "";
 
       const isChannelPartner = role.startsWith("channel partner");
-      const isBlocked = tool === "zoho" || tool === "others";
+      const isBlocked = ["zoho", "others", "sap", "oracle netsuite", "microsoft dynamics 365", "odoo"].includes(tool); // 16 Nov: ERP treated like Zoho / Others
 
       payload.__page = window.location.href;
       payload.__event = isBlocked ? "form_submit_blocked_tool" : "form_submit_whatsapp_waitlist";
