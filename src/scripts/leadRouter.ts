@@ -21,6 +21,7 @@ type Gm = { name: string; full_name?: string; title?: string; photo_url?: string
 export type RouterResult = {
   ok?: boolean; token?: string; reason?: string; pool?: string; blocked?: boolean;
   tally_bucket?: string; callback?: { text?: string; in_hours?: boolean }; gm?: Gm | null;
+  enterprise?: boolean; // 16 Nov 2026: true when the router sent the lead to Deb (pool E)
 };
 
 // Anything not on the live domain (Vercel previews, localhost) is flagged as a test lead
@@ -399,6 +400,21 @@ function instantCardHTML(gm: Gm) {
 <div class="idsub"><p>Prefer to set it up yourself?</p><a class="idca" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_LINK}Create account</a></div>`;
 }
 
+// 16 Nov 2026 enterprise: leads the router sends to Deb (pool E). WhatsApp only: no instant demo, no Create account.
+// The pre-filled text is matched by the WA MQL scan ("i want to know how ai accountant can help"): keep the two in sync.
+function entCardHTML(gm: Gm, whatsapp = true) {
+  const name = esc(gm.name);
+  const ph = fmtPhone(gm.phone);
+  const waHref = ph && whatsapp ? `https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I want to know how AI Accountant can help my finance team.`)}` : "";
+  const title = waHref ? `${name} will help your finance team get started` : `${name} will reach out to you shortly`;
+  return `<div class="grab" aria-hidden="true"></div>
+<div class="idpanel idwabox">
+<div class="idgm">${avHTML(gm, "big")}<div><h2 class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
+<p id="lr-h" class="idh">${title}</p>
+${waHref ? `<a class="b1 idwa" href="${waHref}" target="_blank" rel="noopener">${ICON_MSG}Chat with ${name} on WhatsApp</a>` : ""}
+</div>`;
+}
+
 // v2.3 (27 Oct 2026): WhatsApp version of the card, shown on instant-demo pages when nobody is free or outside demo hours (same as Webflow v2.2)
 function waCardHTML(gm: Gm, inHours: boolean, whatsapp = true) {
   const name = esc(gm.name);
@@ -489,6 +505,12 @@ export function showResult(result: RouterResult | null, firstName: string, opts:
   const ok = !!(result && result.ok && result.gm && result.token);
   const track = ok && opts.track === true; // opt-in per form: ca-wa-bot is not tracked
   lrToken = track ? result!.token! : ""; lrShownAt = track ? Date.now() : 0;
+  // 16 Nov 2026 enterprise (router pool E, Deb): WhatsApp-only card on every page, never the instant demo check
+  if (ok && result!.enterprise === true && opts.variant !== "va_blr") {
+    showModal(entCardHTML(result!.gm!, opts.whatsapp !== false));
+    if (track) lrTrack("popup_shown", { design: "enterprise" });
+    return;
+  }
   const card = !ok ? fallbackHTML(opts.variant)
     : opts.variant === "va_blr" ? vaBlrHTML(result!.gm!, firstName)
     : gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false);
