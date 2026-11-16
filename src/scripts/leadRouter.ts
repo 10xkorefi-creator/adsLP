@@ -406,11 +406,12 @@ function entCardHTML(gm: Gm, whatsapp = true) {
   const name = esc(gm.name);
   const ph = fmtPhone(gm.phone);
   const waHref = ph && whatsapp ? `https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I want to know how AI Accountant can help my finance team.`)}` : "";
-  const title = waHref ? `${name} will help your finance team get started` : `${name} will reach out to you shortly`;
+  const title = `${name} will reach out to you on WhatsApp or give you a call`;
   return `<div class="grab" aria-hidden="true"></div>
 <div class="idpanel idwabox">
 <div class="idgm">${avHTML(gm, "big")}<div><h2 class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
 <p id="lr-h" class="idh">${title}</p>
+<p style="margin:-6px 0 16px;font-size:15px;line-height:1.45;color:#444;text-align:left">He'll understand your current accounting setup and build a rollout plan for your finance team.</p>
 ${waHref ? `<a class="b1 idwa" href="${waHref}" target="_blank" rel="noopener">${ICON_MSG}Chat with ${name} on WhatsApp</a>` : ""}
 </div>`;
 }
