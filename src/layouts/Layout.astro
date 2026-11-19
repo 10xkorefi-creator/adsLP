@@ -72,8 +72,44 @@ const {
     fbq('track', 'PageView');
   </script>
   <!-- HubSpot Script -->
-  <script type="text/javascript" id="hs-script-loader" async defer 
+  <script type="text/javascript" id="hs-script-loader" async defer
     src="//js.hs-scripts.com/39668252.js">
+  </script>
+  <!-- AIA tracking: page views + form lead capture -> CRM (ops.aiaccountant.com) -->
+  <script is:inline>
+    (function () { try {
+      var api = "https://ops.aiaccountant.com/api/method/crm.api.aia_tracking.";
+      function send(ep, d) {
+        var u = api + ep, b = JSON.stringify(d);
+        if (!(navigator.sendBeacon && navigator.sendBeacon(u, new Blob([b], { type: "text/plain" }))))
+          fetch(u, { method: "POST", body: b, keepalive: true, mode: "no-cors" }).catch(function () {});
+      }
+      // same visitor id the main site uses (lead_reference, cookie on .aiaccountant.com)
+      var m = document.cookie.match(/(?:^|;\s*)lead_reference=([^;]+)/), v = m ? m[1] : "";
+      if (!/^[A-Za-z0-9_-]{8,64}$/.test(v)) {
+        v = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+          : Date.now() + "-" + Math.random().toString(36).slice(2);
+      }
+      document.cookie = "lead_reference=" + v + "; domain=.aiaccountant.com; path=/; max-age=7776000; SameSite=Lax; Secure";
+      window.LEAD_REFERENCE = v;
+      var s; try { s = sessionStorage.getItem("aia_sid") || Date.now().toString(36); sessionStorage.setItem("aia_sid", s); }
+      catch (e) { s = Date.now().toString(36); }
+      var q = new URLSearchParams(location.search);
+      send("track", { vid: v, sid: s, host: location.hostname, path: location.pathname,
+        title: document.title, ref: document.referrer,
+        us: q.get("utm_source"), um: q.get("utm_medium"), uc: q.get("utm_campaign"),
+        ut: q.get("utm_term"), un: q.get("utm_content") });
+      document.addEventListener("submit", function (ev) { try {
+        var f = ev.target;
+        if (!f || !f.querySelector) return;
+        var e = f.querySelector("input[type=email],input[name*=email i]");
+        if (!e || !e.value || e.value.indexOf("@") < 0) return;
+        var nm = f.querySelector("input[name*=name i]");
+        var ph = f.querySelector("input[type=tel],input[name*=phone i]");
+        send("capture_lead", { vid: v, email: e.value, name: nm ? nm.value : "",
+          phone: ph ? ph.value : "", page: location.hostname + location.pathname });
+      } catch (x) {} }, true);
+    } catch (e) {} })();
   </script>
 </head>
 <body class={`min-h-screen font-sans text-base overflow-x-hidden selection:bg-purple-500 selection:text-white ${bodyClass}`}>
