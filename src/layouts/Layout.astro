@@ -80,9 +80,8 @@ const {
     (function () { try {
       var api = "https://ops.aiaccountant.com/api/method/crm.api.aia_tracking.";
       function send(ep, d) {
-        var u = api + ep, b = JSON.stringify(d);
-        if (!(navigator.sendBeacon && navigator.sendBeacon(u, new Blob([b], { type: "text/plain" }))))
-          fetch(u, { method: "POST", body: b, keepalive: true, mode: "no-cors" }).catch(function () {});
+        // credentials:"omit" keeps CRM session cookies out so Frappe treats every hit as Guest (no CSRF check)
+        fetch(api + ep, { method: "POST", body: JSON.stringify(d), keepalive: true, mode: "no-cors", credentials: "omit" }).catch(function () {});
       }
       // same visitor id the main site uses (lead_reference, cookie on .aiaccountant.com)
       var m = document.cookie.match(/(?:^|;\s*)lead_reference=([^;]+)/), v = m ? m[1] : "";
