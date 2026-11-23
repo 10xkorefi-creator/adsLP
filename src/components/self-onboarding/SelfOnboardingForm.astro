@@ -1,0 +1,301 @@
+---
+// Self-onboarding form: same fields as the lead-router form, with First Name / Last Name split.
+// On submit: routeLead (owner + token) -> sendToRouterWebhook (HubSpot, fire and forget) -> sign-up page, pre-filled.
+interface Props {
+  contactSource?: string;
+  pageKey?: string;
+}
+const { contactSource = "Tally Self Onboarding", pageKey = "tally-self-onboarding" } = Astro.props;
+
+const input =
+  "w-full h-12 px-4 rounded-md border border-neutral-300 bg-white text-black text-base placeholder-neutral-500 outline-none transition focus:border-[#314DD0] focus:ring-2 focus:ring-[#314DD0]/20";
+const select = `${input} cursor-pointer`;
+const err = "hidden text-red-600 text-xs mt-1 font-medium";
+---
+
+<form id="so-form" class="grid grid-cols-1 sm:grid-cols-2 gap-3" novalidate data-contact-source={contactSource} data-page-key={pageKey}>
+  <div>
+    <label for="so-first_name" class="sr-only">First Name</label>
+    <input type="text" id="so-first_name" name="first_name" autocomplete="given-name" class={input} placeholder="First Name *" required />
+    <span id="so-first_name-error" class={err}>Please enter your first name.</span>
+  </div>
+  <div>
+    <label for="so-last_name" class="sr-only">Last Name</label>
+    <input type="text" id="so-last_name" name="last_name" autocomplete="family-name" class={input} placeholder="Last Name *" required />
+    <span id="so-last_name-error" class={err}>Please enter your last name.</span>
+  </div>
+
+  <div>
+    <label for="so-email" class="sr-only">Work Email</label>
+    <input type="email" id="so-email" name="email" autocomplete="email" class={input} placeholder="Work Email *" required />
+    <span id="so-email-error" class={err}>Please enter a valid email.</span>
+  </div>
+  <div>
+    <label for="so-company" class="sr-only">Company Name</label>
+    <input type="text" id="so-company" name="company" autocomplete="organization" class={input} placeholder="Company Name *" required />
+    <span id="so-company-error" class={err}>Please enter your company name.</span>
+  </div>
+
+  <div class="sm:col-span-2">
+    <label for="so-phone" class="sr-only">WhatsApp Number</label>
+    <div class="flex">
+      <span class="inline-flex items-center px-4 h-12 bg-neutral-100 border border-r-0 border-neutral-300 rounded-l-md text-neutral-700 font-medium select-none shrink-0">+91</span>
+      <input type="tel" id="so-phone" name="lg__phone" inputmode="numeric" autocomplete="tel-national" class={`${input} rounded-l-none`} placeholder="WhatsApp Number *" required />
+    </div>
+    <span id="so-phone-error" class={err}>Please enter a valid 10-digit phone number.</span>
+  </div>
+
+  <div class="sm:col-span-2">
+    <label for="so-accounting_tool" class="sr-only">Accounting tool</label>
+    <select id="so-accounting_tool" name="which_accounting_tool_do_you_use" class={select} required>
+      <option value="" disabled selected>Which accounting tool do you use? *</option>
+      <option value="Tally">Tally</option>
+      <option value="Zoho">Zoho</option>
+      <option value="Zoho and Tally">Zoho and Tally</option>
+      <option value="SAP">SAP</option>
+      <option value="Oracle NetSuite">Oracle NetSuite</option>
+      <option value="Microsoft Dynamics 365">Microsoft Dynamics 365</option>
+      <option value="Odoo">Odoo</option>
+      <option value="Others">Others</option>
+    </select>
+    <span id="so-accounting_tool-error" class={err}>Please select your accounting tool.</span>
+  </div>
+
+  <div id="so-tally_setup-container" class="sm:col-span-2" style="display:none">
+    <label for="so-tally_setup" class="sr-only">Tally setup</label>
+    <select id="so-tally_setup" name="tally_setup" class={select} disabled>
+      <option value="" selected>Is your Tally on cloud or local? *</option>
+      <option value="cloud-hosted">Cloud-hosted</option>
+      <option value="offline">Offline (local system)</option>
+      <option value="not-sure">Not sure</option>
+    </select>
+    <span id="so-tally_setup-error" class={err}>Please select an option.</span>
+  </div>
+
+  <div id="so-tally_manager-container" class="sm:col-span-2" style="display:none">
+    <label for="so-tally_manager" class="sr-only">Who manages Tally?</label>
+    <select id="so-tally_manager" name="tally_manager" class={select} disabled>
+      <option value="" selected>Who manages Tally? *</option>
+      <option value="myself">Myself</option>
+      <option value="my accountant">My accountant</option>
+    </select>
+    <span id="so-tally_manager-error" class={err}>Please select an option.</span>
+  </div>
+
+  <div id="so-accountant_wrapper" class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 rounded-md border border-neutral-200 bg-neutral-50 p-3" style="display:none">
+    <p class="sm:col-span-2 text-sm font-medium text-neutral-700">Accountant details</p>
+    <div>
+      <label for="so-accountant_name" class="sr-only">Accountant Name</label>
+      <input type="text" id="so-accountant_name" name="accountant_name" autocomplete="off" class={input} placeholder="Accountant Name *" disabled />
+      <span id="so-accountant_name-error" class={err}>Please enter accountant name.</span>
+    </div>
+    <div>
+      <label for="so-accountant_phone" class="sr-only">Accountant WhatsApp Number</label>
+      <div class="flex">
+        <span class="inline-flex items-center px-4 h-12 bg-white border border-r-0 border-neutral-300 rounded-l-md text-neutral-700 font-medium select-none shrink-0">+91</span>
+        <input type="tel" id="so-accountant_phone" name="accountant_phone" inputmode="numeric" autocomplete="off" class={`${input} rounded-l-none`} placeholder="WhatsApp Number *" disabled />
+      </div>
+      <span id="so-accountant_phone-error" class={err}>Please enter a valid 10-digit number.</span>
+    </div>
+  </div>
+
+  <div class="sm:col-span-2">
+    <label for="so-team_size" class="sr-only">Accounting team size</label>
+    <select id="so-team_size" name="accounting_team_size" class={select} required>
+      <option value="" disabled selected>Accounting team size *</option>
+      <option value="0">0</option>
+      <option value="1-3">1-3</option>
+      <option value="3-5">3-5</option>
+      <option value="5-10">5-10</option>
+      <option value="10+">10+</option>
+    </select>
+    <span id="so-team_size-error" class={err}>Please select team size.</span>
+  </div>
+  <div class="sm:col-span-2">
+    <label for="so-role" class="sr-only">Which best describes you?</label>
+    <select id="so-role" name="which_best_describes_you" class={select} required>
+      <option value="" disabled selected>Which best describes you? *</option>
+      <option value="CA firm: automating my clients' books">CA firm: automating my clients' books</option>
+      <option value="Business owner: automating my company's accounting">Business owner: automating my company's accounting</option>
+      <option value="Finance team: looking to automate our books">Finance team: looking to automate our books</option>
+      <option value="Channel partner: looking to resell AiA">Channel partner: looking to resell AiA</option>
+    </select>
+    <span id="so-role-error" class={err}>Please select your role.</span>
+  </div>
+
+  <div class="sm:col-span-2 mt-1">
+    <button type="submit" id="so-submit" class="w-full h-13 py-3.5 rounded-md bg-[#314DD0] hover:bg-[#2a42b5] text-white font-bold text-lg transition disabled:opacity-70 disabled:cursor-wait">
+      Start Free Trial
+    </button>
+    <p class="text-sm text-neutral-600 text-center mt-2.5">No card needed. Works with your Tally.</p>
+    <p class="text-xs text-neutral-500 text-center mt-2">
+      By continuing, you agree to our <a href="https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/6a44d5f5042f7ab8d58990ad_Privacy%20Policy_AIA_6.0_300626%20%201%20(1).pdf" target="_blank" rel="noopener" class="underline text-neutral-700 hover:text-black">Privacy Policy</a> and to being contacted.
+    </p>
+  </div>
+</form>
+
+<script>
+  import { routeLead, sendToRouterWebhook } from "../../scripts/leadRouter";
+  import { buildSignupUrl, getClickIds, getUtms, persistAttribution, tenDigitPhone } from "../../scripts/signupRedirect";
+
+  declare global { interface Window { LEAD_REFERENCE?: string } }
+
+  // Only new logic vs the other LPs: UTMs are stored on page load (click IDs already were).
+  persistAttribution();
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+  // Digits only. A pasted "+91 98765 43210" / "098765 43210" keeps the real 10 digits instead of the prefix.
+  const cleanPhone = (el: HTMLInputElement) => {
+    let d = el.value.replace(/\D/g, "");
+    if (d.length > 10) d = d.replace(/^(91|0)/, "");
+    el.value = d.slice(0, 10);
+  };
+
+  const init = () => {
+    const form = document.getElementById("so-form") as HTMLFormElement | null;
+    if (!form || form.dataset.bound === "1") return;
+    form.dataset.bound = "1";
+
+    const firstName = $<HTMLInputElement>("so-first_name");
+    const lastName = $<HTMLInputElement>("so-last_name");
+    const email = $<HTMLInputElement>("so-email");
+    const company = $<HTMLInputElement>("so-company");
+    const phone = $<HTMLInputElement>("so-phone");
+    const tool = $<HTMLSelectElement>("so-accounting_tool");
+    const setupBox = $<HTMLElement>("so-tally_setup-container");
+    const setup = $<HTMLSelectElement>("so-tally_setup");
+    const managerBox = $<HTMLElement>("so-tally_manager-container");
+    const manager = $<HTMLSelectElement>("so-tally_manager");
+    const accBox = $<HTMLElement>("so-accountant_wrapper");
+    const accName = $<HTMLInputElement>("so-accountant_name");
+    const accPhone = $<HTMLInputElement>("so-accountant_phone");
+    const team = $<HTMLSelectElement>("so-team_size");
+    const role = $<HTMLSelectElement>("so-role");
+    const btn = $<HTMLButtonElement>("so-submit");
+
+    const showError = (el: HTMLElement, show: boolean) => {
+      el.style.borderColor = show ? "#dc2626" : "";
+      document.getElementById(`${el.id}-error`)?.classList.toggle("hidden", !show);
+    };
+
+    const toggle = (box: HTMLElement, fields: (HTMLInputElement | HTMLSelectElement)[], on: boolean, display = "block") => {
+      box.style.display = on ? display : "none";
+      fields.forEach((f) => {
+        f.disabled = !on;
+        f.required = on;
+        if (!on) { f.value = ""; showError(f, false); }
+      });
+    };
+
+    // Same conditional questions as the lead-router form.
+    const updateDynamic = () => {
+      const isTally = tool.value.toLowerCase().includes("tally");
+      toggle(setupBox, [setup], isTally);
+      const s = setup.value;
+      toggle(managerBox, [manager], isTally && (s === "offline" || s === "not-sure"));
+      toggle(accBox, [accName, accPhone], managerBox.style.display === "block" && manager.value === "my accountant", "grid");
+    };
+    [tool, setup, manager].forEach((el) => el.addEventListener("change", updateDynamic));
+
+    phone.addEventListener("input", () => cleanPhone(phone));
+    accPhone.addEventListener("input", () => cleanPhone(accPhone));
+
+    [firstName, lastName, email, company, phone, tool, setup, manager, accName, accPhone, team, role].forEach((el) => {
+      el.addEventListener("input", () => showError(el, false));
+      el.addEventListener("change", () => showError(el, false));
+    });
+
+    const validate = () => {
+      const checks: [HTMLElement, boolean][] = [
+        [firstName, !!firstName.value.trim()],
+        [lastName, !!lastName.value.trim()],
+        [email, EMAIL_RE.test(email.value.trim())],
+        [company, !!company.value.trim()],
+        [phone, tenDigitPhone(phone.value).length === 10],
+        [tool, !!tool.value],
+        [setup, !setup.required || !!setup.value],
+        [manager, !manager.required || !!manager.value],
+        [accName, !accName.required || !!accName.value.trim()],
+        [accPhone, !accPhone.required || tenDigitPhone(accPhone.value).length === 10],
+        [team, !!team.value],
+        [role, !!role.value],
+      ];
+      checks.forEach(([el, ok]) => showError(el, !ok));
+      const firstBad = checks.find(([, ok]) => !ok)?.[0];
+      if (firstBad) {
+        firstBad.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstBad.focus({ preventScroll: true });
+      }
+      return !firstBad;
+    };
+
+    let submitting = false;
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (submitting || !validate()) return;
+      submitting = true;
+      btn.disabled = true;
+      btn.textContent = "Setting up your account...";
+
+      const first = firstName.value.trim();
+      const last = lastName.value.trim();
+      const fullName = `${first} ${last}`.trim();
+      const phone10 = tenDigitPhone(phone.value);
+      const utm = getUtms();
+      const clickIds = getClickIds();
+
+      // Lead payload in HubSpot field names (what the router + n8n already read).
+      const payload: Record<string, string> = {
+        first_name: first,
+        last_name: last,
+        email: email.value.trim(),
+        company: company.value.trim(),
+        lg__phone: phone10,
+        which_accounting_tool_do_you_use: tool.value,
+        tally_setup: setup.value,
+        who_manages_tally: manager.value,
+        accountant_name: accName.value.trim(),
+        accountant_number: accPhone.value ? tenDigitPhone(accPhone.value) : "",
+        accounting_team_size: team.value,
+        which_best_describes_you: role.value,
+        contact_source: form.dataset.contactSource || "Tally Self Onboarding",
+        campaign: "tally-self-onboarding",
+        lead_reference: window.LEAD_REFERENCE || "",
+        __page: location.href,
+        ...utm,
+        ...clickIds,
+      };
+      Object.keys(payload).forEach((k) => { if (!payload[k]) delete payload[k]; });
+
+      // 1. Owner + token. routeLead never throws and caps itself at 4s; guard anyway so 2 and 3 always run.
+      let result: Awaited<ReturnType<typeof routeLead>> = null;
+      try {
+        result = await routeLead({
+          pageKey: form.dataset.pageKey || "tally-self-onboarding",
+          email: payload.email, name: fullName, phone: phone10,
+          fields: payload, utm, clickIds,
+        });
+        if (!result || !result.ok) console.error("[self-onboarding] routeLead returned no owner", result);
+      } catch (err) {
+        console.error("[self-onboarding] routeLead failed", err);
+      }
+
+      // 2. HubSpot via n8n. Fire and forget: keepalive lets it finish after we navigate away.
+      try { sendToRouterWebhook(payload, result); }
+      catch (err) { console.error("[self-onboarding] router webhook failed", err); }
+
+      // 3. Sign-up page, pre-filled. Allowlisted params only (no accountant_*, no lr_token).
+      window.location.assign(buildSignupUrl(payload));
+    });
+
+    // bfcache: coming back from the sign-up page must give a usable form again.
+    window.addEventListener("pageshow", (ev) => {
+      if (ev.persisted) { submitting = false; btn.disabled = false; btn.textContent = "Start Free Trial"; }
+    });
+  };
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
+  else init();
+</script>

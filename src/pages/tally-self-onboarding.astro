@@ -1,0 +1,214 @@
+---
+// Self-onboarding LP: visitor fills the form here, lead is routed to an owner in HubSpot,
+// then they land on app.aiaccountant.com/sign-up with the form pre-filled (see scripts/signupRedirect.ts).
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import Testimonials from '../components/Testimonials.astro';
+import SelfOnboardingForm from '../components/self-onboarding/SelfOnboardingForm.astro';
+
+import afkLogo from '../assets/logos/afkgaming.avif';
+import buildTrustLogo from '../assets/logos/buildtrust.avif';
+import cuttingLogo from '../assets/logos/cutting.avif';
+import kettoLogo from '../assets/logos/ketto.avif';
+import newtonLogo from '../assets/logos/newtonschool.avif';
+import tripIndiaLogo from '../assets/logos/tripindia.avif';
+import uplersLogo from '../assets/logos/uplers.avif';
+
+const title = "Let AI do your Tally entries | AI Accountant";
+const description = "Forward bills on WhatsApp, upload bank statements, and get entries ready for Tally with ledger and GST filled in. Start a free trial on your own Tally data.";
+
+const logos = [
+  { src: afkLogo.src, alt: 'AFK Gaming' },
+  { src: buildTrustLogo.src, alt: 'Build Trust' },
+  { src: cuttingLogo.src, alt: 'Cutting' },
+  { src: kettoLogo.src, alt: 'Ketto' },
+  { src: newtonLogo.src, alt: 'Newton School' },
+  { src: tripIndiaLogo.src, alt: 'Trip India' },
+  { src: uplersLogo.src, alt: 'Uplers' },
+];
+
+const rows = [
+  {
+    label: 'Purchase bills',
+    today: 'Bills pile up on WhatsApp and email. Someone types each one into Tally, line by line.',
+    withAia: 'Forward the bill on WhatsApp. It comes back as a purchase entry with the ledger and GST already filled in, ready for your accountant to push to Tally.',
+  },
+  {
+    label: 'Bank statements',
+    today: 'Hundreds of bank entries a month, entered and matched by hand. Always the last job to get done.',
+    withAia: 'Upload the statement. Every entry is mapped to the right ledger and matched to its invoice.',
+  },
+  {
+    label: 'GST reconciliation',
+    today: 'Books matched against GSTR-2B in Excel the day before filing. Mismatches slip through and ITC goes unclaimed.',
+    withAia: "Mismatches are flagged as entries come in, so you claim your full ITC and filing day isn't a scramble.",
+  },
+];
+
+const steps = [
+  { title: 'Sign up in 2 minutes.', body: '' },
+  {
+    title: 'If your accountant manages Tally,',
+    body: 'invite them after you sign up, and they set it up in about 10 minutes from the computer where Tally runs. If you handle Tally yourself, you can do the integration yourself.',
+  },
+  { title: 'Nothing to switch.', body: 'It works on top of TallyPrime, and your books stay in Tally.' },
+  { title: 'Nothing goes in unchecked.', body: 'You review every entry before it goes into Tally.' },
+];
+---
+
+<Layout title={title} description={description} bodyClass="bg-white text-black">
+  <div class="so-page">
+    <!-- Nav -->
+    <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-neutral-200">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <a href="https://www.aiaccountant.com/" target="_blank" rel="noopener" class="flex items-center gap-2">
+          <img src="/korefi-logo.png" alt="" class="h-8 w-auto" />
+          <span class="text-lg sm:text-xl font-bold">AI Accountant</span>
+        </a>
+        <a href="#start" data-focus-form class="hidden sm:inline-flex items-center h-10 px-5 rounded-md bg-[#314DD0] hover:bg-[#2a42b5] text-white font-bold text-sm transition">Start Free Trial</a>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Fold 1: Hero -->
+      <section class="pt-8 pb-12 lg:pt-16 lg:pb-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <div class="lg:col-span-6 lg:pt-6">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05]">
+              Let AI do your <span class="text-[#314DD0]">Tally</span> entries.
+            </h1>
+            <p class="mt-5 text-lg text-neutral-600 leading-relaxed max-w-xl">
+              Effortlessly integrate with Tally using our AI Accountant to streamline workflows, reduce manual errors, and gain real-time financial insights, empowering you to focus on growth and smarter decisions.
+            </p>
+            <ul class="mt-6 flex flex-wrap gap-2" aria-label="Proof points">
+              {['500+ businesses', '300M+ transactions processed', 'ISO & SOC 2 Type II certified'].map((chip) => (
+                <li class="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-medium text-neutral-800">
+                  <svg class="w-4 h-4 text-[#314DD0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+                  {chip}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="lg:col-span-6" id="start">
+            <div class="rounded-xl border border-neutral-200 bg-white p-5 sm:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
+              <h2 class="text-2xl font-bold mb-4">Try it on your own Tally data</h2>
+              <SelfOnboardingForm />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Logo row -->
+      <section class="py-10 border-y border-neutral-200 bg-neutral-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 class="text-center text-base sm:text-lg font-bold text-neutral-800">500+ businesses have switched to AI Accountant</h2>
+          <ul class="mt-6 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+            {logos.map((logo) => (
+              <li class="h-16 rounded-lg border border-neutral-200 bg-white flex items-center justify-center p-3">
+                <img src={logo.src} alt={logo.alt} loading="lazy" decoding="async" class="max-h-full max-w-full object-contain" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- Fold 2: What changes -->
+      <section class="py-14 lg:py-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 class="text-3xl sm:text-4xl font-bold max-w-2xl">What your accounts team stops struggling with</h2>
+
+          <!-- Desktop table -->
+          <div class="hidden md:block mt-10 overflow-hidden rounded-xl border border-neutral-200">
+            <table class="w-full text-left">
+              <thead class="bg-neutral-50 text-sm">
+                <tr>
+                  <th scope="col" class="w-[22%] px-6 py-4"><span class="sr-only">Task</span></th>
+                  <th scope="col" class="w-[36%] px-6 py-4 font-bold text-neutral-600">Today</th>
+                  <th scope="col" class="px-6 py-4 font-bold text-[#314DD0]">With AI Accountant</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-neutral-200">
+                {rows.map((r) => (
+                  <tr class="align-top">
+                    <th scope="row" class="px-6 py-6 font-bold">{r.label}</th>
+                    <td class="px-6 py-6 text-neutral-600 leading-relaxed">{r.today}</td>
+                    <td class="px-6 py-6 text-black leading-relaxed">{r.withAia}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile cards -->
+          <div class="md:hidden mt-8 space-y-4">
+            {rows.map((r) => (
+              <div class="rounded-xl border border-neutral-200 p-5">
+                <h3 class="font-bold text-lg">{r.label}</h3>
+                <p class="mt-3 text-xs font-bold uppercase tracking-wide text-neutral-500">Today</p>
+                <p class="mt-1 text-neutral-600 leading-relaxed">{r.today}</p>
+                <p class="mt-4 text-xs font-bold uppercase tracking-wide text-[#314DD0]">With AI Accountant</p>
+                <p class="mt-1 leading-relaxed">{r.withAia}</p>
+              </div>
+            ))}
+          </div>
+
+          <p class="mt-6 text-neutral-600 text-base flex flex-wrap gap-x-3 gap-y-1">
+            <span><strong class="text-black">48,000+</strong> bills processed last month</span>
+            <span aria-hidden="true" class="text-neutral-300">·</span>
+            <span><strong class="text-black">89%</strong> of bank entries categorised automatically</span>
+            <span aria-hidden="true" class="text-neutral-300">·</span>
+            <span><strong class="text-black">₹4.2 Cr</strong> in ITC mismatches flagged</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Fold 3: Easy to start -->
+      <section class="py-14 lg:py-20 bg-black text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 class="text-3xl sm:text-4xl font-bold">Easy to start, nothing to change</h2>
+          <ol class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+            {steps.map((s, i) => (
+              <li class="flex gap-4">
+                <span class="shrink-0 w-9 h-9 rounded-full border border-white/30 flex items-center justify-center font-bold text-sm">{i + 1}</span>
+                <p class="text-lg leading-relaxed text-neutral-300"><strong class="text-white">{s.title}</strong> {s.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- Fold 4: Proof + closing CTA -->
+      <Testimonials />
+      <section class="py-14 text-center">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <a href="#start" data-focus-form class="inline-flex items-center justify-center h-14 px-10 rounded-md bg-[#314DD0] hover:bg-[#2a42b5] text-white font-bold text-lg transition">Start Free Trial</a>
+          <p class="mt-3 text-neutral-600">(No card required)</p>
+        </div>
+      </section>
+    </main>
+
+    <Footer hideTestimonials={true} />
+  </div>
+</Layout>
+
+<style>
+  .so-page {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .so-page :global(h1),
+  .so-page :global(h2) {
+    letter-spacing: -0.04em;
+  }
+</style>
+
+<script>
+  // CTA buttons jump to the form and put the cursor in the first field.
+  document.querySelectorAll<HTMLAnchorElement>("[data-focus-form]").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("start")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => (document.getElementById("so-first_name") as HTMLInputElement | null)?.focus({ preventScroll: true }), 400);
+    });
+  });
+</script>
