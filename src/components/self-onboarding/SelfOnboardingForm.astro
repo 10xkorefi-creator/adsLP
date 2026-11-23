@@ -122,9 +122,9 @@ const roles = [
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const TALLY_TRIGGERS = ["tally", "both"]; // same as the Meta page's conditional field
-  // Same blocked list and thank-you page as /meta/tally-automation (KORE_FI_FORM_CFG.blockedTools / thankYouUrl).
+  // Same blocked list as /meta/tally-automation (KORE_FI_FORM_CFG.blockedTools); thank-you page is this site's /thank-you-page.
   const BLOCKED_TOOLS = ["zoho books", "others"];
-  const THANK_YOU_URL = "https://www.aiaccountant.com/thank-you";
+  const THANK_YOU_URL = "https://lp.aiaccountant.com/thank-you-page";
   const LEGACY_WEBHOOK = "https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96";
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
