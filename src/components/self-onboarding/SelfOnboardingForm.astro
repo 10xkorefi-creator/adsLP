@@ -122,6 +122,10 @@ const roles = [
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const TALLY_TRIGGERS = ["tally", "both"]; // same as the Meta page's conditional field
+  // Same blocked list and thank-you page as /meta/tally-automation (KORE_FI_FORM_CFG.blockedTools / thankYouUrl).
+  const BLOCKED_TOOLS = ["zoho books", "others"];
+  const THANK_YOU_URL = "https://www.aiaccountant.com/thank-you";
+  const LEGACY_WEBHOOK = "https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96";
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
   // Digits only. A pasted "+91 98765 43210" / "098765 43210" keeps the real 10 digits instead of the prefix.
@@ -231,6 +235,21 @@ const roles = [
 
       // Bot trap filled: same as the Meta page, no router call (no GM turn used) and nothing sent to HubSpot.
       if (payload.lr_hpf_x7) { window.location.assign(buildSignupUrl(payload)); return; }
+
+      // Zoho Books / Others: same as the Meta page. No router, no sign-up redirect: lead is recorded, then thank-you page.
+      // (Meta records it via the native Webflow submit; this page has no Webflow form, so it uses the legacy
+      // lead webhook with the same blocked-tool event the other LP forms use.)
+      const toolNorm = tool.value.toLowerCase().split(":")[0].trim();
+      if (BLOCKED_TOOLS.includes(toolNorm)) {
+        try {
+          fetch(LEGACY_WEBHOOK, {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...payload, __event: "form_submit_blocked_tool" }), keepalive: true,
+          }).catch((err) => console.error("[self-onboarding] blocked-tool webhook failed", err));
+        } catch (err) { console.error("[self-onboarding] blocked-tool webhook failed", err); }
+        window.location.assign(THANK_YOU_URL);
+        return;
+      }
 
       // 1. Owner + token. routeLead never throws and caps itself at 4s; guard anyway so 2 and 3 always run.
       let result: Awaited<ReturnType<typeof routeLead>> = null;
