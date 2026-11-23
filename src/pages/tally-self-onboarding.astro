@@ -1,10 +1,11 @@
 ---
 // Self-onboarding LP: visitor fills the form here, lead is routed to an owner in HubSpot,
 // then they land on app.aiaccountant.com/sign-up with the form pre-filled (see scripts/signupRedirect.ts).
+// Mostly mobile traffic: designed phone-first, desktop layered on with lg: classes.
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
-import Testimonials from '../components/Testimonials.astro';
 import SelfOnboardingForm from '../components/self-onboarding/SelfOnboardingForm.astro';
+import SelfOnboardingTestimonials from '../components/self-onboarding/SelfOnboardingTestimonials.astro';
 
 import afkLogo from '../assets/logos/afkgaming.avif';
 import buildTrustLogo from '../assets/logos/buildtrust.avif';
@@ -45,6 +46,12 @@ const rows = [
   },
 ];
 
+const stats = [
+  { value: '48,000+', label: 'bills processed last month' },
+  { value: '89%', label: 'of bank entries categorised automatically' },
+  { value: '₹4.2 Cr', label: 'in ITC mismatches flagged' },
+];
+
 const steps = [
   { title: 'Sign up in 2 minutes.', body: '' },
   {
@@ -54,16 +61,18 @@ const steps = [
   { title: 'Nothing to switch.', body: 'It works on top of TallyPrime, and your books stay in Tally.' },
   { title: 'Nothing goes in unchecked.', body: 'You review every entry before it goes into Tally.' },
 ];
+
+const chips = ['500+ businesses', '300M+ transactions processed', 'ISO & SOC 2 Type II certified'];
 ---
 
 <Layout title={title} description={description} bodyClass="bg-white text-black">
   <div class="so-page">
     <!-- Nav -->
     <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-neutral-200">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 lg:h-16 flex items-center justify-between">
         <a href="https://www.aiaccountant.com/" target="_blank" rel="noopener" class="flex items-center gap-2">
-          <img src="/korefi-logo.png" alt="" class="h-8 w-auto" />
-          <span class="text-lg sm:text-xl font-bold">AI Accountant</span>
+          <img src="/korefi-logo.png" alt="" class="h-7 lg:h-8 w-auto" />
+          <span class="text-lg lg:text-xl font-bold">AI Accountant</span>
         </a>
         <a href="#start" data-focus-form class="hidden sm:inline-flex items-center h-10 px-5 rounded-md bg-[#314DD0] hover:bg-[#2a42b5] text-white font-bold text-sm transition">Start Free Trial</a>
       </div>
@@ -71,28 +80,28 @@ const steps = [
 
     <main>
       <!-- Fold 1: Hero -->
-      <section class="pt-8 pb-12 lg:pt-16 lg:pb-16">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <section class="pt-6 pb-10 lg:pt-16 lg:pb-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
           <div class="lg:col-span-6 lg:pt-6">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05]">
+            <h1 class="text-[2.5rem] sm:text-5xl lg:text-6xl font-bold leading-[1.05]">
               Let AI do your <span class="text-[#314DD0]">Tally</span> entries.
             </h1>
-            <p class="mt-5 text-lg text-neutral-600 leading-relaxed max-w-xl">
+            <p class="mt-3 lg:mt-5 text-base lg:text-lg text-neutral-600 leading-relaxed max-w-xl">
               Effortlessly integrate with Tally using our AI Accountant to streamline workflows, reduce manual errors, and gain real-time financial insights, empowering you to focus on growth and smarter decisions.
             </p>
-            <ul class="mt-6 flex flex-wrap gap-2" aria-label="Proof points">
-              {['500+ businesses', '300M+ transactions processed', 'ISO & SOC 2 Type II certified'].map((chip) => (
-                <li class="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-3.5 py-1.5 text-sm font-medium text-neutral-800">
-                  <svg class="w-4 h-4 text-[#314DD0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+            <ul class="mt-4 lg:mt-6 flex flex-wrap gap-x-4 gap-y-2 lg:gap-2" aria-label="Proof points">
+              {chips.map((chip) => (
+                <li class="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-800 lg:rounded-full lg:border lg:border-neutral-300 lg:px-3.5 lg:py-1.5">
+                  <svg class="w-4 h-4 text-[#314DD0] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
                   {chip}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div class="lg:col-span-6" id="start">
-            <div class="rounded-xl border border-neutral-200 bg-white p-5 sm:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
-              <h2 class="text-2xl font-bold mb-4">Try it on your own Tally data</h2>
+          <div class="lg:col-span-6 scroll-mt-20" id="start">
+            <div class="-mx-4 sm:mx-0 border-y sm:border border-neutral-200 sm:rounded-xl bg-white px-4 py-5 sm:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
+              <h2 class="text-xl lg:text-2xl font-bold mb-4">Try it on your own Tally data</h2>
               <SelfOnboardingForm />
             </div>
           </div>
@@ -100,23 +109,34 @@ const steps = [
       </section>
 
       <!-- Logo row -->
-      <section class="py-10 border-y border-neutral-200 bg-neutral-50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
-          <h2 class="text-center text-base sm:text-lg font-bold text-neutral-800">500+ businesses have switched to AI Accountant</h2>
-          <ul class="mt-6 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-3">
-            {logos.map((logo) => (
-              <li class="h-16 rounded-lg border border-neutral-200 bg-white flex items-center justify-center p-3">
-                <img src={logo.src} alt={logo.alt} loading="lazy" decoding="async" class="max-h-full max-w-full object-contain" />
+      <section class="py-8 lg:py-10 border-y border-neutral-200 bg-neutral-50 overflow-hidden">
+        <h2 class="px-4 text-center text-base lg:text-lg font-bold text-neutral-800">500+ businesses have switched to AI Accountant</h2>
+        <!-- Mobile: auto-scrolling strip -->
+        <div class="lg:hidden mt-5 relative">
+          <div class="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-neutral-50 to-transparent z-10 pointer-events-none"></div>
+          <div class="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-neutral-50 to-transparent z-10 pointer-events-none"></div>
+          <ul class="so-marquee flex gap-3 w-max" aria-label="Customer logos">
+            {[...logos, ...logos].map((logo, i) => (
+              <li class="w-28 h-14 shrink-0 rounded-lg border border-neutral-200 bg-white flex items-center justify-center p-2.5" aria-hidden={i >= logos.length ? 'true' : undefined}>
+                <img src={logo.src} alt={i >= logos.length ? '' : logo.alt} loading="lazy" decoding="async" class="max-h-full max-w-full object-contain" />
               </li>
             ))}
           </ul>
         </div>
+        <!-- Desktop: one row -->
+        <ul class="hidden lg:grid max-w-6xl mx-auto px-6 mt-6 grid-cols-7 gap-3">
+          {logos.map((logo) => (
+            <li class="h-16 rounded-lg border border-neutral-200 bg-white flex items-center justify-center p-3">
+              <img src={logo.src} alt={logo.alt} loading="lazy" decoding="async" class="max-h-full max-w-full object-contain" />
+            </li>
+          ))}
+        </ul>
       </section>
 
       <!-- Fold 2: What changes -->
-      <section class="py-14 lg:py-20">
+      <section class="py-12 lg:py-20">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
-          <h2 class="text-3xl sm:text-4xl font-bold max-w-2xl">What your accounts team stops struggling with</h2>
+          <h2 class="text-[1.75rem] leading-tight sm:text-4xl font-bold max-w-2xl">What your accounts team stops struggling with</h2>
 
           <!-- Desktop table -->
           <div class="hidden md:block mt-10 overflow-hidden rounded-xl border border-neutral-200">
@@ -133,45 +153,52 @@ const steps = [
                   <tr class="align-top">
                     <th scope="row" class="px-6 py-6 font-bold">{r.label}</th>
                     <td class="px-6 py-6 text-neutral-600 leading-relaxed">{r.today}</td>
-                    <td class="px-6 py-6 text-black leading-relaxed">{r.withAia}</td>
+                    <td class="px-6 py-6 text-black leading-relaxed bg-[#314DD0]/[0.03]">{r.withAia}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          <!-- Mobile cards -->
-          <div class="md:hidden mt-8 space-y-4">
+          <!-- Mobile cards: before / after -->
+          <div class="md:hidden mt-6 space-y-4">
             {rows.map((r) => (
-              <div class="rounded-xl border border-neutral-200 p-5">
-                <h3 class="font-bold text-lg">{r.label}</h3>
-                <p class="mt-3 text-xs font-bold uppercase tracking-wide text-neutral-500">Today</p>
-                <p class="mt-1 text-neutral-600 leading-relaxed">{r.today}</p>
-                <p class="mt-4 text-xs font-bold uppercase tracking-wide text-[#314DD0]">With AI Accountant</p>
-                <p class="mt-1 leading-relaxed">{r.withAia}</p>
-              </div>
+              <article class="rounded-xl border border-neutral-200 overflow-hidden">
+                <h3 class="px-4 pt-4 font-bold text-lg">{r.label}</h3>
+                <div class="px-4 pt-2 pb-4">
+                  <p class="text-[11px] font-bold uppercase tracking-wider text-neutral-500">Today</p>
+                  <p class="mt-1 text-[15px] text-neutral-600 leading-relaxed">{r.today}</p>
+                </div>
+                <div class="px-4 py-4 bg-[#314DD0]/[0.05] border-t border-[#314DD0]/15">
+                  <p class="text-[11px] font-bold uppercase tracking-wider text-[#314DD0]">With AI Accountant</p>
+                  <p class="mt-1 text-[15px] leading-relaxed">{r.withAia}</p>
+                </div>
+              </article>
             ))}
           </div>
 
-          <p class="mt-6 text-neutral-600 text-base flex flex-wrap gap-x-3 gap-y-1">
-            <span><strong class="text-black">48,000+</strong> bills processed last month</span>
-            <span aria-hidden="true" class="text-neutral-300">·</span>
-            <span><strong class="text-black">89%</strong> of bank entries categorised automatically</span>
-            <span aria-hidden="true" class="text-neutral-300">·</span>
-            <span><strong class="text-black">₹4.2 Cr</strong> in ITC mismatches flagged</span>
-          </p>
+          <!-- Stats -->
+          <dl class="mt-6 lg:mt-8 grid grid-cols-1 sm:grid-cols-3 rounded-xl border border-neutral-200 divide-y sm:divide-y-0 sm:divide-x divide-neutral-200">
+            {stats.map((s) => (
+              <div class="flex sm:flex-col items-center sm:items-start gap-4 sm:gap-1 px-4 py-4 sm:px-6 sm:py-5">
+                <dt class="sr-only">{s.label}</dt>
+                <dd class="w-28 sm:w-auto shrink-0 text-2xl lg:text-3xl font-bold text-[#314DD0] tabular-nums">{s.value}</dd>
+                <dd class="text-sm text-neutral-600 leading-snug">{s.label}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
       <!-- Fold 3: Easy to start -->
-      <section class="py-14 lg:py-20 bg-black text-white">
+      <section class="py-12 lg:py-20 bg-black text-white">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
-          <h2 class="text-3xl sm:text-4xl font-bold">Easy to start, nothing to change</h2>
-          <ol class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+          <h2 class="text-[1.75rem] leading-tight sm:text-4xl font-bold">Easy to start, nothing to change</h2>
+          <ol class="mt-8 lg:mt-10 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 lg:gap-y-8">
             {steps.map((s, i) => (
               <li class="flex gap-4">
-                <span class="shrink-0 w-9 h-9 rounded-full border border-white/30 flex items-center justify-center font-bold text-sm">{i + 1}</span>
-                <p class="text-lg leading-relaxed text-neutral-300"><strong class="text-white">{s.title}</strong> {s.body}</p>
+                <span class="shrink-0 w-8 h-8 rounded-full bg-[#314DD0] flex items-center justify-center font-bold text-sm">{i + 1}</span>
+                <p class="text-base lg:text-lg leading-relaxed text-neutral-300 pt-0.5"><strong class="text-white">{s.title}</strong> {s.body}</p>
               </li>
             ))}
           </ol>
@@ -179,16 +206,21 @@ const steps = [
       </section>
 
       <!-- Fold 4: Proof + closing CTA -->
-      <Testimonials />
-      <section class="py-14 text-center">
+      <SelfOnboardingTestimonials />
+      <section id="so-closing" class="py-12 lg:py-16 text-center">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
-          <a href="#start" data-focus-form class="inline-flex items-center justify-center h-14 px-10 rounded-md bg-[#314DD0] hover:bg-[#2a42b5] text-white font-bold text-lg transition">Start Free Trial</a>
+          <a href="#start" data-focus-form class="flex sm:inline-flex items-center justify-center h-14 px-10 rounded-md bg-[#314DD0] hover:bg-[#2a42b5] text-white font-bold text-lg transition">Start Free Trial</a>
           <p class="mt-3 text-neutral-600">(No card required)</p>
         </div>
       </section>
     </main>
 
-    <Footer hideTestimonials={true} />
+    <div id="so-footer"><Footer hideTestimonials={true} /></div>
+
+    <!-- Mobile sticky CTA: appears once the form is off screen, hides near the closing CTA -->
+    <div id="so-sticky" class="lg:hidden fixed inset-x-0 bottom-0 z-40 translate-y-full transition-transform duration-300 bg-white/95 backdrop-blur border-t border-neutral-200 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]" aria-hidden="true">
+      <a href="#start" data-focus-form tabindex="-1" class="flex items-center justify-center h-12 rounded-md bg-[#314DD0] text-white font-bold text-base">Start Free Trial · No card needed</a>
+    </div>
   </div>
 </Layout>
 
@@ -200,6 +232,16 @@ const steps = [
   .so-page :global(h2) {
     letter-spacing: -0.04em;
   }
+  .so-marquee {
+    animation: so-marquee 28s linear infinite;
+  }
+  @keyframes so-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-50% - 0.375rem)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .so-marquee { animation: none; }
+  }
 </style>
 
 <script>
@@ -208,7 +250,22 @@ const steps = [
     a.addEventListener("click", (e) => {
       e.preventDefault();
       document.getElementById("start")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(() => (document.getElementById("so-first_name") as HTMLInputElement | null)?.focus({ preventScroll: true }), 400);
+      setTimeout(() => (document.getElementById("so-first_name") as HTMLInputElement | null)?.focus({ preventScroll: true }), 500);
     });
   });
+
+  // Sticky CTA (mobile): show when the form, the closing CTA and the footer are all off screen.
+  const sticky = document.getElementById("so-sticky");
+  const watched = ["start", "so-closing", "so-footer"].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+  if (sticky && watched.length && "IntersectionObserver" in window) {
+    const visible = new Set<Element>();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => (en.isIntersecting ? visible.add(en.target) : visible.delete(en.target)));
+      const show = visible.size === 0;
+      sticky.classList.toggle("translate-y-full", !show);
+      sticky.setAttribute("aria-hidden", show ? "false" : "true");
+      sticky.querySelector("a")?.setAttribute("tabindex", show ? "0" : "-1");
+    });
+    watched.forEach((el) => io.observe(el));
+  }
 </script>
