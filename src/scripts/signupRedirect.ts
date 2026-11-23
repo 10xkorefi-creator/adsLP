@@ -7,7 +7,7 @@ export const SIGNUP_URL = "https://app.aiaccountant.com/sign-up";
 
 /** The only params the sign-up URL may carry, in this order. */
 export const SIGNUP_PARAMS = [
-  "name", "email", "phone", "company", "accounting_tool",
+  "name", "first_name", "last_name", "email", "phone", "company", "accounting_tool",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term",
   "gclid", "fbclid", "lead_reference",
 ] as const;
@@ -68,13 +68,16 @@ export const tenDigitPhone = (p: string | undefined): string => (p || "").replac
 
 /**
  * Lead payload (HubSpot field names) -> normalised sign-up params.
- * first_name (+ last_name) -> name, lg__phone -> phone, which_accounting_tool_do_you_use -> accounting_tool,
+ * first_name / last_name sent as-is (plus name = both joined), lg__phone -> phone, which_accounting_tool_do_you_use -> accounting_tool,
  * hs_google_click_id -> gclid, hs_facebook_click_id -> fbclid.
  */
 export function toSignupParams(lead: Record<string, string | undefined>): Record<SignupParam, string> {
-  const name = [lead.first_name, lead.last_name].map((s) => (s || "").trim()).filter(Boolean).join(" ");
+  const first = (lead.first_name || "").trim();
+  const last = (lead.last_name || "").trim();
   return {
-    name,
+    name: [first, last].filter(Boolean).join(" "), // kept for sign-up pages that still read a single name
+    first_name: first,
+    last_name: last,
     email: lead.email || "",
     phone: tenDigitPhone(lead.lg__phone),
     company: lead.company || "",
