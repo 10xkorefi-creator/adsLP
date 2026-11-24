@@ -1,0 +1,750 @@
+---
+// /gads/tally-automation – Google Ads Tally automation LP.
+// Built from the "Tally Automation – Google Ads Landing Page Prototype" design (mobile 390px primary + desktop 1440px).
+// Form: Tally / Both -> lead router (GM assigned, HubSpot with owner, GM popup). Anything else -> in-form thank-you.
+import Layout from '../../layouts/Layout.astro';
+
+const accent = '#2E45D6';
+const headline = 'Stop Typing Bills Manually in Tally';
+const sub = 'Upload handwritten bills or PDFs. AI Accountant extracts every detail, maps it to the right ledgers, and prepares your Tally entries.';
+const bullets = ['Upload hundreds of bills at once', 'AI automatically categorises your ledgers', 'Review entries before posting to Tally'];
+
+const trust = [
+  { label: 'Live in 10 mins', icon: 'M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2' },
+  { label: 'From the team behind Karbon Card', icon: 'M3 7h18v10H3zM3 11h18' },
+  { label: 'Bank-grade encryption', icon: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 017 0v3' },
+  { label: '3-day free trial, no credit card', icon: 'M5 12.5l4.5 4.5L19 7.5' },
+];
+const logos = [
+  { src: '/urbanwatch.png', alt: 'UrbanMatch' },
+  { src: '/trip-india.png', alt: 'Trip India' },
+  { src: '/virtual-tech-logo.png', alt: 'Virtual Tech' },
+  { src: '/subhag.png', alt: 'SUBHAG' },
+  { src: '/trifactorial.png', alt: 'Trifactorial' },
+];
+const fields = [
+  { k: 'Vendor', v: 'Sharma Hardware' },
+  { k: 'GSTIN', v: '29AABCS1234F1Z5' },
+  { k: 'Invoice no.', v: 'SH/24-25/0457' },
+  { k: 'Taxable value', v: '₹8,400.00' },
+  { k: 'CGST 9%', v: '₹756.00' },
+  { k: 'SGST 9%', v: '₹756.00' },
+];
+const steps = [
+  { n: '01', title: 'Upload bills or bank statements', body: 'Snap a photo, upload a PDF or drop hundreds of files at once. Handwritten bills work too.' },
+  { n: '02', title: 'AI extracts & categorises', body: 'Vendor, GSTIN, invoice details and line items are extracted, while AI suggests the appropriate ledgers.' },
+  { n: '03', title: 'Review and post to Tally', body: 'Check the entries, then post them to Tally in one click. No retyping.' },
+];
+const quotes = [
+  { initial: 'P', name: 'Pragya Chandra', role: 'Director of Business Development, Trip India', text: 'Tracking invoices and payments manually was a challenge for us. AI Accountant’s AP/AR Dashboard gives complete visibility into our bills and invoices, making reconciliation effortless.' },
+  { initial: 'B', name: 'Bhupendra Singh', role: 'Managing Partner, Trifactorial Consulting LLP', text: 'AI Accountant makes it so much easier to move away from spreadsheets and have receivables and payables tracking in one place.' },
+  { initial: 'D', name: 'Dhruvin Patel', role: 'CEO, Virtual Tech', text: 'The way it automatically matches transactions to invoices has saved us so much time.' },
+  { initial: 'N', name: 'Nishu B.', role: 'Co-Founder, UrbanMatch', text: 'Expense categorization and bills automation simplify coordination with my CA.' },
+];
+const featured = quotes[0];
+const others = quotes.slice(1);
+const features = [
+  { title: 'Bill & invoice entry', body: 'Photo or PDF in, Tally-ready entry out. Vendor, GST, line items, and suggested ledger captured automatically.', icon: 'M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5' },
+  { title: 'Bank statement to Tally', body: 'Any bank, any format. Transactions categorised and posted without Excel cleanup.', icon: 'M3 10l9-6 9 6M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18' },
+  { title: 'Auto bank reconciliation', body: 'Matches bank entries to bills and invoices and flags what doesn’t match.', icon: 'M4 7h12l-3-3M20 17H8l3 3' },
+  { title: 'AI ledger categorisation', body: 'Automatically suggests the right ledgers and learns from your corrections to improve accuracy over time.', icon: 'M4 4h9l7 7-9 9-7-7zM8.5 8.5h.01' },
+  { title: 'GST 2B matching & TDS checks', body: 'Catch mismatches before filing, not after.', icon: 'M12 3l8 3v6c0 4.5-3.5 8-8 9-4.5-1-8-4.5-8-9V6zM8.5 12l2.5 2.5 4.5-5' },
+  { title: 'Payables & receivables view', body: 'Every bill and invoice in one dashboard: what’s due, what’s paid, what’s overdue.', icon: 'M4 5h16v14H4zM4 10h16M8 15h3' },
+];
+const faqs = [
+  ['Does it work with offline (local) Tally?', 'Yes. AI Accountant works with both online (cloud-hosted) and offline (local) Tally. You connect your Tally company in a few clicks, and approved entries are pushed to Tally in one click.'],
+  ['Can it read handwritten and scanned bills?', 'Yes. It reads handwritten and scanned bills with 95% accuracy on handwritten bills, along with PDFs, Excel files and images.'],
+  ['Is my business data safe?', 'Yes. AI Accountant is SOC 2 Type II and ISO 27001:2022 certified. Your data is stored on secure servers with encryption and is accessed only for authorised purposes.'],
+  ['How does the free trial work?', 'You get a 3-day free trial, no credit card needed. Your 3 days start only once your Tally is connected, so setup time never eats into your trial.'],
+  ['What happens after I submit the form?', 'Our team calls you right away, connects your Tally with you on the call, and your 3-day trial starts from there.'],
+];
+const TERMS = 'https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/69a92b7bd26f8cfca36689f6_Terms%20of%20Use%20-%20Final.pdf';
+const PRIVACY = 'https://cdn.prod.website-files.com/67ed19ac5d8a1253defd2450/6a44d5f5042f7ab8d58990ad_Privacy%20Policy_AIA_6.0_300626%20%201%20(1).pdf';
+const check = 'M4.5 12.5l5 5L19.5 7';
+---
+
+<Layout title="Stop typing bills manually in Tally | AI Accountant" description={sub} bodyClass="bg-white">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+
+  <div class="g" style={`--accent:${accent}`}>
+    <!-- Header (sticky on phones) -->
+    <header class="g-header">
+      <div class="g-wrap g-header-in">
+        <a class="g-brand" href="https://www.aiaccountant.com/" target="_blank" rel="noopener">
+          <span class="g-mark">A</span><span class="g-brand-name">AI Accountant</span>
+        </a>
+        <a href="#form" class="g-btn g-header-cta" data-to-form>Start Free Trial</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- 1. Hero + 2. Form -->
+      <section class="g-hero">
+        <div class="g-wrap g-hero-in">
+          <div class="g-hero-copy">
+            <div class="g-rating"><span class="g-stars">★★★★★</span><span>Rated 4.7 on Capterra</span></div>
+            <h1 class="g-h1">{headline}</h1>
+            <p class="g-sub">{sub}</p>
+
+            <div class="g-bill-demo">
+              <div class="g-note">
+                <span class="g-note-t">Sharma Hardware</span>
+                <span>Cement 50kg × 20 … 8,400</span>
+                <span>GST 18% … 1,512</span>
+                <span class="g-note-total">Total ₹9,912</span>
+              </div>
+              <svg aria-hidden="true" class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M14 6l6 6-6 6"></path></svg>
+              <div class="g-voucher">
+                <span class="g-voucher-k"><span class="m-only">TALLY · PURCHASE</span><span class="d-only">TALLY · PURCHASE VOUCHER</span></span>
+                <span class="g-voucher-n">Sharma Hardware</span>
+                <span class="g-voucher-a">₹9,912.00</span>
+                <span class="g-posted"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#146C3F" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Posted to Tally</span>
+              </div>
+            </div>
+
+            <ul class="g-bullets">
+              {bullets.map((b) => (
+                <li><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d={check}></path></svg><span>{b}</span></li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="g-form-col">
+            <div class="g-card" id="form">
+              <form id="g-form" class="g-form" novalidate>
+                <div class="g-form-head">
+                  <span class="g-form-title">Start your free trial</span>
+                  <span class="g-form-sub">Takes 30 seconds. We call you right away to set it up.</span>
+                </div>
+
+                <label class="g-f a-name">Full name
+                  <input type="text" id="g-name" name="first_name" placeholder="e.g. Rahul Sharma" autocomplete="name" maxlength="256" required />
+                  <span class="g-err">Please enter your name.</span>
+                </label>
+                <label class="g-f a-email">Work email
+                  <input type="email" id="g-email" name="email" placeholder="you@company.com" autocomplete="email" maxlength="256" required />
+                  <span class="g-err">Please enter a valid email address.</span>
+                </label>
+                <label class="g-f a-phone">Phone number
+                  <span class="g-phone"><span class="g-cc">+91</span><input type="tel" id="g-phone" name="lg__phone" inputmode="numeric" placeholder="98765 43210" autocomplete="tel-national" required /></span>
+                  <span class="g-err">Enter a valid 10-digit number.</span>
+                </label>
+                <label class="g-f a-company">Company name
+                  <input type="text" id="g-company" name="company" placeholder="e.g. Sharma Traders Pvt Ltd" autocomplete="organization" maxlength="256" required />
+                  <span class="g-err">Please enter your company name.</span>
+                </label>
+                <label class="g-f a-tool"><span class="m-only">Accounting software you use</span><span class="d-only">Accounting software</span>
+                  <select id="g-tool" name="which_accounting_tool_do_you_use" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="Tally">Tally</option>
+                    <option value="Zoho Books">Zoho Books</option>
+                    <option value="Both">Both</option>
+                    <option value="Others">Others</option>
+                  </select>
+                  <span class="g-err">Please select your accounting software.</span>
+                </label>
+                <label class="g-f a-setup" id="g-setup-wrap" hidden><span class="m-only">Is your Tally on cloud or local?</span><span class="d-only">Tally: cloud or local?</span>
+                  <select id="g-setup" name="tally_setup" disabled>
+                    <option value="" disabled selected>Select</option>
+                    <option value="Offline">Offline (local system)</option>
+                    <option value="Cloud-hosted">Cloud-hosted</option>
+                    <option value="not-sure">Not sure</option>
+                  </select>
+                  <span class="g-err">Please select an option.</span>
+                </label>
+                <label class="g-f a-team">Team size
+                  <select id="g-team" name="accounting_team_size" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1-3">1-3</option>
+                    <option value="3-5">3-5</option>
+                    <option value="5-10">5-10</option>
+                    <option value="10+">10+</option>
+                  </select>
+                  <span class="g-err">Please select team size.</span>
+                </label>
+                <label class="g-f a-role">You are a
+                  <select id="g-role" name="which_best_describes_you" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="Business owner">Business owner</option>
+                    <option value="finance team">Finance team</option>
+                    <option value="CA firm">CA firm</option>
+                    <option value="Channel partner">Channel partner</option>
+                  </select>
+                  <span class="g-err">Please select one.</span>
+                </label>
+
+                <input type="text" name="lr_hpf_x7" tabindex="-1" autocomplete="off" aria-hidden="true" class="g-hp" />
+
+                <button type="submit" id="g-submit" class="g-btn g-submit a-submit">Start My Free Trial →</button>
+                <p class="g-legal a-legal">By submitting, you agree to our <a href={PRIVACY} target="_blank" rel="noopener">Privacy Policy</a> and consent to being contacted.</p>
+              </form>
+
+              <div id="g-success" class="g-success" hidden role="status" aria-live="polite" tabindex="-1">
+                <span class="g-success-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+                <span class="g-success-t">Thanks for submitting the Form</span>
+                <span class="g-success-s">We will reach out to you</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Trust callouts -->
+      <section class="g-trust">
+        <div class="g-wrap g-trust-in">
+          {trust.map((t) => (
+            <div class="g-trust-i"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={t.icon}></path></svg><span>{t.label}</span></div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 4. Customer logos -->
+      <section class="g-logos">
+        <div class="g-wrap g-logos-in">
+          <p class="g-eyebrow g-muted">500+ COMPANIES HAVE SWITCHED</p>
+          <ul class="g-logo-row">
+            {logos.map((l) => <li><img src={l.src} alt={l.alt} loading="lazy" decoding="async" /></li>)}
+          </ul>
+        </div>
+      </section>
+
+      <!-- 5. How it works -->
+      <section class="g-how">
+        <div class="g-wrap g-how-in">
+          <div class="g-how-copy">
+            <div class="g-head">
+              <span class="g-eyebrow g-eyebrow-dark">HOW IT WORKS</span>
+              <h2 class="g-h2">From a crumpled bill to a Tally entry</h2>
+            </div>
+            <ol class="g-steps">
+              {steps.map((s) => (
+                <li><span class="g-step-n">{s.n}</span><div><span class="g-step-t">{s.title}</span><span class="g-step-b">{s.body}</span></div></li>
+              ))}
+            </ol>
+          </div>
+          <div class="g-how-demo">
+            <div class="g-ex">
+              <div class="g-ex-top">
+                <span class="g-ex-file"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#C9CCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7zM14 3v4h4"></path></svg>bill_0457.jpg</span>
+                <span class="g-ex-tag">Extracted</span>
+              </div>
+              <div class="g-ex-rows">
+                {fields.map((f) => <div class="g-ex-row"><span>{f.k}</span><span>{f.v}</span></div>)}
+                <div class="g-ex-ledger"><span>Suggested ledger</span><span>Purchase – Hardware<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#5FD49A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span></div>
+                <div class="g-ex-total"><span>Total</span><span>₹9,912.00</span></div>
+              </div>
+              <div class="g-ex-post">Post to Tally</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Testimonials -->
+      <section class="g-stories">
+        <div class="g-wrap g-sec">
+          <div class="g-head">
+            <span class="g-eyebrow g-eyebrow-accent">CUSTOMER STORIES</span>
+            <h2 class="g-h2 g-h2-narrow">Businesses that stopped doing data entry</h2>
+          </div>
+          <div class="g-stories-in">
+            <figure class="g-featured">
+              <span aria-hidden="true" class="g-bigq">“</span>
+              <blockquote>{featured.text}</blockquote>
+              <figcaption><span class="g-av">{featured.initial}</span><span class="g-who"><span class="g-who-n">{featured.name}</span><span class="g-who-r">{featured.role}</span></span></figcaption>
+            </figure>
+            <div class="g-others">
+              {others.map((q) => (
+                <figure><blockquote>“{q.text}”</blockquote><figcaption><span class="g-who-n2">{q.name}</span> · {q.role}</figcaption></figure>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Features -->
+      <section class="g-features">
+        <div class="g-wrap g-sec">
+          <div class="g-feat-head">
+            <div class="g-head">
+              <span class="g-eyebrow g-eyebrow-accent">FEATURES</span>
+              <h2 class="g-h2 g-h2-feat">Everything your Tally workflow needs</h2>
+            </div>
+            <p class="g-feat-more d-only">+ expense categorisation, custom reports, and Zoho Books support</p>
+          </div>
+          <div class="g-feat-grid">
+            {features.map((f) => (
+              <div class="g-feat"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={f.icon}></path></svg><span class="g-feat-t">{f.title}</span><span class="g-feat-b">{f.body}</span></div>
+            ))}
+          </div>
+          <p class="g-feat-more m-only">+ expense categorisation, custom reports, and Zoho Books support</p>
+        </div>
+      </section>
+
+      <!-- 8. FAQs -->
+      <section class="g-faq">
+        <div class="g-wrap g-sec g-faq-in">
+          <h2 class="g-h2 g-faq-h">Questions, answered</h2>
+          <div class="g-faq-list">
+            {faqs.map(([q, a]) => (
+              <details open>
+                <summary><span>{q}</span><span class="g-sign" aria-hidden="true"></span></summary>
+                <p>{a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. Final CTA -->
+      <section class="g-final">
+        <div class="g-wrap g-final-in">
+          <div class="g-final-copy">
+            <h2>Stop typing. Start closing books faster.</h2>
+            <p>Join 500+ companies automating their Tally entries with AI Accountant.</p>
+          </div>
+          <a href="#form" class="g-final-cta" data-to-form>Start My Free Trial →</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="g-footer">
+      <div class="g-wrap g-footer-in">
+        <div class="g-brand"><span class="g-mark g-mark-inv">A</span><span class="g-brand-name g-white">AI Accountant</span></div>
+        <div class="g-footer-links">
+          <a href={TERMS} target="_blank" rel="noopener">Terms</a>
+          <a href={PRIVACY} target="_blank" rel="noopener">Privacy</a>
+          <span class="g-footer-co">Korefi Business Solutions Private Limited<span class="m-only"> · All rights reserved.</span></span>
+        </div>
+      </div>
+    </footer>
+  </div>
+</Layout>
+
+<style>
+  /* Design tokens from the prototype */
+  .g { --ink:#0E0F12; --ink2:#2A2D34; --mut:#4A4E58; --mut2:#5A5F6B; --line:#E3E0D8; --line2:#DAD6CC; --field:#D6D3CB; --sand:#F6F4EF;
+    font-family:'Inter Tight', system-ui, sans-serif; color:var(--ink); background:#fff; -webkit-font-smoothing:antialiased; }
+  .g :global(*) { box-sizing:border-box; }
+  .g a { color:var(--accent); }
+  .g-wrap { max-width:1200px; margin:0 auto; padding:0 18px; }
+  .d-only { display:none; }
+  .g-eyebrow { font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.6px; margin:0; font-weight:500; }
+  .g-muted { color:var(--mut2); font-size:10.5px; }
+  .g-eyebrow-dark { color:#8C99E6; }
+  .g-eyebrow-accent { color:var(--accent); }
+  .g-head { display:flex; flex-direction:column; gap:8px; }
+  .g-h2 { margin:0; font-size:28px; line-height:1.12; font-weight:800; letter-spacing:-.8px; }
+  .g-btn { display:flex; align-items:center; justify-content:center; background:var(--accent); color:#fff !important; text-decoration:none; font-weight:600; border:0; cursor:pointer; font-family:inherit; }
+
+  /* Header */
+  .g-header { position:sticky; top:0; z-index:40; background:rgba(255,255,255,.96); border-bottom:1px solid var(--line); backdrop-filter:saturate(1.4) blur(6px); }
+  .g-header-in { height:60px; padding:0 14px 0 18px; display:flex; align-items:center; justify-content:space-between; }
+  .g-brand { display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--ink) !important; }
+  .g-mark { width:28px; height:28px; border-radius:7px; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; }
+  .g-mark-inv { width:26px; height:26px; border-radius:6px; background:#fff; color:var(--ink); font-size:14px; }
+  .g-brand-name { font-weight:700; font-size:16px; letter-spacing:-.2px; }
+  .g-white { color:#fff; font-size:15px; }
+  .g-header-cta { height:44px; padding:0 16px; border-radius:10px; font-size:14px; white-space:nowrap; }
+
+  /* Hero */
+  .g-hero { background:#fff; }
+  .g-hero-in { padding:0; display:flex; flex-direction:column; }
+  .g-hero-copy { padding:26px 18px 22px; background:var(--sand); display:flex; flex-direction:column; gap:12px; }
+  .g-rating { display:flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:500; color:var(--mut); }
+  .g-stars { color:#E8A317; letter-spacing:1px; }
+  .g-h1 { margin:0; font-size:33px; line-height:1.08; font-weight:800; letter-spacing:-1.2px; }
+  .g-sub { margin:0; font-size:15px; line-height:1.5; color:var(--mut); }
+  .g-bill-demo { display:flex; align-items:center; gap:6px; margin:6px 0 2px; }
+  .g-note { flex:none; width:132px; padding:10px 10px 8px; background:#FFFCF2; border:1px solid #E6DDC4; border-radius:4px; transform:rotate(-3deg); box-shadow:0 3px 8px rgba(60,40,0,.08); font-family:Caveat, cursive; color:#2B2A6B; display:flex; flex-direction:column; gap:1px; font-size:13px; line-height:1.25; }
+  .g-note-t { font-size:17px; font-weight:700; line-height:1; }
+  .g-note-total { font-size:15px; font-weight:700; line-height:1.2; border-top:1px solid #D8CFB4; margin-top:2px; padding-top:2px; }
+  .g-arrow { flex:none; width:26px; height:26px; color:var(--accent); stroke-width:2; }
+  .g-voucher { flex:1; min-width:0; padding:10px 11px; background:#fff; border:1px solid var(--line); border-radius:10px; display:flex; flex-direction:column; gap:4px; }
+  .g-voucher-k { font-family:'JetBrains Mono', monospace; font-size:9px; font-weight:600; letter-spacing:.8px; color:#6B6F7A; }
+  .g-voucher-n { font-size:13px; font-weight:600; }
+  .g-voucher-a { font-family:'JetBrains Mono', monospace; font-size:15px; font-weight:600; }
+  .g-posted { align-self:flex-start; display:flex; align-items:center; gap:4px; font-size:10px; font-weight:600; color:#146C3F; background:#E3F4EA; border-radius:4px; padding:2px 6px; }
+  .g-posted svg { width:10px; height:10px; }
+  .g-bullets { margin:4px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .g-bullets li { display:flex; align-items:center; gap:10px; font-size:14px; font-weight:500; }
+  .g-bullets svg { flex:none; width:16px; height:16px; color:var(--accent); }
+
+  /* Form card */
+  .g-form-col { padding:0 14px 6px; background:linear-gradient(var(--sand) 0 28px, #fff 28px); }
+  .g-card { background:#fff; border:1px solid var(--line2); border-radius:14px; box-shadow:0 1px 0 var(--line2), 0 10px 24px rgba(14,15,18,.06); padding:20px 16px 16px; scroll-margin-top:72px; }
+  .g-form { display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    grid-template-areas:"head head" "name name" "email email" "phone phone" "company company" "tool tool" "setup setup" "team role" "submit submit" "legal legal"; }
+  .g-form-head { grid-area:head; display:flex; flex-direction:column; gap:3px; margin-bottom:4px; }
+  .g-form-title { font-size:20px; font-weight:800; letter-spacing:-.4px; }
+  .g-form-sub { font-size:13px; color:var(--mut); }
+  .a-name{grid-area:name} .a-email{grid-area:email} .a-phone{grid-area:phone} .a-company{grid-area:company} .a-tool{grid-area:tool} .a-setup{grid-area:setup} .a-team{grid-area:team} .a-role{grid-area:role} .a-submit{grid-area:submit} .a-legal{grid-area:legal}
+  .g-f { display:flex; flex-direction:column; gap:5px; font-size:12px; font-weight:600; color:var(--ink2); min-width:0; }
+  .g-f[hidden] { display:none; }
+  .g-f input, .g-f select { height:48px; width:100%; min-width:0; border:1px solid var(--field); border-radius:8px; padding:0 14px; font-size:16px; font-family:inherit; font-weight:400; background:#fff; color:var(--ink); outline:none; transition:border-color .15s, box-shadow .15s; }
+  .g-f select { padding:0 10px; cursor:pointer; }
+  .g-f select:invalid, .g-f select option[value=""] { color:#8A8E98; }
+  .g-f input:focus, .g-f select:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(46,69,214,.15); }
+  .a-setup select { border-style:dashed; border-color:#8C99E6; }
+  .g-phone { display:flex; gap:8px; }
+  .g-cc { height:48px; border:1px solid var(--field); border-radius:8px; padding:0 12px; display:flex; align-items:center; font-size:16px; font-weight:500; background:var(--sand); color:var(--ink); }
+  .g-err { display:none; color:#DC2626; font-size:11.5px; font-weight:500; }
+  .g-f.bad input, .g-f.bad select { border-color:#DC2626; }
+  .g-f.bad .g-err { display:block; }
+  .g-hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; pointer-events:none; }
+  .g-submit { margin-top:6px; height:54px; border-radius:10px; font-size:16px; font-weight:700; }
+  .g-submit:disabled { opacity:.7; cursor:wait; }
+  .g-legal { margin:0; font-size:11px; line-height:1.5; color:var(--mut2); text-align:center; }
+  .g-success { text-align:center; padding:36px 8px; display:flex; flex-direction:column; align-items:center; gap:8px; outline:none; }
+  .g-success[hidden] { display:none; }
+  .g-success-ic { width:56px; height:56px; border-radius:50%; background:rgba(46,69,214,.1); color:var(--accent); display:flex; align-items:center; justify-content:center; margin-bottom:6px; }
+  .g-success-ic svg { width:28px; height:28px; }
+  .g-success-t { font-size:22px; font-weight:800; letter-spacing:-.4px; text-wrap:balance; }
+  .g-success-s { font-size:15px; color:var(--mut); }
+
+  /* Trust */
+  .g-trust-in { padding:14px 20px 22px; display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; }
+  .g-trust-i { display:flex; align-items:flex-start; gap:7px; font-size:11.5px; line-height:1.4; font-weight:600; color:var(--ink2); }
+  .g-trust-i svg { flex:none; width:15px; height:15px; margin-top:1px; }
+
+  /* Logos */
+  .g-logos { border-top:1px solid var(--line); }
+  .g-logos-in { padding:22px 20px 26px; display:flex; flex-direction:column; gap:14px; }
+  .g-logo-row { margin:0; padding:0; list-style:none; display:flex; gap:26px; align-items:center; overflow-x:auto; scrollbar-width:none; }
+  .g-logo-row::-webkit-scrollbar { display:none; }
+  .g-logo-row li { flex:none; }
+  .g-logo-row img { height:28px; width:auto; max-width:120px; object-fit:contain; filter:grayscale(1); opacity:.6; }
+
+  /* How it works */
+  .g-how { background:var(--ink); color:#fff; }
+  .g-how-in { padding:44px 18px 40px; display:flex; flex-direction:column; gap:22px; }
+  .g-how-copy { display:contents; }
+  .g-how-copy .g-head { order:1; }
+  .g-how-demo { order:2; }
+  .g-steps { order:3; margin:0; padding:0; list-style:none; display:flex; flex-direction:column; }
+  .g-steps li { display:flex; gap:14px; padding:16px 0; border-top:1px solid #2A2C33; }
+  .g-step-n { flex:none; width:28px; font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:600; color:#8C99E6; padding-top:2px; }
+  .g-steps li > div { display:flex; flex-direction:column; gap:4px; }
+  .g-step-t { font-size:16px; font-weight:700; }
+  .g-step-b { font-size:13.5px; line-height:1.55; color:#B4B8C2; }
+  .g-ex { background:#17181D; border:1px solid #2A2C33; border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:12px; }
+  .g-ex-top { display:flex; justify-content:space-between; align-items:center; }
+  .g-ex-file { display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono', monospace; font-size:11px; color:#C9CCD4; }
+  .g-ex-file svg { width:13px; height:13px; }
+  .g-ex-tag { font-size:10px; font-weight:600; color:var(--ink); background:#B7C0F5; border-radius:4px; padding:2px 7px; }
+  .g-ex-rows { display:flex; flex-direction:column; font-family:'JetBrains Mono', monospace; font-size:11.5px; }
+  .g-ex-row { display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-top:1px solid #25272E; }
+  .g-ex-row span:first-child { color:#9A9EA8; }
+  .g-ex-row span:last-child { color:#fff; text-align:right; }
+  .g-ex-ledger { display:flex; justify-content:space-between; align-items:center; gap:10px; margin:4px -8px; padding:8px; border-radius:6px; background:rgba(183,192,245,.12); border:1px solid rgba(183,192,245,.35); }
+  .g-ex-ledger span:first-child { color:#B7C0F5; }
+  .g-ex-ledger span:last-child { display:flex; align-items:center; gap:5px; color:#fff; font-weight:600; }
+  .g-ex-ledger svg { width:12px; height:12px; }
+  .g-ex-total { display:flex; justify-content:space-between; gap:10px; padding:9px 0 2px; border-top:1px solid #3A3D46; font-size:13px; font-weight:600; }
+  .g-ex-total span:last-child { color:#B7C0F5; }
+  .g-ex-post { height:42px; border-radius:8px; background:var(--accent); color:#fff; font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+
+  /* Sections */
+  .g-sec { padding:44px 18px; display:flex; flex-direction:column; gap:20px; }
+  .g-stories, .g-faq { background:var(--sand); }
+  .g-stories-in { display:flex; flex-direction:column; gap:20px; }
+  .g-featured { margin:0; display:flex; flex-direction:column; gap:14px; }
+  .g-bigq { font-size:64px; line-height:.6; font-weight:800; color:var(--accent); height:30px; }
+  .g-featured blockquote { margin:0; font-size:19px; line-height:1.42; font-weight:600; letter-spacing:-.3px; }
+  .g-featured figcaption { display:flex; align-items:center; gap:10px; }
+  .g-av { width:38px; height:38px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:none; }
+  .g-who { display:flex; flex-direction:column; }
+  .g-who-n { font-size:14px; font-weight:700; }
+  .g-who-r { font-size:12px; color:var(--mut2); }
+  .g-others figure { margin:0; padding:18px 0; border-top:1px solid var(--line2); display:flex; flex-direction:column; gap:10px; }
+  .g-others blockquote { margin:0; font-size:14.5px; line-height:1.55; color:var(--ink2); }
+  .g-others figcaption { font-size:12.5px; color:var(--mut2); }
+  .g-who-n2 { font-weight:700; color:var(--ink); }
+
+  .g-feat-head { display:flex; flex-direction:column; gap:16px; }
+  .g-feat-grid { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line); border-left:1px solid var(--line); }
+  .g-feat { padding:16px 14px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); display:flex; flex-direction:column; gap:8px; }
+  .g-feat svg { width:22px; height:22px; }
+  .g-feat-t { font-size:14px; line-height:1.25; font-weight:700; }
+  .g-feat-b { font-size:12.5px; line-height:1.5; color:var(--mut2); }
+  .g-feat-more { margin:0; font-size:13px; color:var(--mut2); }
+
+  .g-faq-in { gap:16px; }
+  .g-faq-list details { padding:18px 0; border-top:1px solid var(--line2); }
+  .g-faq-list summary { list-style:none; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; cursor:pointer; font-size:15.5px; font-weight:700; line-height:1.35; }
+  .g-faq-list summary::-webkit-details-marker { display:none; }
+  .g-sign::before { content:"+"; flex:none; font-size:20px; line-height:1; color:var(--accent); font-weight:500; }
+  details[open] .g-sign::before { content:"−"; }
+  .g-faq-list p { margin:8px 0 0; font-size:14px; line-height:1.6; color:var(--mut); }
+
+  .g-final { background:var(--accent); color:#fff; }
+  .g-final-in { padding:48px 20px; display:flex; flex-direction:column; gap:22px; }
+  .g-final-copy { display:flex; flex-direction:column; gap:14px; }
+  .g-final h2 { margin:0; font-size:31px; line-height:1.08; font-weight:800; letter-spacing:-1px; }
+  .g-final p { margin:0; font-size:15px; line-height:1.5; color:#DDE2FB; }
+  .g-final-cta { height:54px; border-radius:10px; background:#fff; color:var(--ink) !important; font-size:16px; font-weight:700; text-decoration:none; display:flex; align-items:center; justify-content:center; }
+
+  .g-footer { background:var(--ink); color:#B4B8C2; }
+  .g-footer-in { padding:32px 20px; display:flex; flex-direction:column; gap:14px; }
+  .g-footer-links { display:flex; flex-wrap:wrap; gap:14px 16px; font-size:13px; align-items:center; }
+  .g-footer-links a { color:#B4B8C2 !important; }
+  .g-footer-co { width:100%; font-size:11px; color:#9A9EA8; }
+
+  /* Desktop artboard (1440) */
+  @media (min-width: 960px) {
+    .m-only { display:none; }
+    .d-only { display:inline; }
+    .g-wrap { padding:0 32px; }
+    .g-header { position:static; background:#fff; backdrop-filter:none; }
+    .g-header-in { height:72px; padding:0 32px; gap:16px; }
+    .g-mark { width:32px; height:32px; border-radius:8px; font-size:17px; }
+    .g-brand { gap:10px; }
+    .g-brand-name { font-size:18px; letter-spacing:-.3px; }
+    .g-header-cta { padding:0 20px; }
+
+    .g-hero { background:var(--sand); }
+    .g-hero-in { padding:72px 32px 80px; flex-direction:row; flex-wrap:wrap; gap:64px; align-items:flex-start; }
+    .g-hero-copy { flex:999 1 500px; min-width:0; padding:0; gap:20px; background:none; }
+    .g-rating { font-size:12.5px; gap:10px; }
+    .g-stars { letter-spacing:1.5px; }
+    .g-h1 { font-size:64px; line-height:1.02; letter-spacing:-2.6px; max-width:640px; }
+    .g-sub { font-size:20px; max-width:540px; }
+    .g-bullets { order:3; gap:12px; }
+    .g-bullets li { font-size:17px; gap:12px; }
+    .g-bullets svg { width:18px; height:18px; }
+    .g-bill-demo { order:4; gap:18px; margin-top:18px; flex-wrap:wrap; }
+    .g-note { width:210px; padding:16px 16px 12px; gap:2px; font-size:18px; box-shadow:0 6px 16px rgba(60,40,0,.10); }
+    .g-note-t { font-size:24px; }
+    .g-note-total { font-size:21px; margin-top:4px; padding-top:4px; }
+    .g-arrow { width:36px; height:36px; stroke-width:1.8; }
+    .g-voucher { flex:0 1 240px; min-width:200px; padding:16px; border-radius:12px; gap:6px; }
+    .g-voucher-k { font-size:10.5px; }
+    .g-voucher-n { font-size:16px; font-weight:700; }
+    .g-voucher-a { font-size:22px; }
+    .g-posted { font-size:12px; gap:5px; border-radius:5px; padding:3px 8px; }
+    .g-posted svg { width:12px; height:12px; }
+
+    .g-form-col { flex:1 1 400px; max-width:440px; min-width:0; padding:0; background:none; }
+    .g-card { border-radius:16px; box-shadow:0 1px 0 var(--line2), 0 18px 40px rgba(14,15,18,.08); padding:28px; scroll-margin-top:24px; }
+    .g-form { gap:12px; grid-template-areas:"head head" "name phone" "email email" "company company" "tool setup" "team role" "submit submit" "legal legal"; }
+    .g-form.no-setup { grid-template-areas:"head head" "name phone" "email email" "company company" "tool tool" "team role" "submit submit" "legal legal"; }
+    .g-form-title { font-size:22px; letter-spacing:-.5px; }
+    .g-form-sub { font-size:13.5px; }
+    .g-f input, .g-f select { height:46px; font-size:15px; padding:0 12px; }
+    .g-f select { padding:0 10px; }
+    /* desktop: +91 sits inside the field (half-width column, as in the design) */
+    .g-phone { position:relative; gap:0; }
+    .g-cc { position:absolute; left:1px; top:1px; height:44px; padding:0 0 0 12px; border:0; background:none; font-size:15px; color:var(--ink2); pointer-events:none; }
+    .a-phone input { padding:0 10px 0 46px; }
+
+    .g-trust { border-bottom:1px solid var(--line); }
+    .g-trust-in { padding:22px 32px; display:flex; flex-wrap:wrap; gap:14px 40px; justify-content:space-between; }
+    .g-trust-i { align-items:center; gap:9px; font-size:14px; }
+    .g-trust-i svg { width:18px; height:18px; margin:0; }
+
+    .g-logos { border-top:0; }
+    .g-logos-in { padding:32px; flex-direction:row; flex-wrap:wrap; gap:18px 48px; align-items:center; }
+    .g-muted { font-size:11.5px; }
+    .g-logo-row { flex-wrap:wrap; gap:18px 44px; overflow:visible; }
+    .g-logo-row img { height:34px; max-width:150px; }
+
+    .g-eyebrow { font-size:12px; }
+    .g-h2 { font-size:46px; line-height:1.05; letter-spacing:-1.6px; }
+    .g-head { gap:12px; }
+
+    .g-how-in { padding:96px 32px; flex-direction:row; flex-wrap:wrap; gap:64px; align-items:center; }
+    .g-how-copy { display:flex; flex:1 1 420px; min-width:0; flex-direction:column; gap:28px; }
+    .g-how-demo { flex:1 1 420px; min-width:0; }
+    .g-steps li { gap:20px; padding:20px 0; }
+    .g-step-n { width:32px; font-size:14px; padding-top:3px; }
+    .g-steps li > div { gap:6px; }
+    .g-step-t { font-size:19px; }
+    .g-step-b { font-size:15px; }
+    .g-ex { border-radius:16px; padding:22px; gap:16px; }
+    .g-ex-file { font-size:13px; gap:8px; }
+    .g-ex-file svg { width:15px; height:15px; }
+    .g-ex-tag { font-size:11.5px; border-radius:5px; padding:3px 9px; }
+    .g-ex-rows { font-size:13.5px; }
+    .g-ex-row { gap:16px; padding:10px 0; }
+    .g-ex-ledger { gap:16px; margin:6px -10px; padding:11px 10px; border-radius:8px; }
+    .g-ex-ledger span:last-child { gap:6px; }
+    .g-ex-ledger svg { width:14px; height:14px; }
+    .g-ex-total { gap:16px; padding:12px 0 2px; font-size:15px; }
+    .g-ex-post { height:48px; border-radius:9px; font-size:15px; }
+
+    .g-sec { padding:96px 32px; gap:44px; }
+    .g-h2-narrow { max-width:640px; }
+    .g-stories-in { flex-direction:row; flex-wrap:wrap; gap:56px; }
+    .g-featured { flex:1.2 1 440px; min-width:0; gap:22px; }
+    .g-bigq { font-size:96px; height:44px; }
+    .g-featured blockquote { font-size:28px; line-height:1.35; letter-spacing:-.6px; }
+    .g-featured figcaption { gap:12px; }
+    .g-av { width:44px; height:44px; font-size:16px; }
+    .g-who-n { font-size:16px; }
+    .g-who-r { font-size:14px; }
+    .g-others { flex:1 1 360px; min-width:0; }
+    .g-others figure { padding:22px 0; }
+    .g-others blockquote { font-size:16px; }
+    .g-others figcaption { font-size:13.5px; }
+
+    .g-feat-head { flex-direction:row; flex-wrap:wrap; gap:16px 48px; justify-content:space-between; align-items:flex-end; }
+    .g-h2-feat { max-width:560px; }
+    .g-feat-more { font-size:15px; max-width:320px; }
+    .g-feat-grid { grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); }
+    .g-feat { padding:30px 28px; gap:12px; }
+    .g-feat svg { width:26px; height:26px; stroke-width:1.7; }
+    .g-feat-t { font-size:19px; letter-spacing:-.2px; line-height:1.3; }
+    .g-feat-b { font-size:15px; line-height:1.55; }
+
+    .g-faq-in { flex-direction:row; flex-wrap:wrap; gap:40px 80px; }
+    .g-faq-h { flex:1 1 280px; }
+    .g-faq-list { flex:2 1 520px; min-width:0; }
+    .g-faq-list details { padding:24px 0; }
+    .g-faq-list summary { font-size:18px; gap:16px; }
+    .g-sign::before { font-size:24px; }
+    .g-faq-list p { margin-top:10px; font-size:15.5px; max-width:640px; }
+
+    .g-final-in { padding:88px 32px; flex-direction:row; flex-wrap:wrap; gap:32px; justify-content:space-between; align-items:center; }
+    .g-final-copy { flex:1 1 520px; min-width:0; }
+    .g-final h2 { font-size:52px; line-height:1.02; letter-spacing:-2px; max-width:640px; }
+    .g-final p { font-size:18px; }
+    .g-final-cta { height:58px; padding:0 36px; font-size:17px; }
+
+    .g-footer-in { padding:40px 32px; flex-direction:row; flex-wrap:wrap; gap:20px; justify-content:space-between; align-items:center; }
+    .g-footer-links { gap:20px; }
+    .g-footer-co { width:auto; font-size:13px; }
+    .g-mark-inv { width:28px; height:28px; border-radius:7px; font-size:15px; }
+    .g-white { font-size:16px; }
+  }
+</style>
+
+<script>
+  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
+  import { getClickIds, getUtms, persistAttribution, tenDigitPhone } from "../../scripts/signupRedirect";
+
+  declare global { interface Window { LEAD_REFERENCE?: string } }
+
+  const PAGE_KEY = "gads-tally-automation";
+  const CONTACT_SOURCE = "Tally Automation - gads";
+  const ROUTER_TOOLS = ["tally", "both"]; // everything else: in-form thank-you, no router
+  const LEGACY_WEBHOOK = "https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96";
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  persistAttribution(); // UTMs + click IDs kept for the session
+
+  // CTAs jump to the form and focus the first field.
+  document.querySelectorAll<HTMLAnchorElement>("[data-to-form]").forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => (document.getElementById("g-name") as HTMLInputElement | null)?.focus({ preventScroll: true }), 450);
+    }));
+
+  const form = document.getElementById("g-form") as HTMLFormElement;
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const name = $<HTMLInputElement>("g-name"), email = $<HTMLInputElement>("g-email"), phone = $<HTMLInputElement>("g-phone");
+  const company = $<HTMLInputElement>("g-company"), tool = $<HTMLSelectElement>("g-tool"), setup = $<HTMLSelectElement>("g-setup");
+  const setupWrap = $<HTMLElement>("g-setup-wrap"), team = $<HTMLSelectElement>("g-team"), role = $<HTMLSelectElement>("g-role");
+  const btn = $<HTMLButtonElement>("g-submit"), success = $<HTMLElement>("g-success");
+  const honeypot = form.querySelector<HTMLInputElement>('input[name="lr_hpf_x7"]');
+
+  const mark = (el: HTMLElement, bad: boolean) => el.closest(".g-f")?.classList.toggle("bad", bad);
+  [name, email, phone, company, tool, setup, team, role].forEach((el) => {
+    el.addEventListener("input", () => mark(el, false));
+    el.addEventListener("change", () => mark(el, false));
+  });
+
+  // Digits only; a pasted "+91 98765 43210" keeps the real 10 digits.
+  phone.addEventListener("input", () => {
+    let d = phone.value.replace(/\D/g, "");
+    if (d.length > 10) d = d.replace(/^(91|0)/, "");
+    phone.value = d.slice(0, 10);
+  });
+
+  // "Is your Tally on cloud or local?" only for Tally / Both.
+  const syncSetup = () => {
+    const on = ROUTER_TOOLS.some((t) => tool.value.toLowerCase().includes(t));
+    setupWrap.hidden = !on; setup.disabled = !on; setup.required = on;
+    form.classList.toggle("no-setup", !on);
+    if (!on) { setup.selectedIndex = 0; mark(setup, false); }
+  };
+  tool.addEventListener("change", syncSetup);
+  syncSetup();
+
+  const validate = () => {
+    const checks: [HTMLElement, boolean][] = [
+      [name, !!name.value.trim()],
+      [email, EMAIL_RE.test(email.value.trim())],
+      [phone, tenDigitPhone(phone.value).length === 10],
+      [company, !!company.value.trim()],
+      [tool, !!tool.value],
+      [setup, !setup.required || !!setup.value],
+      [team, !!team.value],
+      [role, !!role.value],
+    ];
+    checks.forEach(([el, ok]) => mark(el, !ok));
+    const bad = checks.find(([, ok]) => !ok)?.[0];
+    if (bad) { bad.scrollIntoView({ behavior: "smooth", block: "center" }); bad.focus({ preventScroll: true }); }
+    return !bad;
+  };
+
+  const showSuccess = () => {
+    form.style.display = "none";
+    success.hidden = false;
+    success.scrollIntoView({ behavior: "smooth", block: "center" });
+    success.focus({ preventScroll: true });
+  };
+
+  let busy = false;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (busy || !validate()) return;
+    busy = true; btn.disabled = true; btn.textContent = "Submitting...";
+
+    const fullName = name.value.trim();
+    const phone10 = tenDigitPhone(phone.value);
+    const utm = getUtms(), clickIds = getClickIds();
+    const payload: Record<string, string> = {
+      first_name: fullName,
+      email: email.value.trim(),
+      company: company.value.trim(),
+      lg__phone: phone10,
+      which_accounting_tool_do_you_use: tool.value,
+      tally_setup: setup.disabled ? "" : setup.value,
+      accounting_team_size: team.value,
+      which_best_describes_you: role.value,
+      contact_source: CONTACT_SOURCE,
+      campaign: "gads-tally-automation",
+      lead_reference: window.LEAD_REFERENCE || "",
+      lr_hpf_x7: honeypot?.value || "",
+      __page: location.href,
+      ...utm, ...clickIds,
+    };
+    Object.keys(payload).forEach((k) => { if (!payload[k]) delete payload[k]; });
+
+    // Bot trap filled: show the thank-you, send nothing (no GM turn used).
+    if (payload.lr_hpf_x7) { showSuccess(); return; }
+
+    // Not Tally / Both: record the lead, thank-you in place, no router.
+    if (!ROUTER_TOOLS.includes(tool.value.toLowerCase())) {
+      try {
+        fetch(LEGACY_WEBHOOK, { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...payload, __event: "form_submit_blocked_tool" }), keepalive: true })
+          .catch((err) => console.error("[gads-ta] blocked-tool webhook failed", err));
+      } catch (err) { console.error("[gads-ta] blocked-tool webhook failed", err); }
+      showSuccess();
+      return;
+    }
+
+    // Tally / Both: router picks the GM (self-caps at 4s), lead goes to HubSpot with that owner, GM popup.
+    showLoading();
+    let result: Awaited<ReturnType<typeof routeLead>> = null;
+    try {
+      result = await routeLead({ pageKey: PAGE_KEY, email: payload.email, name: fullName, phone: phone10, fields: payload, utm, clickIds });
+    } catch (err) { console.error("[gads-ta] routeLead failed", err); }
+    try { sendToRouterWebhook(payload, result); } catch (err) { console.error("[gads-ta] router webhook failed", err); }
+    showSuccess();
+    showResult(result, fullName.split(/\s+/)[0] || fullName, { selfSetup: payload.tally_setup === "Offline", track: true });
+  });
+</script>
