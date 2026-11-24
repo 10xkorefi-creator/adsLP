@@ -1,3 +1,4 @@
+import { buildSignupUrl } from "./signupRedirect";
 // Lead router client for Astro forms. Same logic and popup as the Webflow pages (router v1.2).
 // 1. lr_submit_lead (Supabase) picks the GM/CS person and returns their card.
 // 2. The lead + token go to the n8n router, which creates the HubSpot contact with that owner.
@@ -13,6 +14,20 @@ const BOT_WA_NUMBER = "916366575567";
 const BOT_WA_TEXT = "I want to sign up";
 const BOT_WA_URL = `https://wa.me/${BOT_WA_NUMBER}?text=${encodeURIComponent(BOT_WA_TEXT)}`;
 const LIVE_HOST = "lp.aiaccountant.com";
+// 24 Nov 2026: "Create account" opens the product sign-up page pre-filled (same URL contract as the self-onboarding page).
+// The last lead sent to the router is kept here so the popup can build the link. Falls back to the bot if it is missing.
+let lastLead: Record<string, string> | null = null;
+function signupHref(): string {
+  if (!lastLead) return BOT_WA_URL;
+  const l = { ...lastLead };
+  // Forms with one name box put the full name in first_name: split it for the sign-up page.
+  if (!l.last_name && l.first_name && l.first_name.trim().includes(" ")) {
+    const parts = l.first_name.trim().split(/\s+/);
+    l.first_name = parts.shift() || "";
+    l.last_name = parts.join(" ");
+  }
+  return buildSignupUrl(l);
+}
 // Instant demo: live Teams call with the GM straight from the popup (opt-in per form, backend decides availability)
 const INSTANT_DEMO_WEBHOOK = "https://n8n.aiaccountant.com/webhook/instant-demo";
 const INSTANT_DEMO_TIMEOUT_MS = 15000;
@@ -52,6 +67,12 @@ export async function routeLead(opts: {
   pageKey: string; idempotencyKey?: string; email: string; name: string; phone: string;
   fields: Record<string, string>; utm: Record<string, string>; clickIds: Record<string, string>;
 }): Promise<RouterResult | null> {
+  lastLead = {
+    ...opts.fields, ...opts.utm, ...opts.clickIds,
+    email: opts.email || opts.fields.email || "",
+    lg__phone: opts.fields.lg__phone || opts.phone || "",
+    first_name: opts.fields.first_name || opts.name || "",
+  };
   const body = {
     idempotency_key: opts.idempotencyKey || newKey(),
     page_key: opts.pageKey, email: opts.email, name: opts.name, phone: opts.phone,
@@ -329,7 +350,7 @@ function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterRes
     ? `<a class="b1 wcta" href="${waHref}" target="_blank" rel="noopener">${ICON_MSG}Chat with ${name} on WhatsApp</a>`
     : ph ? `<a class="b1 wcta" href="tel:${ph.tel}">${ICON_PHONE}Call ${name}</a>` : `<p class="ft">${name} will reach out to you shortly.</p>`;
   const self = showSelf
-    ? `<div class="wsub"><p>Prefer to set it up yourself?</p><a class="wsb" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_USERPLUS}Create account</a></div>`
+    ? `<div class="wsub"><p>Prefer to set it up yourself?</p><a class="wsb" href="${esc(signupHref())}" target="_blank" rel="noopener">${ICON_USERPLUS}Create account</a></div>`
     : "";
   return `<div class="grab" aria-hidden="true"></div>${chat}${cta}${self}`;
 }
