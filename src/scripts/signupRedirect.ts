@@ -9,7 +9,7 @@ export const SIGNUP_URL = "https://app.aiaccountant.com/sign-up";
 export const SIGNUP_PARAMS = [
   "name", "first_name", "last_name", "email", "phone", "company", "accounting_tool",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term",
-  "gclid", "fbclid", "lead_reference",
+  "gclid", "fbclid", "lead_reference", "type",
 ] as const;
 export type SignupParam = (typeof SIGNUP_PARAMS)[number];
 
@@ -90,6 +90,7 @@ export function toSignupParams(lead: Record<string, string | undefined>): Record
     gclid: lead.hs_google_click_id || lead.gclid || "",
     fbclid: lead.hs_facebook_click_id || lead.fbclid || "",
     lead_reference: lead.lead_reference || "",
+    type: "external", // 24 Nov 2026: the sign-up page pre-fills on type=external (agreed with the product team, utm_source not dependable)
   };
 }
 
