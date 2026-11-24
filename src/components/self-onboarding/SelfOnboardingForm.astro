@@ -131,8 +131,9 @@ const roles = [
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const TALLY_TRIGGERS = ["tally", "both"]; // same as the Meta page's conditional field
-  // Same blocked list as /meta/tally-automation (KORE_FI_FORM_CFG.blockedTools); these get the in-form thank-you.
-  const BLOCKED_TOOLS = ["zoho books", "others"];
+  // Only these tools go to the router + sign-up page. Every other choice (Zoho Books, ERPs, Others, and any
+  // option added later) gets the in-form thank-you instead.
+  const SIGNUP_TOOLS = ["tally", "both"];
   const SIGNUP_UTM_SOURCE = "meta"; // required by the sign-up page for prefilling
   const LEGACY_WEBHOOK = "https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96";
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -258,10 +259,10 @@ const roles = [
       // Bot trap filled: same as the Meta page, no router call (no GM turn used) and nothing sent to HubSpot.
       if (payload.lr_hpf_x7) { window.location.assign(buildSignupUrl(payload)); return; }
 
-      // Zoho Books / Others: no router, no redirect. The lead is recorded via the legacy lead webhook (same
+      // Anything but Tally / Both: no router, no redirect. The lead is recorded via the legacy lead webhook (same
       // blocked-tool event the other LP forms use) and the form card swaps to a thank-you message in place.
       const toolNorm = tool.value.toLowerCase().split(":")[0].trim();
-      if (BLOCKED_TOOLS.includes(toolNorm)) {
+      if (!SIGNUP_TOOLS.includes(toolNorm)) {
         try {
           fetch(LEGACY_WEBHOOK, {
             method: "POST", headers: { "Content-Type": "application/json" },
