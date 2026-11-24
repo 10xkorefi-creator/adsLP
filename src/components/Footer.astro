@@ -1,9 +1,11 @@
 ---
 interface Props {
   hideTestimonials?: boolean;
+  /** Hide the "*Offer applicable for annual plans" note (pages with no offer, e.g. the self-onboarding LP). */
+  hideOfferNote?: boolean;
 }
 
-const { hideTestimonials = false } = Astro.props;
+const { hideTestimonials = false, hideOfferNote = false } = Astro.props;
 ---
 
 <!-- Section 5: Footer (Exact Match to Image) -->
@@ -17,9 +19,11 @@ const { hideTestimonials = false } = Astro.props;
           <img src="/korefi-logo.png" alt="AI Accountant Logo" class="h-8 w-auto" />
           <span class="text-xl font-bold text-white tracking-tight">AI Accountant</span>
         </div>
-        <p class="text-xs text-slate-400 font-medium">
-          *Offer applicable for annual plans
-        </p>
+        {!hideOfferNote && (
+          <p class="text-xs text-slate-400 font-medium">
+            *Offer applicable for annual plans
+          </p>
+        )}
       </div>
 
       <!-- Right Column: Quick Links -->

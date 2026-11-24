@@ -133,6 +133,7 @@ const roles = [
   const TALLY_TRIGGERS = ["tally", "both"]; // same as the Meta page's conditional field
   // Same blocked list as /meta/tally-automation (KORE_FI_FORM_CFG.blockedTools); these get the in-form thank-you.
   const BLOCKED_TOOLS = ["zoho books", "others"];
+  const SIGNUP_UTM_SOURCE = "meta"; // required by the sign-up page for prefilling
   const LEGACY_WEBHOOK = "https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96";
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -289,7 +290,9 @@ const roles = [
       catch (err) { console.error("[self-onboarding] router webhook failed", err); }
 
       // 3. Sign-up page, pre-filled. Allowlisted params only.
-      window.location.assign(buildSignupUrl(payload));
+      // The sign-up page prefills only for utm_source=meta, so the link always says meta.
+      // (HubSpot above still gets the visitor's real UTMs.)
+      window.location.assign(buildSignupUrl({ ...payload, utm_source: SIGNUP_UTM_SOURCE }));
     });
 
     // bfcache: coming back from the sign-up page must give a usable form again.
