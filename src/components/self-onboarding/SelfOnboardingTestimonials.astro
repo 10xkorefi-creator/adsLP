@@ -1,15 +1,15 @@
 ---
 // Testimonials for the self-onboarding LP. Mobile: one swipeable row (snap). Desktop: 3-column masonry.
-// Tally-related quotes first. Data mirrors components/Testimonials.astro (left untouched).
+// Vadivel and Sunil (Tally quotes) last, so they close the mobile slider. Data mirrors components/Testimonials.astro (left untouched).
 const items = [
-  { quote: "The Tally integration with AI Accountant has been transformative. What earlier took hours of manual entry now syncs seamlessly in minutes, and the best part is how it connects directly with our dashboards. We can now show clients clean, real-time numbers during every review meeting.", author: "Vadivel CMA", role: "Founder at Vadivel & Co" },
-  { quote: "AI Accountant has eliminated the repetitive task of converting bank statements into Tally entries. This has increased efficiency across our team and allows us to focus on reconciliations and analysis rather than manual pasting. The way it blends into our traditional accounting processes is seamless.", author: "Sunil", role: "Calculators - The Tax People" },
   { quote: "AI Accountant has really simplified things for us. The way it automatically matches transactions to invoices has saved us so much time.", author: "Dhruvin Patel", role: "CEO at Virtual Tech", logo: "/virtual-tech-logo.png" },
   { quote: "AI Accountant has made financial management effortless. Expense categorization and bills automation simplify coordination with my CA, and this new dashboard helps track business performance. I suggested adding bank charge tracking, and AI Accountant built it; truly customer-focused!", author: "Nishu B.", role: "Co-Founder, UrbanWatch", logo: "/urbanwatch.png" },
   { quote: "Tracking invoices and payments manually was a challenge for us. AI Accountant's AP/AR Dashboard gives complete visibility into our bills and invoices, making reconciliation effortless.", author: "Pragya Chandra", role: "Director of Business Development, Trip India", logo: "/trip-india.png" },
   { quote: "AI Accountant makes it so much easier to move away from spreadsheets and have receivables and payables tracking in one place.", author: "Bhupendra Singh", role: "Managing Partner, Trifactorial Consulting LLP", logo: "/trifactorial.png" },
   { quote: "Through AI Accountant with just one click, I can create customized reports and track my finances in real-time, no more waiting until the year-end to see where things stand.", author: "Chandan Prasad", role: "Head Operation at SUBHAG® HealthTech", logo: "/subhag.png" },
   { quote: "Clients can upload documents, track filing status, and access reports 24/7. It's elevated our firm's professional image.", author: "Adarsh MG", role: "Managing Partner at Acc 'N' More", logo: "/acc-n-more.png" },
+  { quote: "The Tally integration with AI Accountant has been transformative. What earlier took hours of manual entry now syncs seamlessly in minutes, and the best part is how it connects directly with our dashboards. We can now show clients clean, real-time numbers during every review meeting.", author: "Vadivel CMA", role: "Founder at Vadivel & Co" },
+  { quote: "AI Accountant has eliminated the repetitive task of converting bank statements into Tally entries. This has increased efficiency across our team and allows us to focus on reconciliations and analysis rather than manual pasting. The way it blends into our traditional accounting processes is seamless.", author: "Sunil", role: "Calculators - The Tax People" },
 ];
 const initials = (n: string) => n.replace(/[^A-Za-z ]/g, "").trim().charAt(0);
 ---
