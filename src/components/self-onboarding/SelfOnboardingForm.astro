@@ -111,6 +111,15 @@ const roles = [
   </div>
 </form>
 
+<!-- In-place thank-you for Zoho Books / Others (no redirect) -->
+<div id="so-success" hidden role="status" aria-live="polite" tabindex="-1" class="outline-none text-center px-2 py-10 sm:py-14 scroll-mt-24">
+  <div class="mx-auto w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#314DD0]/10 text-[#314DD0] flex items-center justify-center">
+    <svg class="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+  </div>
+  <h3 class="mt-5 text-2xl sm:text-3xl font-bold leading-tight text-balance">Thanks for submitting the Form</h3>
+  <p class="mt-2 text-base sm:text-lg text-neutral-600">We will reach out to you</p>
+</div>
+
 <script>
   import { routeLead, sendToRouterWebhook } from "../../scripts/leadRouter";
   import { buildSignupUrl, getClickIds, getUtms, persistAttribution, tenDigitPhone } from "../../scripts/signupRedirect";
@@ -122,9 +131,8 @@ const roles = [
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const TALLY_TRIGGERS = ["tally", "both"]; // same as the Meta page's conditional field
-  // Same blocked list as /meta/tally-automation (KORE_FI_FORM_CFG.blockedTools); thank-you page is this site's /thank-you-page.
+  // Same blocked list as /meta/tally-automation (KORE_FI_FORM_CFG.blockedTools); these get the in-form thank-you.
   const BLOCKED_TOOLS = ["zoho books", "others"];
-  const THANK_YOU_URL = "https://lp.aiaccountant.com/thank-you-page";
   const LEGACY_WEBHOOK = "https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96";
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -197,6 +205,19 @@ const roles = [
       return !firstBad;
     };
 
+    // In-place thank-you (Zoho Books / Others): hide the form and its card heading, show the message,
+    // and bring it into view (on phones the submit button sits well below the top of the card).
+    const success = $<HTMLElement>("so-success");
+    const showSuccess = () => {
+      form.style.display = "none"; // inline style: the form's `grid` class would beat the hidden attribute
+      const heading = form.parentElement?.querySelector<HTMLElement>(":scope > h2");
+      if (heading) heading.style.display = "none";
+      success.hidden = false;
+      success.scrollIntoView({ behavior: "smooth", block: "center" });
+      success.focus({ preventScroll: true });
+      window.dispatchEvent(new CustomEvent("so:lead-done"));
+    };
+
     let submitting = false;
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -236,9 +257,8 @@ const roles = [
       // Bot trap filled: same as the Meta page, no router call (no GM turn used) and nothing sent to HubSpot.
       if (payload.lr_hpf_x7) { window.location.assign(buildSignupUrl(payload)); return; }
 
-      // Zoho Books / Others: same as the Meta page. No router, no sign-up redirect: lead is recorded, then thank-you page.
-      // (Meta records it via the native Webflow submit; this page has no Webflow form, so it uses the legacy
-      // lead webhook with the same blocked-tool event the other LP forms use.)
+      // Zoho Books / Others: no router, no redirect. The lead is recorded via the legacy lead webhook (same
+      // blocked-tool event the other LP forms use) and the form card swaps to a thank-you message in place.
       const toolNorm = tool.value.toLowerCase().split(":")[0].trim();
       if (BLOCKED_TOOLS.includes(toolNorm)) {
         try {
@@ -247,7 +267,7 @@ const roles = [
             body: JSON.stringify({ ...payload, __event: "form_submit_blocked_tool" }), keepalive: true,
           }).catch((err) => console.error("[self-onboarding] blocked-tool webhook failed", err));
         } catch (err) { console.error("[self-onboarding] blocked-tool webhook failed", err); }
-        window.location.assign(THANK_YOU_URL);
+        showSuccess();
         return;
       }
 

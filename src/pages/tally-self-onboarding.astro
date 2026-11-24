@@ -267,5 +267,12 @@ const chips = ['500+ businesses', '300M+ transactions processed', 'ISO & SOC 2 T
       sticky.querySelector("a")?.setAttribute("tabindex", show ? "0" : "-1");
     });
     watched.forEach((el) => io.observe(el));
+    // After an in-form thank-you, "Start Free Trial" has nothing left to do: retire the sticky bar.
+    window.addEventListener("so:lead-done", () => {
+      io.disconnect();
+      sticky.classList.add("translate-y-full");
+      sticky.setAttribute("aria-hidden", "true");
+      sticky.querySelector("a")?.setAttribute("tabindex", "-1");
+    });
   }
 </script>
