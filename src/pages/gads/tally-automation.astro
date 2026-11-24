@@ -689,6 +689,17 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     return !bad;
   };
 
+  // The live page hides "Create account" in the router popup (Webflow page code, 29 Oct: .wsub,.idsub hidden).
+  // The popup lives in an open shadow root, so the same rule is added inside it.
+  const hideCreateAccount = () => {
+    const root = document.querySelector<HTMLElement>("[data-lr-modal]")?.shadowRoot;
+    if (!root || root.querySelector("style[data-gads-ta]")) return;
+    const st = document.createElement("style");
+    st.setAttribute("data-gads-ta", "");
+    st.textContent = ".wsub,.idsub{display:none!important}";
+    root.appendChild(st);
+  };
+
   const showSuccess = () => {
     form.style.display = "none";
     success.hidden = false;
@@ -739,12 +750,16 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
     // Tally / Both: router picks the GM (self-caps at 4s), lead goes to HubSpot with that owner, GM popup.
     showLoading();
+    hideCreateAccount();
     let result: Awaited<ReturnType<typeof routeLead>> = null;
     try {
       result = await routeLead({ pageKey: PAGE_KEY, email: payload.email, name: fullName, phone: phone10, fields: payload, utm, clickIds });
     } catch (err) { console.error("[gads-ta] routeLead failed", err); }
     try { sendToRouterWebhook(payload, result); } catch (err) { console.error("[gads-ta] router webhook failed", err); }
     showSuccess();
-    showResult(result, fullName.split(/\s+/)[0] || fullName, { selfSetup: payload.tally_setup === "Offline", track: true });
+    // Instant Demo, same as the live Webflow /gads/tally-automation page (instantDemo: true, card design):
+    // in business hours, if a GM is free right now the popup offers a live video call (Teams; phones use the
+    // aiaccountant.com/instant-live-demo join page). Otherwise, or on any failure, the WhatsApp card.
+    showResult(result, fullName.split(/\s+/)[0] || fullName, { track: true, instantDemo: true });
   });
 </script>
