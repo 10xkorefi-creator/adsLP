@@ -1,7 +1,8 @@
 ---
 // /gads/tally-automation – Google Ads Tally automation LP.
 // Built from the "Tally Automation – Google Ads Landing Page Prototype" design (mobile 390px primary + desktop 1440px).
-// Form: Tally / Both -> lead router (GM assigned, HubSpot with owner, GM popup). Anything else -> in-form thank-you.
+// Form (26 Nov, same as self-onboarding): Tally / Both -> router + HubSpot -> pre-filled sign-up page;
+// 5+ accountants (not CA firm / channel partner) -> Deb's WhatsApp card; any other tool -> in-form thank-you.
 import Layout from '../../layouts/Layout.astro';
 import afkLogo from '../../assets/logos/afkgaming.avif';
 import buildTrustLogo from '../../assets/logos/buildtrust.avif';
@@ -15,7 +16,7 @@ const accent = '#2E45D6';
 const headline = 'Stop Typing Bills Manually in Tally';
 const sub = 'Upload handwritten bills or PDFs. AI Accountant extracts every detail, maps it to the right ledgers, and prepares your Tally entries.';
 const bullets = ['Upload hundreds of bills at once', 'Bank statements reconciled in minutes', 'Review entries before posting to Tally'];
-const CAPTERRA_URL = 'https://www.capterra.com/p/10030073/AI-Accountant/'; // 4.71 from 14 reviews (checked 25 Nov 2026)
+// Capterra rating: 4.71 from 14 reviews, https://www.capterra.com/p/10030073/AI-Accountant/ (checked 25 Nov 2026). Badge is not a link.
 const VIDEO_ID = 'c0PIguVVOI4'; // "Automate Tally Bill Entries with AI Accountant" – official AI Accountant YouTube channel
 const tools = ['Tally', 'Zoho Books', 'Both', 'SAP', 'Oracle NetSuite', 'Microsoft Dynamics 365', 'Odoo', 'Others'];
 
@@ -96,14 +97,14 @@ const check = 'M4.5 12.5l5 5L19.5 7';
       <section class="g-hero">
         <div class="g-wrap g-hero-in">
           <div class="g-hero-copy">
-            <a class="g-cap" href={CAPTERRA_URL} target="_blank" rel="noopener" aria-label="Rated 4.7 out of 5 on Capterra">
+            <div class="g-cap" role="img" aria-label="Rated 4.7 out of 5 on Capterra">
               <img class="g-cap-logo" src="/capterra-logo.svg" alt="Capterra" width="100" height="23" />
               <span class="g-cap-div" aria-hidden="true"></span>
               <span class="g-cap-txt">
                 <span class="g-cap-row"><span class="g-cap-stars" aria-hidden="true">★★★★<span class="g-cap-part">★<span>★</span></span></span><span class="g-cap-score">4.7/5</span></span>
                 <span class="g-cap-sub">Rated on Capterra</span>
               </span>
-            </a>
+            </div>
             <h1 class="g-h1">{headline}</h1>
             <p class="g-sub">{sub}</p>
 
@@ -627,7 +628,6 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
   /* Capterra badge */
   .g-cap { align-self:flex-start; display:flex; align-items:center; gap:10px; padding:7px 12px 7px 10px; background:#fff; border:1px solid var(--line2); border-radius:10px; box-shadow:0 1px 2px rgba(14,15,18,.05); text-decoration:none; color:var(--ink) !important; transition:border-color .15s; }
-  .g-cap:hover { border-color:#B8B3A6; }
   .g-cap-logo { height:17px; width:auto; display:block; }
   .g-cap-div { width:1px; height:26px; background:var(--line); }
   .g-cap-txt { display:flex; flex-direction:column; gap:1px; }
@@ -815,12 +815,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     return !bad;
   };
 
-  // Popup "Prefer to set it up yourself? Create account" (26 Nov): opens the product sign-up page pre-filled,
-  // same link as the self-onboarding page (instead of the WhatsApp bot the Instant Demo cards default to).
-  // Hidden for 5+ accountant teams (5-10 / 10+), same rule as the other router pages.
-  // The popup is in an open shadow root and its cards are re-rendered (loading -> card -> demo steps), so a
-  // MutationObserver keeps the link pointed at sign-up whenever a card appears.
-  let popupObs: MutationObserver | null = null;
+  // Pre-filled sign-up link, same contract as the self-onboarding page (full name split into first/last).
   const signupLink = (p: Record<string, string>) => {
     const l = { ...p };
     if (l.first_name && l.first_name.includes(" ")) { // one name box: split for the sign-up page
@@ -828,23 +823,6 @@ const check = 'M4.5 12.5l5 5L19.5 7';
       l.first_name = parts.shift() || ""; l.last_name = parts.join(" ");
     }
     return buildSignupUrl(l);
-  };
-  const wirePopup = (href: string, bigTeam: boolean) => {
-    const root = document.querySelector<HTMLElement>("[data-lr-modal]")?.shadowRoot;
-    if (!root) return;
-    if (bigTeam && !root.querySelector("style[data-gads-ta]")) {
-      const st = document.createElement("style");
-      st.setAttribute("data-gads-ta", "");
-      st.textContent = ".wsub,.idsub{display:none!important}";
-      root.appendChild(st);
-    }
-    const apply = () => root.querySelectorAll<HTMLAnchorElement>("a.idca, a.wsb").forEach((a) => {
-      if (a.getAttribute("href") !== href) a.setAttribute("href", href);
-    });
-    apply();
-    popupObs?.disconnect();
-    popupObs = new MutationObserver(apply);
-    popupObs.observe(root, { childList: true, subtree: true });
   };
 
   // "How it works" video: thumbnail + play button; the YouTube player loads only on click.
@@ -907,18 +885,37 @@ const check = 'M4.5 12.5l5 5L19.5 7';
       return;
     }
 
-    // Tally / Both: router picks the GM (self-caps at 4s), lead goes to HubSpot with that owner, GM popup.
-    showLoading();
-    wirePopup(signupLink(payload), ["5-10", "10+"].includes(team.value));
+    // Tally / Both (26 Nov): same flow as the self-onboarding page.
+    // Enterprise = 5+ accountants (5-10 / 10+) and not a CA firm / channel partner -> router sends them to Deb;
+    // they stay on the page and see Deb's WhatsApp card. Everyone else -> router + HubSpot, then straight to the
+    // pre-filled sign-up page (no popup).
+    const isEnterprise = ["5-10", "10+"].includes(team.value) && !/^(ca firm|channel partner)/i.test(role.value);
+    if (isEnterprise) showLoading();
+    else btn.textContent = "Setting up your account...";
+
+    // 1. Owner + token (router self-caps at 4s, never throws; guarded anyway so 2 and 3 always run).
     let result: Awaited<ReturnType<typeof routeLead>> = null;
     try {
       result = await routeLead({ pageKey: PAGE_KEY, email: payload.email, name: fullName, phone: phone10, fields: payload, utm, clickIds });
+      if (!result || !result.ok) console.error("[gads-ta] routeLead returned no owner", result);
     } catch (err) { console.error("[gads-ta] routeLead failed", err); }
+
+    // 2. HubSpot via n8n, fire and forget (keepalive survives the navigation).
     try { sendToRouterWebhook(payload, result); } catch (err) { console.error("[gads-ta] router webhook failed", err); }
-    showSuccess();
-    // Instant Demo + WhatsApp + Create account (sign-up), same as the live Webflow /gads/tally-automation page (instantDemo: true, card design):
-    // in business hours, if a GM is free right now the popup offers a live video call (Teams; phones use the
-    // aiaccountant.com/instant-live-demo join page). Otherwise, or on any failure, the WhatsApp card.
-    showResult(result, fullName.split(/\s+/)[0] || fullName, { track: true, instantDemo: true });
+
+    // Enterprise: stay on the page, Deb's card (GM card if Deb is out of office; generic card if the router failed).
+    if (isEnterprise) {
+      showSuccess();
+      showResult(result, fullName.split(/\s+/)[0] || fullName, { track: true });
+      return;
+    }
+
+    // 3. Sign-up page, pre-filled (full name split into first/last, type=external; real UTMs kept).
+    window.location.assign(signupLink(payload));
+  });
+
+  // bfcache: coming back from the sign-up page must give a usable form again.
+  window.addEventListener("pageshow", (ev) => {
+    if (ev.persisted) { busy = false; btn.disabled = false; btn.textContent = "Start Free Trial →"; }
   });
 </script>
