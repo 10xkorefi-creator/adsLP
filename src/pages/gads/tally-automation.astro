@@ -139,9 +139,13 @@ const check = 'M4.5 12.5l5 5L19.5 7';
                   <span class="g-form-sub">Takes 30 seconds. We call you right away to set it up.</span>
                 </div>
 
-                <label class="g-f a-name">Full name
-                  <input type="text" id="g-name" name="first_name" placeholder="e.g. Priya Mehta" autocomplete="name" maxlength="256" required />
-                  <span class="g-err">Please enter your name.</span>
+                <label class="g-f a-first">First name
+                  <input type="text" id="g-first" name="first_name" placeholder="e.g. Priya" autocomplete="given-name" maxlength="256" required />
+                  <span class="g-err">Please enter your first name.</span>
+                </label>
+                <label class="g-f a-last">Last name
+                  <input type="text" id="g-last" name="last_name" placeholder="e.g. Mehta" autocomplete="family-name" maxlength="256" required />
+                  <span class="g-err">Please enter your last name.</span>
                 </label>
                 <label class="g-f a-email">Work email
                   <input type="email" id="g-email" name="email" placeholder="you@company.com" autocomplete="email" maxlength="256" required />
@@ -396,11 +400,11 @@ const check = 'M4.5 12.5l5 5L19.5 7';
   .g-form-col { padding:0 14px 6px; background:linear-gradient(var(--sand) 0 28px, #fff 28px); }
   .g-card { background:#fff; border:1px solid var(--line2); border-radius:14px; box-shadow:0 1px 0 var(--line2), 0 10px 24px rgba(14,15,18,.06); padding:20px 16px 16px; scroll-margin-top:72px; }
   .g-form { display:grid; grid-template-columns:1fr 1fr; gap:10px;
-    grid-template-areas:"head head" "name name" "email email" "phone phone" "company company" "tool tool" "setup setup" "team role" "submit submit" "legal legal"; }
+    grid-template-areas:"head head" "first last" "email email" "phone phone" "company company" "tool tool" "setup setup" "team role" "submit submit" "legal legal"; }
   .g-form-head { grid-area:head; display:flex; flex-direction:column; gap:3px; margin-bottom:4px; }
   .g-form-title { font-size:20px; font-weight:800; letter-spacing:-.4px; }
   .g-form-sub { font-size:13px; color:var(--mut); }
-  .a-name{grid-area:name} .a-email{grid-area:email} .a-phone{grid-area:phone} .a-company{grid-area:company} .a-tool{grid-area:tool} .a-setup{grid-area:setup} .a-team{grid-area:team} .a-role{grid-area:role} .a-submit{grid-area:submit} .a-legal{grid-area:legal}
+  .a-first{grid-area:first} .a-last{grid-area:last} .a-email{grid-area:email} .a-phone{grid-area:phone} .a-company{grid-area:company} .a-tool{grid-area:tool} .a-setup{grid-area:setup} .a-team{grid-area:team} .a-role{grid-area:role} .a-submit{grid-area:submit} .a-legal{grid-area:legal}
   .g-f { display:flex; flex-direction:column; gap:5px; font-size:12px; font-weight:600; color:var(--ink2); min-width:0; }
   .g-f[hidden] { display:none; }
   .g-f input, .g-f select { height:48px; width:100%; min-width:0; border:1px solid var(--field); border-radius:8px; padding:0 14px; font-size:16px; font-family:inherit; font-weight:400; background:#fff; color:var(--ink); outline:none; transition:border-color .15s, box-shadow .15s; }
@@ -541,8 +545,8 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
     .g-form-col { flex:1 1 400px; max-width:440px; min-width:0; padding:0; background:none; }
     .g-card { border-radius:16px; box-shadow:0 1px 0 var(--line2), 0 18px 40px rgba(14,15,18,.08); padding:28px; scroll-margin-top:24px; }
-    .g-form { gap:12px; grid-template-areas:"head head" "name phone" "email email" "company company" "tool setup" "team role" "submit submit" "legal legal"; }
-    .g-form.no-setup { grid-template-areas:"head head" "name phone" "email email" "company company" "tool tool" "team role" "submit submit" "legal legal"; }
+    .g-form { gap:12px; grid-template-areas:"head head" "first last" "email phone" "company company" "tool setup" "team role" "submit submit" "legal legal"; }
+    .g-form.no-setup { grid-template-areas:"head head" "first last" "email phone" "company company" "tool tool" "team role" "submit submit" "legal legal"; }
     .g-form-title { font-size:22px; letter-spacing:-.5px; }
     .g-form-sub { font-size:13.5px; }
     .g-f input, .g-f select { height:46px; font-size:15px; padding:0 12px; }
@@ -764,19 +768,19 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     a.addEventListener("click", (e) => {
       e.preventDefault();
       document.getElementById("form")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(() => (document.getElementById("g-name") as HTMLInputElement | null)?.focus({ preventScroll: true }), 450);
+      setTimeout(() => (document.getElementById("g-first") as HTMLInputElement | null)?.focus({ preventScroll: true }), 450);
     }));
 
   const form = document.getElementById("g-form") as HTMLFormElement;
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-  const name = $<HTMLInputElement>("g-name"), email = $<HTMLInputElement>("g-email"), phone = $<HTMLInputElement>("g-phone");
+  const first = $<HTMLInputElement>("g-first"), last = $<HTMLInputElement>("g-last"), email = $<HTMLInputElement>("g-email"), phone = $<HTMLInputElement>("g-phone");
   const company = $<HTMLInputElement>("g-company"), tool = $<HTMLSelectElement>("g-tool"), setup = $<HTMLSelectElement>("g-setup");
   const setupWrap = $<HTMLElement>("g-setup-wrap"), team = $<HTMLSelectElement>("g-team"), role = $<HTMLSelectElement>("g-role");
   const btn = $<HTMLButtonElement>("g-submit"), success = $<HTMLElement>("g-success");
   const honeypot = form.querySelector<HTMLInputElement>('input[name="lr_hpf_x7"]');
 
   const mark = (el: HTMLElement, bad: boolean) => el.closest(".g-f")?.classList.toggle("bad", bad);
-  [name, email, phone, company, tool, setup, team, role].forEach((el) => {
+  [first, last, email, phone, company, tool, setup, team, role].forEach((el) => {
     el.addEventListener("input", () => mark(el, false));
     el.addEventListener("change", () => mark(el, false));
   });
@@ -800,7 +804,8 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
   const validate = () => {
     const checks: [HTMLElement, boolean][] = [
-      [name, !!name.value.trim()],
+      [first, !!first.value.trim()],
+      [last, !!last.value.trim()],
       [email, EMAIL_RE.test(email.value.trim())],
       [phone, tenDigitPhone(phone.value).length === 10],
       [company, !!company.value.trim()],
@@ -815,15 +820,8 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     return !bad;
   };
 
-  // Pre-filled sign-up link, same contract as the self-onboarding page (full name split into first/last).
-  const signupLink = (p: Record<string, string>) => {
-    const l = { ...p };
-    if (l.first_name && l.first_name.includes(" ")) { // one name box: split for the sign-up page
-      const parts = l.first_name.trim().split(/\s+/);
-      l.first_name = parts.shift() || ""; l.last_name = parts.join(" ");
-    }
-    return buildSignupUrl(l);
-  };
+  // Pre-filled sign-up link, same contract as the self-onboarding page (first_name and last_name sent separately).
+  const signupLink = (p: Record<string, string>) => buildSignupUrl(p);
 
   // "How it works" video: thumbnail + play button; the YouTube player loads only on click.
   document.querySelectorAll<HTMLButtonElement>(".g-video-btn").forEach((b) =>
@@ -850,11 +848,13 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     if (busy || !validate()) return;
     busy = true; btn.disabled = true; btn.textContent = "Submitting...";
 
-    const fullName = name.value.trim();
+    const firstName = first.value.trim(), lastName = last.value.trim();
+    const fullName = `${firstName} ${lastName}`.trim();
     const phone10 = tenDigitPhone(phone.value);
     const utm = getUtms(), clickIds = getClickIds();
     const payload: Record<string, string> = {
-      first_name: fullName,
+      first_name: firstName,
+      last_name: lastName,
       email: email.value.trim(),
       company: company.value.trim(),
       lg__phone: phone10,
@@ -906,7 +906,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     // Enterprise: stay on the page, Deb's card (GM card if Deb is out of office; generic card if the router failed).
     if (isEnterprise) {
       showSuccess();
-      showResult(result, fullName.split(/\s+/)[0] || fullName, { track: true });
+      showResult(result, firstName, { track: true });
       return;
     }
 
