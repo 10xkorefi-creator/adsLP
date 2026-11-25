@@ -17,6 +17,10 @@ const LIVE_HOST = "lp.aiaccountant.com";
 // 24 Nov 2026: "Create account" opens the product sign-up page pre-filled (same URL contract as the self-onboarding page).
 // The last lead sent to the router is kept here so the popup can build the link. Falls back to the bot if it is missing.
 let lastLead: Record<string, string> | null = null;
+function bigTeam(): boolean {
+  const t = String((lastLead && (lastLead.accounting_team_size_dropdown || lastLead.accounting_team_size)) || "").trim();
+  return t === "5-10" || t === "10+";
+}
 function signupHref(): string {
   if (!lastLead) return BOT_WA_URL;
   const l = { ...lastLead };
@@ -338,7 +342,8 @@ function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterRes
   const role = esc(gm.title || "Product Specialist");
   const ph = fmtPhone(gm.phone);
   void selfSetup; void bucket;
-      const showSelf = true; // v2.5 (2 Nov 2026): "Create account" back for everyone
+  // 25 Nov 2026: no "Create account" for 5+ accountant leads (team size 5-10 / 10+), whoever they are (CA firms too)
+  const showSelf = !bigTeam();
   const waHref = ph && whatsapp ? `https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}` : "";
   const mock = `<div class="wc-hd">${ICON_BACK}<span class="wc-av">${av}</span><span class="wc-who"><h2 id="lr-h" class="wc-nm">${esc(gm.full_name || gm.name)}</h2><span class="wc-sub">${role}, AI Accountant</span></span><span class="wc-ic">${ICON_CAMVID}${ICON_PHONE}<span class="wc-dots">${ICON_DOTS}</span></span></div>
 <div class="wc-bd"><span class="wc-pill">Today</span><span class="wc-enc">${ICON_LOCK}Messages are end-to-end encrypted</span><div class="wc-bub">Let's continue this conversation on WhatsApp<span class="wc-tm">now</span></div></div>
