@@ -670,7 +670,8 @@ const check = 'M4.5 12.5l5 5L19.5 7';
   .g-play { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:64px; height:64px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,.35); transition:transform .15s; }
   .g-play svg { width:26px; height:26px; margin-left:3px; }
   .g-video-btn:hover .g-play, .g-video-btn:focus-visible .g-play { transform:translate(-50%,-50%) scale(1.08); }
-  .g-video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  /* the player is injected on click, so it has no Astro scope attribute: target it with :global */
+  .g-video :global(iframe) { position:absolute; inset:0; width:100%; height:100%; border:0; display:block; }
   .g-video-cap { margin:10px 0 0; font-size:12.5px; color:#B4B8C2; }
 
   /* Stories + features headings */
