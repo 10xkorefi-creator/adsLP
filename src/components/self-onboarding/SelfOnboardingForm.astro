@@ -121,7 +121,7 @@ const roles = [
 </div>
 
 <script>
-  import { routeLead, sendToRouterWebhook } from "../../scripts/leadRouter";
+  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
   import { buildSignupUrl, getClickIds, getUtms, persistAttribution, tenDigitPhone } from "../../scripts/signupRedirect";
 
   declare global { interface Window { LEAD_REFERENCE?: string } }
@@ -273,6 +273,13 @@ const roles = [
         return;
       }
 
+      // Enterprise (25 Nov): 5+ accountants (team 5-10 / 10+), not a CA firm or channel partner. Same test as the
+      // router's enterprise rule, which sends them to Deb (pool E). They do NOT go to self-onboarding: lead goes to
+      // the router + HubSpot as usual, then the popup shows Deb's WhatsApp card. CA firms / channel partners with 5+
+      // keep going to sign-up; non-Tally tools were already handled above (thank-you).
+      const isEnterprise = ["5-10", "10+"].includes(team.value) && !/^(ca firm|channel partner)/i.test(role.value);
+      if (isEnterprise) showLoading();
+
       // 1. Owner + token. routeLead never throws and caps itself at 4s; guard anyway so 2 and 3 always run.
       let result: Awaited<ReturnType<typeof routeLead>> = null;
       try {
@@ -289,6 +296,14 @@ const roles = [
       // 2. HubSpot via n8n. Fire and forget: keepalive lets it finish after we navigate away.
       try { sendToRouterWebhook(payload, result); }
       catch (err) { console.error("[self-onboarding] router webhook failed", err); }
+
+      // Enterprise: stay on the page. Router said Deb -> Deb WhatsApp card. (If Deb is out of office the router falls
+      // back to a GM and the GM card shows; if the router fails, the generic "we'll reach out" card.) No sign-up redirect.
+      if (isEnterprise) {
+        showSuccess();
+        showResult(result, first, { track: true });
+        return;
+      }
 
       // 3. Sign-up page, pre-filled. Allowlisted params only.
       // The sign-up page prefills only for utm_source=meta, so the link always says meta.
