@@ -3,32 +3,43 @@
 // Built from the "Tally Automation – Google Ads Landing Page Prototype" design (mobile 390px primary + desktop 1440px).
 // Form: Tally / Both -> lead router (GM assigned, HubSpot with owner, GM popup). Anything else -> in-form thank-you.
 import Layout from '../../layouts/Layout.astro';
+import afkLogo from '../../assets/logos/afkgaming.avif';
+import buildTrustLogo from '../../assets/logos/buildtrust.avif';
+import cuttingLogo from '../../assets/logos/cutting.avif';
+import kettoLogo from '../../assets/logos/ketto.avif';
+import newtonLogo from '../../assets/logos/newtonschool.avif';
+import tripIndiaLogo from '../../assets/logos/tripindia.avif';
+import uplersLogo from '../../assets/logos/uplers.avif';
 
 const accent = '#2E45D6';
 const headline = 'Stop Typing Bills Manually in Tally';
 const sub = 'Upload handwritten bills or PDFs. AI Accountant extracts every detail, maps it to the right ledgers, and prepares your Tally entries.';
-const bullets = ['Upload hundreds of bills at once', 'AI automatically categorises your ledgers', 'Review entries before posting to Tally'];
+const bullets = ['Upload hundreds of bills at once', 'Bank statements reconciled in minutes', 'Review entries before posting to Tally'];
+const CAPTERRA_URL = 'https://www.capterra.com/p/10030073/AI-Accountant/'; // 4.71 from 14 reviews (checked 25 Nov 2026)
+const VIDEO_ID = 'c0PIguVVOI4'; // "Automate Tally Bill Entries with AI Accountant" – official AI Accountant YouTube channel
+const tools = ['Tally', 'Zoho Books', 'Both', 'SAP', 'Oracle NetSuite', 'Microsoft Dynamics 365', 'Odoo', 'Others'];
 
 const trust = [
-  { label: 'Live in 10 mins', icon: 'M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2' },
-  { label: 'From the team behind Karbon Card', icon: 'M3 7h18v10H3zM3 11h18' },
-  { label: 'Bank-grade encryption', icon: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 017 0v3' },
-  { label: '3-day free trial, no credit card', icon: 'M5 12.5l4.5 4.5L19 7.5' },
+  { label: 'Live in 10 mins', sub: 'Connect your Tally and go', icon: 'M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2' },
+  { label: 'From the Karbon Card team', sub: 'YC-backed fintech builders', icon: 'M3 7h18v10H3zM3 11h18' },
+  { label: 'Bank-grade security', sub: 'SOC 2 Type II & ISO 27001 certified', icon: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 017 0v3' },
+  { label: '3-day free trial', sub: 'No credit card required', icon: 'M5 12.5l4.5 4.5L19 7.5' },
 ];
+// Customer logos, original colours (same files as the other LPs + the Webflow logo strip).
 const logos = [
+  { src: uplersLogo.src, alt: 'Uplers' },
+  { src: kettoLogo.src, alt: 'Ketto' },
   { src: '/urbanwatch.png', alt: 'UrbanMatch' },
-  { src: '/trip-india.png', alt: 'Trip India' },
+  { src: cuttingLogo.src, alt: 'Cutting Edge Design Studio' },
+  { src: '/snazzy-logo.png', alt: 'Snazzy' },
+  { src: tripIndiaLogo.src, alt: 'Trip India' },
+  { src: buildTrustLogo.src, alt: 'Acviss' },
   { src: '/virtual-tech-logo.png', alt: 'Virtual Tech' },
+  { src: newtonLogo.src, alt: 'Newton School' },
   { src: '/subhag.png', alt: 'SUBHAG' },
-  { src: '/trifactorial.png', alt: 'Trifactorial' },
-];
-const fields = [
-  { k: 'Vendor', v: 'Sharma Hardware' },
-  { k: 'GSTIN', v: '29AABCS1234F1Z5' },
-  { k: 'Invoice no.', v: 'SH/24-25/0457' },
-  { k: 'Taxable value', v: '₹8,400.00' },
-  { k: 'CGST 9%', v: '₹756.00' },
-  { k: 'SGST 9%', v: '₹756.00' },
+  { src: afkLogo.src, alt: 'AFK Gaming' },
+  { src: '/trifactorial.png', alt: 'Trifactorial Consulting' },
+  { src: '/acc-n-more.png', alt: "Acc 'N' More" },
 ];
 const steps = [
   { n: '01', title: 'Upload bills or bank statements', body: 'Snap a photo, upload a PDF or drop hundreds of files at once. Handwritten bills work too.' },
@@ -43,6 +54,7 @@ const quotes = [
 ];
 const featured = quotes[0];
 const others = quotes.slice(1);
+const HIGHLIGHT = 'AI ledger categorisation'; // highlighted card in the design
 const features = [
   { title: 'Bill & invoice entry', body: 'Photo or PDF in, Tally-ready entry out. Vendor, GST, line items, and suggested ledger captured automatically.', icon: 'M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5' },
   { title: 'Bank statement to Tally', body: 'Any bank, any format. Transactions categorised and posted without Excel cleanup.', icon: 'M3 10l9-6 9 6M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18' },
@@ -69,11 +81,11 @@ const check = 'M4.5 12.5l5 5L19.5 7';
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
 
   <div class="g" style={`--accent:${accent}`}>
-    <!-- Header (sticky on phones) -->
+    <!-- Header (sticky on phones and desktop) -->
     <header class="g-header">
       <div class="g-wrap g-header-in">
         <a class="g-brand" href="https://www.aiaccountant.com/" target="_blank" rel="noopener">
-          <span class="g-mark">A</span><span class="g-brand-name">AI Accountant</span>
+          <img class="g-logo" src="/korefi-logo.png" alt="" width="32" height="32" /><span class="g-brand-name">AI Accountant</span>
         </a>
         <a href="#form" class="g-btn g-header-cta" data-to-form>Start Free Trial</a>
       </div>
@@ -84,7 +96,14 @@ const check = 'M4.5 12.5l5 5L19.5 7';
       <section class="g-hero">
         <div class="g-wrap g-hero-in">
           <div class="g-hero-copy">
-            <div class="g-rating"><span class="g-stars">★★★★★</span><span>Rated 4.7 on Capterra</span></div>
+            <a class="g-cap" href={CAPTERRA_URL} target="_blank" rel="noopener" aria-label="Rated 4.7 out of 5 on Capterra">
+              <img class="g-cap-logo" src="/capterra-logo.svg" alt="Capterra" width="100" height="23" />
+              <span class="g-cap-div" aria-hidden="true"></span>
+              <span class="g-cap-txt">
+                <span class="g-cap-row"><span class="g-cap-stars" aria-hidden="true">★★★★<span class="g-cap-part">★<span>★</span></span></span><span class="g-cap-score">4.7/5</span></span>
+                <span class="g-cap-sub">Rated on Capterra</span>
+              </span>
+            </a>
             <h1 class="g-h1">{headline}</h1>
             <p class="g-sub">{sub}</p>
 
@@ -120,7 +139,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
                 </div>
 
                 <label class="g-f a-name">Full name
-                  <input type="text" id="g-name" name="first_name" placeholder="e.g. Rahul Sharma" autocomplete="name" maxlength="256" required />
+                  <input type="text" id="g-name" name="first_name" placeholder="e.g. Priya Mehta" autocomplete="name" maxlength="256" required />
                   <span class="g-err">Please enter your name.</span>
                 </label>
                 <label class="g-f a-email">Work email
@@ -132,16 +151,13 @@ const check = 'M4.5 12.5l5 5L19.5 7';
                   <span class="g-err">Enter a valid 10-digit number.</span>
                 </label>
                 <label class="g-f a-company">Company name
-                  <input type="text" id="g-company" name="company" placeholder="e.g. Sharma Traders Pvt Ltd" autocomplete="organization" maxlength="256" required />
+                  <input type="text" id="g-company" name="company" placeholder="e.g. Mehta Enterprises Pvt Ltd" autocomplete="organization" maxlength="256" required />
                   <span class="g-err">Please enter your company name.</span>
                 </label>
                 <label class="g-f a-tool"><span class="m-only">Accounting software you use</span><span class="d-only">Accounting software</span>
                   <select id="g-tool" name="which_accounting_tool_do_you_use" required>
                     <option value="" disabled selected>Select</option>
-                    <option value="Tally">Tally</option>
-                    <option value="Zoho Books">Zoho Books</option>
-                    <option value="Both">Both</option>
-                    <option value="Others">Others</option>
+                    {tools.map((t) => <option value={t}>{t}</option>)}
                   </select>
                   <span class="g-err">Please select your accounting software.</span>
                 </label>
@@ -177,7 +193,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
                 <input type="text" name="lr_hpf_x7" tabindex="-1" autocomplete="off" aria-hidden="true" class="g-hp" />
 
-                <button type="submit" id="g-submit" class="g-btn g-submit a-submit">Start My Free Trial →</button>
+                <button type="submit" id="g-submit" class="g-btn g-submit a-submit">Start Free Trial →</button>
                 <p class="g-legal a-legal">By submitting, you agree to our <a href={PRIVACY} target="_blank" rel="noopener">Privacy Policy</a> and consent to being contacted.</p>
               </form>
 
@@ -193,10 +209,15 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
       <!-- 3. Trust callouts -->
       <section class="g-trust">
-        <div class="g-wrap g-trust-in">
-          {trust.map((t) => (
-            <div class="g-trust-i"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={t.icon}></path></svg><span>{t.label}</span></div>
-          ))}
+        <div class="g-wrap g-trust-wrap">
+          <div class="g-trust-in">
+            {trust.map((t) => (
+              <div class="g-trust-i">
+                <span class="g-tile"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={t.icon}></path></svg></span>
+                <span class="g-trust-txt"><span class="g-trust-l">{t.label}</span><span class="g-trust-s">{t.sub}</span></span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -204,9 +225,13 @@ const check = 'M4.5 12.5l5 5L19.5 7';
       <section class="g-logos">
         <div class="g-wrap g-logos-in">
           <p class="g-eyebrow g-muted">500+ COMPANIES HAVE SWITCHED</p>
-          <ul class="g-logo-row">
-            {logos.map((l) => <li><img src={l.src} alt={l.alt} loading="lazy" decoding="async" /></li>)}
-          </ul>
+          <div class="g-marquee" aria-label="Customers">
+            <ul class="g-logo-track">
+              {[...logos, ...logos].map((l, i) => (
+                <li aria-hidden={i >= logos.length ? 'true' : undefined}><img src={l.src} alt={i >= logos.length ? '' : l.alt} loading="lazy" decoding="async" /></li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -215,8 +240,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
         <div class="g-wrap g-how-in">
           <div class="g-how-copy">
             <div class="g-head">
-              <span class="g-eyebrow g-eyebrow-dark">HOW IT WORKS</span>
-              <h2 class="g-h2">From a crumpled bill to a Tally entry</h2>
+              <h2 class="g-h2 g-h2-how">From a <span class="g-hw-note">crumpled bill</span> to a <span class="g-hw-chip">Tally entry<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#5FD49A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span></h2>
             </div>
             <ol class="g-steps">
               {steps.map((s) => (
@@ -225,18 +249,13 @@ const check = 'M4.5 12.5l5 5L19.5 7';
             </ol>
           </div>
           <div class="g-how-demo">
-            <div class="g-ex">
-              <div class="g-ex-top">
-                <span class="g-ex-file"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#C9CCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7zM14 3v4h4"></path></svg>bill_0457.jpg</span>
-                <span class="g-ex-tag">Extracted</span>
-              </div>
-              <div class="g-ex-rows">
-                {fields.map((f) => <div class="g-ex-row"><span>{f.k}</span><span>{f.v}</span></div>)}
-                <div class="g-ex-ledger"><span>Suggested ledger</span><span>Purchase – Hardware<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#5FD49A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span></div>
-                <div class="g-ex-total"><span>Total</span><span>₹9,912.00</span></div>
-              </div>
-              <div class="g-ex-post">Post to Tally</div>
+            <div class="g-video">
+              <button type="button" class="g-video-btn" data-yt={VIDEO_ID} aria-label="Play video: Automate Tally bill entries with AI Accountant">
+                <img src={`https://i.ytimg.com/vi/${VIDEO_ID}/sddefault.jpg`} alt="" loading="lazy" decoding="async" />
+                <span class="g-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"></path></svg></span>
+              </button>
             </div>
+            <p class="g-video-cap">Watch it work: bulk upload, OCR, GST and one-click sync to Tally</p>
           </div>
         </div>
       </section>
@@ -245,14 +264,13 @@ const check = 'M4.5 12.5l5 5L19.5 7';
       <section class="g-stories">
         <div class="g-wrap g-sec">
           <div class="g-head">
-            <span class="g-eyebrow g-eyebrow-accent">CUSTOMER STORIES</span>
-            <h2 class="g-h2 g-h2-narrow">Businesses that stopped doing data entry</h2>
+            <h2 class="g-h2 g-h2-narrow">Businesses that stopped doing <span class="g-strike">data entry<svg aria-hidden="true" viewBox="0 0 100 24" preserveAspectRatio="none" fill="none"><path d="M2 15 C 20 8, 35 18, 52 10 S 85 6, 98 12" stroke="#E5484D" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"></path></svg></span></h2>
           </div>
           <div class="g-stories-in">
             <figure class="g-featured">
               <span aria-hidden="true" class="g-bigq">“</span>
               <blockquote>{featured.text}</blockquote>
-              <figcaption><span class="g-av">{featured.initial}</span><span class="g-who"><span class="g-who-n">{featured.name}</span><span class="g-who-r">{featured.role}</span></span></figcaption>
+              <figcaption><span class="g-line" aria-hidden="true"></span><span class="g-who"><span class="g-who-n">{featured.name}</span><span class="g-who-r">{featured.role}</span></span></figcaption>
             </figure>
             <div class="g-others">
               {others.map((q) => (
@@ -268,17 +286,19 @@ const check = 'M4.5 12.5l5 5L19.5 7';
         <div class="g-wrap g-sec">
           <div class="g-feat-head">
             <div class="g-head">
-              <span class="g-eyebrow g-eyebrow-accent">FEATURES</span>
-              <h2 class="g-h2 g-h2-feat">Everything your Tally workflow needs</h2>
+              <h2 class="g-h2 g-h2-feat">Everything your <span class="g-ul">Tally workflow<svg aria-hidden="true" viewBox="0 0 100 18" preserveAspectRatio="none" fill="none"><path d="M2 12 C 25 5, 55 3, 98 7 M 10 15 C 40 11, 70 11, 92 12" stroke="currentColor" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"></path></svg></span> needs</h2>
             </div>
-            <p class="g-feat-more d-only">+ expense categorisation, custom reports, and Zoho Books support</p>
+            <p class="g-feat-more d-only">+ expense categorisation, custom reports, and more</p>
           </div>
           <div class="g-feat-grid">
             {features.map((f) => (
-              <div class="g-feat"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={f.icon}></path></svg><span class="g-feat-t">{f.title}</span><span class="g-feat-b">{f.body}</span></div>
+              <div class:list={["g-feat", { "g-feat-hl": f.title === HIGHLIGHT }]}>
+                <span class="g-tile g-tile-feat"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d={f.icon}></path></svg></span>
+                <span class="g-feat-txt"><span class="g-feat-t">{f.title}</span><span class="g-feat-b">{f.body}</span></span>
+              </div>
             ))}
           </div>
-          <p class="g-feat-more m-only">+ expense categorisation, custom reports, and Zoho Books support</p>
+          <p class="g-feat-more m-only">+ expense categorisation, custom reports, and more</p>
         </div>
       </section>
 
@@ -287,8 +307,8 @@ const check = 'M4.5 12.5l5 5L19.5 7';
         <div class="g-wrap g-sec g-faq-in">
           <h2 class="g-h2 g-faq-h">Questions, answered</h2>
           <div class="g-faq-list">
-            {faqs.map(([q, a]) => (
-              <details open>
+            {faqs.map(([q, a], i) => (
+              <details open={i === 0}>
                 <summary><span>{q}</span><span class="g-sign" aria-hidden="true"></span></summary>
                 <p>{a}</p>
               </details>
@@ -304,14 +324,14 @@ const check = 'M4.5 12.5l5 5L19.5 7';
             <h2>Stop typing. Start closing books faster.</h2>
             <p>Join 500+ companies automating their Tally entries with AI Accountant.</p>
           </div>
-          <a href="#form" class="g-final-cta" data-to-form>Start My Free Trial →</a>
+          <a href="#form" class="g-final-cta" data-to-form>Start Free Trial →</a>
         </div>
       </section>
     </main>
 
     <footer class="g-footer">
       <div class="g-wrap g-footer-in">
-        <div class="g-brand"><span class="g-mark g-mark-inv">A</span><span class="g-brand-name g-white">AI Accountant</span></div>
+        <div class="g-brand"><img class="g-logo g-logo-inv" src="/korefi-logo.png" alt="" width="28" height="28" /><span class="g-brand-name g-white">AI Accountant</span></div>
         <div class="g-footer-links">
           <a href={TERMS} target="_blank" rel="noopener">Terms</a>
           <a href={PRIVACY} target="_blank" rel="noopener">Privacy</a>
@@ -384,7 +404,11 @@ const check = 'M4.5 12.5l5 5L19.5 7';
   .g-f[hidden] { display:none; }
   .g-f input, .g-f select { height:48px; width:100%; min-width:0; border:1px solid var(--field); border-radius:8px; padding:0 14px; font-size:16px; font-family:inherit; font-weight:400; background:#fff; color:var(--ink); outline:none; transition:border-color .15s, box-shadow .15s; }
   .g-f select { padding:0 10px; cursor:pointer; }
-  .g-f select:invalid, .g-f select option[value=""] { color:#8A8E98; }
+  /* Unpicked select shows a muted placeholder, but the option list itself is always full-contrast
+     (on Windows/desktop Chrome the list inherits the select's colour, which made every option look faded). */
+  .g-f select:invalid { color:#6B6F7A; }
+  .g-f select option { color:var(--ink); background:#fff; font-weight:500; }
+  .g-f select option[value=""] { color:#6B6F7A; font-weight:400; }
   .g-f input:focus, .g-f select:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(46,69,214,.15); }
   .a-setup select { border-style:dashed; border-color:#8C99E6; }
   .g-phone { display:flex; gap:8px; }
@@ -404,17 +428,10 @@ const check = 'M4.5 12.5l5 5L19.5 7';
   .g-success-s { font-size:15px; color:var(--mut); }
 
   /* Trust */
-  .g-trust-in { padding:14px 20px 22px; display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; }
-  .g-trust-i { display:flex; align-items:flex-start; gap:7px; font-size:11.5px; line-height:1.4; font-weight:600; color:var(--ink2); }
-  .g-trust-i svg { flex:none; width:15px; height:15px; margin-top:1px; }
 
   /* Logos */
   .g-logos { border-top:1px solid var(--line); }
   .g-logos-in { padding:22px 20px 26px; display:flex; flex-direction:column; gap:14px; }
-  .g-logo-row { margin:0; padding:0; list-style:none; display:flex; gap:26px; align-items:center; overflow-x:auto; scrollbar-width:none; }
-  .g-logo-row::-webkit-scrollbar { display:none; }
-  .g-logo-row li { flex:none; }
-  .g-logo-row img { height:28px; width:auto; max-width:120px; object-fit:contain; filter:grayscale(1); opacity:.6; }
 
   /* How it works */
   .g-how { background:var(--ink); color:#fff; }
@@ -463,9 +480,6 @@ const check = 'M4.5 12.5l5 5L19.5 7';
   .g-who-n2 { font-weight:700; color:var(--ink); }
 
   .g-feat-head { display:flex; flex-direction:column; gap:16px; }
-  .g-feat-grid { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line); border-left:1px solid var(--line); }
-  .g-feat { padding:16px 14px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); display:flex; flex-direction:column; gap:8px; }
-  .g-feat svg { width:22px; height:22px; }
   .g-feat-t { font-size:14px; line-height:1.25; font-weight:700; }
   .g-feat-b { font-size:12.5px; line-height:1.5; color:var(--mut2); }
   .g-feat-more { margin:0; font-size:13px; color:var(--mut2); }
@@ -496,7 +510,6 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     .m-only { display:none; }
     .d-only { display:inline; }
     .g-wrap { padding:0 32px; }
-    .g-header { position:static; background:#fff; backdrop-filter:none; }
     .g-header-in { height:72px; padding:0 32px; gap:16px; }
     .g-mark { width:32px; height:32px; border-radius:8px; font-size:17px; }
     .g-brand { gap:10px; }
@@ -533,21 +546,13 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     .g-form-sub { font-size:13.5px; }
     .g-f input, .g-f select { height:46px; font-size:15px; padding:0 12px; }
     .g-f select { padding:0 10px; }
-    /* desktop: +91 sits inside the field (half-width column, as in the design) */
-    .g-phone { position:relative; gap:0; }
-    .g-cc { position:absolute; left:1px; top:1px; height:44px; padding:0 0 0 12px; border:0; background:none; font-size:15px; color:var(--ink2); pointer-events:none; }
-    .a-phone input { padding:0 10px 0 46px; }
+    .g-phone { gap:6px; }
+    .g-cc { height:46px; padding:0 10px; font-size:15px; }
 
-    .g-trust { border-bottom:1px solid var(--line); }
-    .g-trust-in { padding:22px 32px; display:flex; flex-wrap:wrap; gap:14px 40px; justify-content:space-between; }
-    .g-trust-i { align-items:center; gap:9px; font-size:14px; }
-    .g-trust-i svg { width:18px; height:18px; margin:0; }
 
     .g-logos { border-top:0; }
     .g-logos-in { padding:32px; flex-direction:row; flex-wrap:wrap; gap:18px 48px; align-items:center; }
     .g-muted { font-size:11.5px; }
-    .g-logo-row { flex-wrap:wrap; gap:18px 44px; overflow:visible; }
-    .g-logo-row img { height:34px; max-width:150px; }
 
     .g-eyebrow { font-size:12px; }
     .g-h2 { font-size:46px; line-height:1.05; letter-spacing:-1.6px; }
@@ -592,8 +597,6 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     .g-h2-feat { max-width:560px; }
     .g-feat-more { font-size:15px; max-width:320px; }
     .g-feat-grid { grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); }
-    .g-feat { padding:30px 28px; gap:12px; }
-    .g-feat svg { width:26px; height:26px; stroke-width:1.7; }
     .g-feat-t { font-size:19px; letter-spacing:-.2px; line-height:1.3; }
     .g-feat-b { font-size:15px; line-height:1.55; }
 
@@ -617,11 +620,133 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     .g-mark-inv { width:28px; height:28px; border-radius:7px; font-size:15px; }
     .g-white { font-size:16px; }
   }
+  /* ===== 26 Nov update: design v2 (artifact) + requested changes ===== */
+  /* Our logo (A-Star) */
+  .g-logo { width:28px; height:28px; object-fit:contain; flex:none; }
+  .g-logo-inv { width:26px; height:26px; filter:invert(1); }
+
+  /* Capterra badge */
+  .g-cap { align-self:flex-start; display:flex; align-items:center; gap:10px; padding:7px 12px 7px 10px; background:#fff; border:1px solid var(--line2); border-radius:10px; box-shadow:0 1px 2px rgba(14,15,18,.05); text-decoration:none; color:var(--ink) !important; transition:border-color .15s; }
+  .g-cap:hover { border-color:#B8B3A6; }
+  .g-cap-logo { height:17px; width:auto; display:block; }
+  .g-cap-div { width:1px; height:26px; background:var(--line); }
+  .g-cap-txt { display:flex; flex-direction:column; gap:1px; }
+  .g-cap-row { display:flex; align-items:center; gap:6px; }
+  .g-cap-stars { display:inline-flex; font-size:14px; letter-spacing:1px; line-height:1; color:#E8A317; }
+  .g-cap-part { position:relative; display:inline-block; color:#D6D3CB; }
+  .g-cap-part > span { position:absolute; left:0; top:0; width:70%; overflow:hidden; color:#E8A317; white-space:nowrap; }
+  .g-cap-score { font-size:14px; font-weight:800; line-height:1; }
+  .g-cap-sub { font-size:11px; color:var(--mut2); }
+
+  /* Trust card */
+  .g-trust-wrap { padding:14px 14px 24px; }
+  .g-trust-in { display:grid; grid-template-columns:1fr 1fr; gap:4px; padding:6px; background:#fff; border:1px solid var(--line); border-radius:14px; box-shadow:0 6px 18px rgba(14,15,18,.06); }
+  .g-trust-i { display:flex; align-items:flex-start; gap:9px; padding:10px 8px; min-width:0; }
+  .g-tile { flex:none; width:32px; height:32px; border-radius:9px; background:#EEF0FC; color:var(--accent); display:flex; align-items:center; justify-content:center; }
+  .g-tile svg { width:16px; height:16px; }
+  .g-trust-txt { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .g-trust-l { font-size:12.5px; line-height:1.25; font-weight:700; color:var(--ink); }
+  .g-trust-s { font-size:10.5px; line-height:1.35; color:var(--mut2); }
+
+  /* Revolving customer logos (original colours) */
+  .g-marquee { position:relative; overflow:hidden; margin:0 -20px; -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .g-logo-track { margin:0; padding:4px 0; list-style:none; display:flex; align-items:center; gap:36px; width:max-content; animation:g-marquee 38s linear infinite; }
+  .g-marquee:hover .g-logo-track { animation-play-state:paused; }
+  .g-logo-track li { flex:none; height:34px; display:flex; align-items:center; }
+  .g-logo-track img { height:100%; width:auto; max-width:130px; object-fit:contain; }
+  @keyframes g-marquee { from { transform:translateX(0); } to { transform:translateX(calc(-50% - 18px)); } }
+  @media (prefers-reduced-motion: reduce) { .g-logo-track { animation:none; flex-wrap:wrap; width:auto; justify-content:center; } .g-logo-track li[aria-hidden="true"] { display:none; } }
+
+  /* How it works heading */
+  .g-h2-how { line-height:1.55; }
+  .g-hw-note { display:inline-block; font-family:Caveat, cursive; font-weight:700; font-size:35px; line-height:1.05; letter-spacing:0; color:#2B2A6B; background:#FFFCF2; padding:0 9px 3px; border-radius:3px; transform:rotate(-2deg); box-shadow:0 3px 8px rgba(0,0,0,.25); }
+  .g-hw-chip { display:inline-flex; align-items:center; gap:7px; font-family:'JetBrains Mono', monospace; font-weight:600; font-size:20px; line-height:1.2; letter-spacing:-.3px; color:#fff; background:#17181D; border:1px solid #3A3D46; padding:4px 10px; border-radius:7px; vertical-align:middle; white-space:nowrap; }
+  .g-hw-chip svg { width:16px; height:16px; }
+
+  /* Product video (click to play) */
+  .g-video { position:relative; aspect-ratio:16/9; border-radius:14px; overflow:hidden; background:#17181D; border:1px solid #2A2C33; }
+  .g-video-btn { position:absolute; inset:0; width:100%; height:100%; padding:0; border:0; background:none; cursor:pointer; display:block; }
+  .g-video-btn img { width:100%; height:100%; object-fit:cover; display:block; }
+  .g-play { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:64px; height:64px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,.35); transition:transform .15s; }
+  .g-play svg { width:26px; height:26px; margin-left:3px; }
+  .g-video-btn:hover .g-play, .g-video-btn:focus-visible .g-play { transform:translate(-50%,-50%) scale(1.08); }
+  .g-video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .g-video-cap { margin:10px 0 0; font-size:12.5px; color:#B4B8C2; }
+
+  /* Stories + features headings */
+  .g-strike { position:relative; display:inline-block; color:#8A8E98; }
+  .g-strike svg { position:absolute; left:-4px; top:50%; width:calc(100% + 8px); height:16px; margin-top:-6px; overflow:visible; }
+  .g-line { flex:none; width:28px; height:2px; background:var(--accent); }
+  .g-ul { position:relative; display:inline-block; white-space:nowrap; color:inherit; }
+  .g-ul svg { position:absolute; left:-2px; bottom:-9px; width:calc(100% + 4px); height:12px; overflow:visible; color:var(--accent); }
+
+  /* Features: single-column list on phones */
+  .g-feat-grid { display:flex; flex-direction:column; border-top:1px solid var(--line); }
+  .g-feat { display:flex; align-items:flex-start; gap:14px; padding:16px 12px; border-bottom:1px solid var(--line); background:#fff; }
+  .g-feat-hl { background:#EEF0FC; }
+  .g-feat-hl .g-tile-feat { background:#fff; }
+  .g-tile-feat { width:38px; height:38px; border-radius:10px; }
+  .g-tile-feat svg { width:19px; height:19px; }
+  .g-feat-txt { display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .g-feat-t { font-size:15px; line-height:1.3; }
+  .g-feat-b { font-size:13.5px; }
+
+  @media (min-width: 960px) {
+    .g-logo { width:32px; height:32px; }
+    .g-logo-inv { width:28px; height:28px; }
+
+    .g-cap { gap:14px; padding:10px 18px 10px 14px; border-radius:12px; }
+    .g-cap-logo { height:23px; }
+    .g-cap-div { height:34px; }
+    .g-cap-txt { gap:3px; }
+    .g-cap-row { gap:8px; }
+    .g-cap-stars { font-size:18px; letter-spacing:1.5px; }
+    .g-cap-score { font-size:18px; }
+    .g-cap-sub { font-size:13px; }
+
+    .g-trust { position:relative; z-index:2; margin-top:-44px; }
+    .g-trust-wrap { padding:0 32px; }
+    .g-trust-in { grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:8px; padding:14px; border-radius:16px; box-shadow:0 10px 30px rgba(14,15,18,.07); }
+    .g-trust-i { gap:12px; padding:12px; }
+    .g-tile { width:40px; height:40px; border-radius:10px; }
+    .g-tile svg { width:19px; height:19px; }
+    .g-trust-l { font-size:15.5px; }
+    .g-trust-s { font-size:13px; line-height:1.4; }
+
+    .g-logos-in { flex-wrap:nowrap; gap:48px; }
+    .g-logos-in .g-eyebrow { flex:none; }
+    .g-marquee { flex:1; min-width:0; margin:0; }
+    .g-logo-track { gap:48px; }
+    .g-logo-track li { height:40px; }
+    .g-logo-track img { max-width:150px; }
+    @keyframes g-marquee { from { transform:translateX(0); } to { transform:translateX(calc(-50% - 24px)); } }
+
+    .g-h2-how { line-height:1.5; }
+    .g-hw-note { font-size:58px; padding:0 14px 4px; border-radius:4px; box-shadow:0 5px 14px rgba(0,0,0,.3); }
+    .g-hw-chip { font-size:34px; gap:10px; letter-spacing:-.8px; padding:6px 16px; border-radius:10px; }
+    .g-hw-chip svg { width:26px; height:26px; }
+    .g-video { border-radius:16px; }
+    .g-play { width:76px; height:76px; }
+    .g-play svg { width:30px; height:30px; }
+    .g-video-cap { font-size:13.5px; }
+
+    .g-strike svg { left:-6px; width:calc(100% + 12px); height:24px; margin-top:-9px; }
+    .g-line { width:36px; }
+    .g-ul svg { left:-3px; bottom:-14px; width:calc(100% + 6px); height:18px; }
+
+    .g-feat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); border-left:1px solid var(--line); }
+    .g-feat { flex-direction:column; gap:12px; padding:30px 28px; border-right:1px solid var(--line); }
+    .g-tile-feat { width:46px; height:46px; border-radius:12px; }
+    .g-tile-feat svg { width:22px; height:22px; }
+    .g-feat-txt { gap:12px; }
+    .g-feat-t { font-size:19px; }
+    .g-feat-b { font-size:15px; }
+  }
 </style>
 
 <script>
   import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
-  import { getClickIds, getUtms, persistAttribution, tenDigitPhone } from "../../scripts/signupRedirect";
+  import { buildSignupUrl, getClickIds, getUtms, persistAttribution, tenDigitPhone } from "../../scripts/signupRedirect";
 
   declare global { interface Window { LEAD_REFERENCE?: string } }
 
@@ -689,16 +814,49 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     return !bad;
   };
 
-  // The live page hides "Create account" in the router popup (Webflow page code, 29 Oct: .wsub,.idsub hidden).
-  // The popup lives in an open shadow root, so the same rule is added inside it.
-  const hideCreateAccount = () => {
-    const root = document.querySelector<HTMLElement>("[data-lr-modal]")?.shadowRoot;
-    if (!root || root.querySelector("style[data-gads-ta]")) return;
-    const st = document.createElement("style");
-    st.setAttribute("data-gads-ta", "");
-    st.textContent = ".wsub,.idsub{display:none!important}";
-    root.appendChild(st);
+  // Popup "Prefer to set it up yourself? Create account" (26 Nov): opens the product sign-up page pre-filled,
+  // same link as the self-onboarding page (instead of the WhatsApp bot the Instant Demo cards default to).
+  // Hidden for 5+ accountant teams (5-10 / 10+), same rule as the other router pages.
+  // The popup is in an open shadow root and its cards are re-rendered (loading -> card -> demo steps), so a
+  // MutationObserver keeps the link pointed at sign-up whenever a card appears.
+  let popupObs: MutationObserver | null = null;
+  const signupLink = (p: Record<string, string>) => {
+    const l = { ...p };
+    if (l.first_name && l.first_name.includes(" ")) { // one name box: split for the sign-up page
+      const parts = l.first_name.trim().split(/\s+/);
+      l.first_name = parts.shift() || ""; l.last_name = parts.join(" ");
+    }
+    return buildSignupUrl(l);
   };
+  const wirePopup = (href: string, bigTeam: boolean) => {
+    const root = document.querySelector<HTMLElement>("[data-lr-modal]")?.shadowRoot;
+    if (!root) return;
+    if (bigTeam && !root.querySelector("style[data-gads-ta]")) {
+      const st = document.createElement("style");
+      st.setAttribute("data-gads-ta", "");
+      st.textContent = ".wsub,.idsub{display:none!important}";
+      root.appendChild(st);
+    }
+    const apply = () => root.querySelectorAll<HTMLAnchorElement>("a.idca, a.wsb").forEach((a) => {
+      if (a.getAttribute("href") !== href) a.setAttribute("href", href);
+    });
+    apply();
+    popupObs?.disconnect();
+    popupObs = new MutationObserver(apply);
+    popupObs.observe(root, { childList: true, subtree: true });
+  };
+
+  // "How it works" video: thumbnail + play button; the YouTube player loads only on click.
+  document.querySelectorAll<HTMLButtonElement>(".g-video-btn").forEach((b) =>
+    b.addEventListener("click", () => {
+      const id = b.dataset.yt; if (!id) return;
+      const f = document.createElement("iframe");
+      f.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+      f.title = "Automate Tally bill entries with AI Accountant";
+      f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      f.allowFullscreen = true;
+      b.replaceWith(f);
+    }));
 
   const showSuccess = () => {
     form.style.display = "none";
@@ -750,14 +908,14 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
     // Tally / Both: router picks the GM (self-caps at 4s), lead goes to HubSpot with that owner, GM popup.
     showLoading();
-    hideCreateAccount();
+    wirePopup(signupLink(payload), ["5-10", "10+"].includes(team.value));
     let result: Awaited<ReturnType<typeof routeLead>> = null;
     try {
       result = await routeLead({ pageKey: PAGE_KEY, email: payload.email, name: fullName, phone: phone10, fields: payload, utm, clickIds });
     } catch (err) { console.error("[gads-ta] routeLead failed", err); }
     try { sendToRouterWebhook(payload, result); } catch (err) { console.error("[gads-ta] router webhook failed", err); }
     showSuccess();
-    // Instant Demo, same as the live Webflow /gads/tally-automation page (instantDemo: true, card design):
+    // Instant Demo + WhatsApp + Create account (sign-up), same as the live Webflow /gads/tally-automation page (instantDemo: true, card design):
     // in business hours, if a GM is free right now the popup offers a live video call (Teams; phones use the
     // aiaccountant.com/instant-live-demo join page). Otherwise, or on any failure, the WhatsApp card.
     showResult(result, fullName.split(/\s+/)[0] || fullName, { track: true, instantDemo: true });
