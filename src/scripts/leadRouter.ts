@@ -35,6 +35,7 @@ function signupHref(): string {
 // Instant demo: live Teams call with the GM straight from the popup (opt-in per form, backend decides availability)
 const INSTANT_DEMO_WEBHOOK = "https://n8n.aiaccountant.com/webhook/instant-demo";
 const INSTANT_DEMO_TIMEOUT_MS = 15000;
+if (typeof window !== "undefined") { try { const s2 = document.createElement("script"); s2.async = true; s2.src = "https://qmaphtslnvvifkzmbrvh.supabase.co/functions/v1/ild-popup"; document.head.appendChild(s2); } catch {} }
 
 type Gm = { name: string; full_name?: string; title?: string; photo_url?: string | null; phone?: string; email?: string; pronoun?: string | null };
 export type RouterResult = {
@@ -458,6 +459,8 @@ ${waHref ? `<a class="b1 idwa" href="${waHref}" target="_blank" rel="noopener">$
 }
 
 async function startInstantDemo(token: string, gm: Gm, backToCard: () => void) {
+  const id2 = (window as any).LRID2;
+  if (id2 && id2.on()) return id2.start({ token, gm, showModal, root: () => modalRoot, track: lrTrack, esc, fmtPhone, webhook: INSTANT_DEMO_WEBHOOK });
   lrTrack("instant_demo_click");
   let cancelled = false;
   const ctrl = new AbortController();
