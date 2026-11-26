@@ -1,8 +1,11 @@
 ---
 // /gads/tally-automation – Google Ads Tally automation LP.
 // Built from the "Tally Automation – Google Ads Landing Page Prototype" design (mobile 390px primary + desktop 1440px).
-// Form (26 Nov, same as self-onboarding): Tally / Both -> router + HubSpot -> pre-filled sign-up page;
-// 5+ accountants (not CA firm / channel partner) -> Deb's WhatsApp card; any other tool -> in-form thank-you.
+// Form routing = live Webflow /gads/tally-automation page (KORE_FI_FORM_CFG, read 26 Nov):
+//   Zoho Books / Others -> lead recorded, redirect to www.aiaccountant.com/thank-you (no router);
+//   every other tool (Tally, Both, ERPs), any team size, any role -> lead router + HubSpot + popup:
+//   enterprise -> Deb's WhatsApp card; GM free now -> Instant Demo card; else WhatsApp card;
+//   "Create account" (pre-filled sign-up, new tab) under GM cards, hidden for 5-10 / 10+.
 import Layout from '../../layouts/Layout.astro';
 import afkLogo from '../../assets/logos/afkgaming.avif';
 import buildTrustLogo from '../../assets/logos/buildtrust.avif';
@@ -178,6 +181,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
                 <label class="g-f a-team">Team size
                   <select id="g-team" name="accounting_team_size" required>
                     <option value="" disabled selected>Select</option>
+                    <option value="0">0</option>
                     <option value="1-3">1-3</option>
                     <option value="3-5">3-5</option>
                     <option value="5-10">5-10</option>
@@ -757,7 +761,9 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
   const PAGE_KEY = "gads-tally-automation";
   const CONTACT_SOURCE = "Tally Automation - gads";
-  const ROUTER_TOOLS = ["tally", "both"]; // everything else: in-form thank-you, no router
+  const TALLY_TOOLS = ["tally", "both"];          // show "Is your Tally on cloud or local?"
+  const BLOCKED_TOOLS = ["zoho books", "others"];  // Webflow blockedTools: no router, thank-you page
+  const THANK_YOU_URL = "https://www.aiaccountant.com/thank-you"; // Webflow thankYouUrl
   const LEGACY_WEBHOOK = "https://n8n.aiaccountant.com/webhook/ce246056-bdd0-4199-b363-3b44ed255f96";
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -794,7 +800,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
   // "Is your Tally on cloud or local?" only for Tally / Both.
   const syncSetup = () => {
-    const on = ROUTER_TOOLS.some((t) => tool.value.toLowerCase().includes(t));
+    const on = TALLY_TOOLS.some((t) => tool.value.toLowerCase().includes(t));
     setupWrap.hidden = !on; setup.disabled = !on; setup.required = on;
     form.classList.toggle("no-setup", !on);
     if (!on) { setup.selectedIndex = 0; mark(setup, false); }
@@ -822,6 +828,28 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 
   // Pre-filled sign-up link, same contract as the self-onboarding page (first_name and last_name sent separately).
   const signupLink = (p: Record<string, string>) => buildSignupUrl(p);
+
+  // Popup "Prefer to set it up yourself? Create account": on Webflow it opens the pre-filled sign-up page and is
+  // hidden for 5-10 / 10+ teams. The shared Instant Demo / WhatsApp cards point it at the WhatsApp bot, so the page
+  // re-points it (and hides it for big teams). The popup is an open shadow root re-rendered per step, hence the observer.
+  let popupObs: MutationObserver | null = null;
+  const wirePopup = (href: string, bigTeam: boolean) => {
+    const root = document.querySelector<HTMLElement>("[data-lr-modal]")?.shadowRoot;
+    if (!root) return;
+    if (bigTeam && !root.querySelector("style[data-gads-ta]")) {
+      const st = document.createElement("style");
+      st.setAttribute("data-gads-ta", "");
+      st.textContent = ".wsub,.idsub{display:none!important}";
+      root.appendChild(st);
+    }
+    const apply = () => root.querySelectorAll<HTMLAnchorElement>("a.idca, a.wsb").forEach((a) => {
+      if (a.getAttribute("href") !== href) a.setAttribute("href", href);
+    });
+    apply();
+    popupObs?.disconnect();
+    popupObs = new MutationObserver(apply);
+    popupObs.observe(root, { childList: true, subtree: true });
+  };
 
   // "How it works" video: thumbnail + play button; the YouTube player loads only on click.
   document.querySelectorAll<HTMLButtonElement>(".g-video-btn").forEach((b) =>
@@ -871,50 +899,45 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     };
     Object.keys(payload).forEach((k) => { if (!payload[k]) delete payload[k]; });
 
-    // Bot trap filled: show the thank-you, send nothing (no GM turn used).
-    if (payload.lr_hpf_x7) { showSuccess(); return; }
+    // Bot trap filled (Webflow: nothing sent anywhere, generic card).
+    if (payload.lr_hpf_x7) { showResult(null, firstName); setTimeout(() => { busy = false; btn.disabled = false; }, 1500); return; }
 
-    // Not Tally / Both: record the lead, thank-you in place, no router.
-    if (!ROUTER_TOOLS.includes(tool.value.toLowerCase())) {
+    // PATH 1 (Webflow blockedTools): Zoho Books / Others -> lead recorded, thank-you page, no router.
+    // (Webflow records it with its native form submit; this page has no Webflow form, so the legacy lead webhook.)
+    if (BLOCKED_TOOLS.includes(tool.value.toLowerCase())) {
       try {
         fetch(LEGACY_WEBHOOK, { method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...payload, __event: "form_submit_blocked_tool" }), keepalive: true })
           .catch((err) => console.error("[gads-ta] blocked-tool webhook failed", err));
       } catch (err) { console.error("[gads-ta] blocked-tool webhook failed", err); }
-      showSuccess();
+      setTimeout(() => window.location.assign(THANK_YOU_URL), 300);
       return;
     }
 
-    // Tally / Both (26 Nov): same flow as the self-onboarding page.
-    // Enterprise = 5+ accountants (5-10 / 10+) and not a CA firm / channel partner -> router sends them to Deb;
-    // they stay on the page and see Deb's WhatsApp card. Everyone else -> router + HubSpot, then straight to the
-    // pre-filled sign-up page (no popup).
-    const isEnterprise = ["5-10", "10+"].includes(team.value) && !/^(ca firm|channel partner)/i.test(role.value);
-    if (isEnterprise) showLoading();
-    else btn.textContent = "Setting up your account...";
-
-    // 1. Owner + token (router self-caps at 4s, never throws; guarded anyway so 2 and 3 always run).
+    // PATH 3 (Webflow): everyone else -> lead router (GM, or Deb for enterprise) + HubSpot + popup. No redirect.
+    const t0 = performance.now();
+    showLoading();
+    wirePopup(signupLink(payload), ["5-10", "10+"].includes(team.value));
     let result: Awaited<ReturnType<typeof routeLead>> = null;
     try {
       result = await routeLead({ pageKey: PAGE_KEY, email: payload.email, name: fullName, phone: phone10, fields: payload, utm, clickIds });
       if (!result || !result.ok) console.error("[gads-ta] routeLead returned no owner", result);
     } catch (err) { console.error("[gads-ta] routeLead failed", err); }
-
-    // 2. HubSpot via n8n, fire and forget (keepalive survives the navigation).
     try { sendToRouterWebhook(payload, result); } catch (err) { console.error("[gads-ta] router webhook failed", err); }
+    const ok = !!(result && result.ok && result.gm && result.token);
 
-    // Enterprise: stay on the page, Deb's card (GM card if Deb is out of office; generic card if the router failed).
-    if (isEnterprise) {
-      showSuccess();
-      showResult(result, firstName, { track: true });
-      return;
-    }
+    // Same analytics event as Webflow (GTM / Google Ads conversion).
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({ event: "lead_submitted", transaction_id: ok ? result!.token : `gads-ta-${Date.now()}`,
+      lr_reason: ok ? (result!.reason || "") : "fallback", lr_ms: Math.round(performance.now() - t0) });
 
-    // 3. Sign-up page, pre-filled (full name split into first/last, type=external; real UTMs kept).
-    window.location.assign(signupLink(payload));
+    showSuccess();
+    // Enterprise -> Deb card; GM -> Instant Demo card if free now (business hours) else WhatsApp card; failure -> fallback.
+    showResult(result, firstName, { track: true, instantDemo: true });
+    setTimeout(() => { busy = false; btn.disabled = false; }, 1500);
   });
 
-  // bfcache: coming back from the sign-up page must give a usable form again.
+  // bfcache: coming back from the thank-you page must give a usable form again.
   window.addEventListener("pageshow", (ev) => {
     if (ev.persisted) { busy = false; btn.disabled = false; btn.textContent = "Start Free Trial →"; }
   });
