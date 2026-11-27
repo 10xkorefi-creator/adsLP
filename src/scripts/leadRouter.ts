@@ -85,6 +85,8 @@ export async function routeLead(opts: {
     lg__phone: opts.fields.lg__phone || opts.phone || "",
     first_name: opts.fields.first_name || opts.name || "",
   };
+  // 27 Nov 2026: Tally local + small team -> no popup at all (not even the loader); goToSignup redirects after routing
+  if (tallyLocal() && !bigTeam()) hideModalNow();
   const body = {
     idempotency_key: opts.idempotencyKey || newKey(),
     page_key: opts.pageKey, email: opts.email, name: opts.name, phone: opts.phone,
@@ -306,6 +308,12 @@ function showModal(html: string) {
   requestAnimationFrame(() => ov.classList.add("on"));
   (root.querySelector(".card") as HTMLElement).focus({ preventScroll: true }); // never focus a button (Enter would press it)
   root.querySelector(".btn")?.addEventListener("click", () => closeModal(true));
+}
+
+function hideModalNow() {
+  if (!modalRoot) return;
+  const ov = modalRoot.querySelector(".ov") as HTMLElement;
+  clearTimeout(hideTimer); ov.classList.remove("on"); ov.style.display = "none"; openedAt = 0;
 }
 
 function closeModal(force?: boolean) {
@@ -535,14 +543,14 @@ ${ph ? `<a class="b1 wa" href="https://wa.me/${ph.wa}?text=${waText}" target="_b
 <button class="btn dn">Done</button>`);
 }
 
-/** 27 Nov 2026: Tally local lead -> short "taking you" screen, then the pre-filled sign-up page.
+/** 27 Nov 2026: Tally local lead -> straight to the pre-filled sign-up page, no popup.
  *  The HubSpot webhook (sendToRouterWebhook) is already sent with keepalive, so leaving the page cannot cancel it.
  *  Logged as self_setup (meta auto: true) so the backend and reports treat it like a Create account click. */
 function goToSignup(token: string) {
   const href = signupHref();
-  showModal(`<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Taking you to your account setup</h2><p>This takes a second.</p>`);
+  hideModalNow(); // no popup: the lead goes straight to sign-up
   if (token) { lrToken = token; lrShownAt = Date.now(); lrTrack("self_setup", { auto: true, via: "redirect" }); }
-  setTimeout(() => { window.location.assign(href); }, 900);
+  setTimeout(() => { window.location.assign(href); }, 150); // let the keepalive requests start first
 }
 
 /** Swap the loader for the GM card (or the generic card if routing failed). */
