@@ -28,6 +28,8 @@ function tallyLocal(result?: RouterResult | null): boolean {
   const v = String((lastLead && (lastLead.tally_setup_dropdown || lastLead.tally_setup)) || "").trim().toLowerCase();
   return v.startsWith("offline");
 }
+/** True when the last routed lead is redirected to sign-up (forms then skip their own thank-you state). */
+export const willRedirectToSignup = () => tallyLocal() && !bigTeam();
 function signupHref(): string {
   if (!lastLead) return BOT_WA_URL;
   const l = { ...lastLead };

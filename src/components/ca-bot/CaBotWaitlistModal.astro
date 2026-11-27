@@ -185,7 +185,7 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
 </div>
 
 <script>
-  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
+  import { routeLead, sendToRouterWebhook, showLoading, showResult, willRedirectToSignup } from "../../scripts/leadRouter";
 
   // Expose modal toggle functions globally so inline onclick works
   // Expose modal toggle functions globally so inline onclick works
@@ -410,12 +410,14 @@ const { contactSource = "VA WA Bot", showTallyReadyMessage = true, hideHeaderOnS
           await backup;
         }
 
-        // Show success state
-        form.style.display = "none";
-        successMsg.classList.remove("hidden");
-        const waHeader = document.getElementById('wa-header');
-        if (waHeader && form.getAttribute('data-hide-header') === 'true') {
-          waHeader.style.display = "none";
+        // Show success state (Tally local: straight to sign-up, form stays as is)
+        if (!willRedirectToSignup()) {
+          form.style.display = "none";
+          successMsg.classList.remove("hidden");
+          const waHeader = document.getElementById('wa-header');
+          if (waHeader && form.getAttribute('data-hide-header') === 'true') {
+            waHeader.style.display = "none";
+          }
         }
 
       } catch (err) {

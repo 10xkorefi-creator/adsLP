@@ -136,7 +136,7 @@
 </section>
 
 <script>
-  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
+  import { routeLead, sendToRouterWebhook, showLoading, showResult, willRedirectToSignup } from "../../scripts/leadRouter";
 
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('ca-bot-form') as HTMLFormElement;
@@ -301,7 +301,7 @@
           });
           
           sendToRouterWebhook(payload, result);
-          showSuccessState();
+          if (!willRedirectToSignup()) showSuccessState(); // Tally local: straight to sign-up, form stays as is
           
           const selfSetup = setup === "offline";
           showResult(result, name, { selfSetup });

@@ -280,7 +280,7 @@ const {
 </div>
 
 <script>
-  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
+  import { routeLead, sendToRouterWebhook, showLoading, showResult, willRedirectToSignup } from "../../scripts/leadRouter";
   // Expose modal toggle functions globally so inline onclick works
   window.openWaitlistModal = () => {
     const modal = document.getElementById('waitlist-modal');
@@ -566,7 +566,7 @@ const {
             email, name, phone, fields: payload, utm, clickIds,
           });
           sendToRouterWebhook(payload, result);
-          showSuccessState();
+          if (!willRedirectToSignup()) showSuccessState(); // Tally local: straight to sign-up, form stays as is
           // MAds: self-setup button for offline, and for "not sure" when they manage Tally themselves
           const selfSetup = setup === "offline" || (setup === "not-sure" && manager === "myself");
           showResult(result, name, { selfSetup, track: true, instantDemo: true });

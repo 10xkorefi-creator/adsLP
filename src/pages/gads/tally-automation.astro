@@ -754,7 +754,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
 </style>
 
 <script>
-  import { routeLead, sendToRouterWebhook, showLoading, showResult } from "../../scripts/leadRouter";
+  import { routeLead, sendToRouterWebhook, showLoading, showResult, willRedirectToSignup } from "../../scripts/leadRouter";
   import { buildSignupUrl, getClickIds, getUtms, persistAttribution, tenDigitPhone } from "../../scripts/signupRedirect";
 
   declare global { interface Window { LEAD_REFERENCE?: string } }
@@ -931,7 +931,7 @@ const check = 'M4.5 12.5l5 5L19.5 7';
     (window as any).dataLayer.push({ event: "lead_submitted", transaction_id: ok ? result!.token : `gads-ta-${Date.now()}`,
       lr_reason: ok ? (result!.reason || "") : "fallback", lr_ms: Math.round(performance.now() - t0) });
 
-    showSuccess();
+    if (!willRedirectToSignup()) showSuccess(); // Tally local: straight to sign-up, form stays as is
     // Enterprise -> Deb card; GM -> Instant Demo card if free now (business hours) else WhatsApp card; failure -> fallback.
     showResult(result, firstName, { track: true, instantDemo: true });
     setTimeout(() => { busy = false; btn.disabled = false; }, 1500);
