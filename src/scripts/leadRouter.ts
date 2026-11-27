@@ -21,15 +21,22 @@ function bigTeam(): boolean {
   const t = String((lastLead && (lastLead.accounting_team_size_dropdown || lastLead.accounting_team_size)) || "").trim();
   return t === "5-10" || t === "10+";
 }
+// 27 Nov 2026 (evening): only enterprise leads (5-10 / 10+ and NOT a CA firm or channel partner, same test as the router's
+// rule 15) keep their popup. Tally local CA firms and channel partners of any size go to sign-up like everyone else.
+function entLike(): boolean {
+  if (!bigTeam()) return false;
+  const d = String((lastLead && (lastLead.which_best_describes_you_dropdown || lastLead.which_best_describes_you)) || "").trim().toLowerCase();
+  return !(d.startsWith("ca firm") || d.startsWith("channel partner"));
+}
 // 27 Nov 2026: Tally local leads skip the popup and go straight to the pre-filled sign-up page (any hour).
-// Enterprise (Deb) and 5-10 / 10+ teams keep their popup. No "Create account" button anywhere else.
+// Enterprise (Deb) keeps its popup (see entLike). No "Create account" button anywhere else.
 function tallyLocal(result?: RouterResult | null): boolean {
   if (result && result.tally_bucket) return result.tally_bucket === "offline";
   const v = String((lastLead && (lastLead.tally_setup_dropdown || lastLead.tally_setup)) || "").trim().toLowerCase();
   return v.startsWith("offline");
 }
 /** True when the last routed lead is redirected to sign-up (forms then skip their own thank-you state). */
-export const willRedirectToSignup = () => tallyLocal() && !bigTeam();
+export const willRedirectToSignup = () => tallyLocal() && !entLike();
 function signupHref(): string {
   if (!lastLead) return BOT_WA_URL;
   const l = { ...lastLead };
@@ -88,7 +95,7 @@ export async function routeLead(opts: {
     first_name: opts.fields.first_name || opts.name || "",
   };
   // 27 Nov 2026: Tally local + small team -> no popup at all (not even the loader); goToSignup redirects after routing
-  if (tallyLocal() && !bigTeam()) hideModalNow();
+  if (tallyLocal() && !entLike()) hideModalNow();
   const body = {
     idempotency_key: opts.idempotencyKey || newKey(),
     page_key: opts.pageKey, email: opts.email, name: opts.name, phone: opts.phone,
@@ -566,7 +573,7 @@ export function showResult(result: RouterResult | null, firstName: string, opts:
     if (track) lrTrack("popup_shown", { design: "enterprise" });
     return;
   }
-  if (opts.variant !== "va_blr" && tallyLocal(result) && !bigTeam()) { goToSignup(ok ? result!.token! : ""); return; }
+  if (opts.variant !== "va_blr" && tallyLocal(result) && !entLike()) { goToSignup(ok ? result!.token! : ""); return; }
   const card = !ok ? fallbackHTML(opts.variant)
     : opts.variant === "va_blr" ? vaBlrHTML(result!.gm!, firstName)
     : gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false);
