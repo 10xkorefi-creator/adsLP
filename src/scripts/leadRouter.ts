@@ -21,6 +21,13 @@ function bigTeam(): boolean {
   const t = String((lastLead && (lastLead.accounting_team_size_dropdown || lastLead.accounting_team_size)) || "").trim();
   return t === "5-10" || t === "10+";
 }
+// 27 Nov 2026: Tally local leads skip the popup and go straight to the pre-filled sign-up page (any hour).
+// Enterprise (Deb) and 5-10 / 10+ teams keep their popup. No "Create account" button anywhere else.
+function tallyLocal(result?: RouterResult | null): boolean {
+  if (result && result.tally_bucket) return result.tally_bucket === "offline";
+  const v = String((lastLead && (lastLead.tally_setup_dropdown || lastLead.tally_setup)) || "").trim().toLowerCase();
+  return v.startsWith("offline");
+}
 function signupHref(): string {
   if (!lastLead) return BOT_WA_URL;
   const l = { ...lastLead };
@@ -344,7 +351,7 @@ function gmHTML(gm: Gm, firstName: string, bucket?: string, callback?: RouterRes
   const ph = fmtPhone(gm.phone);
   void selfSetup; void bucket;
   // 25 Nov 2026: no "Create account" for 5+ accountant leads (team size 5-10 / 10+), whoever they are (CA firms too)
-  const showSelf = !bigTeam();
+  const showSelf = false; // 27 Nov 2026: no Create account in the popup (Tally local leads are redirected instead)
   const waHref = ph && whatsapp ? `https://wa.me/${ph.wa}?text=${encodeURIComponent(`Hi ${gm.name}, I just signed up for the AI Accountant free trial.`)}` : "";
   const mock = `<div class="wc-hd">${ICON_BACK}<span class="wc-av">${av}</span><span class="wc-who"><h2 id="lr-h" class="wc-nm">${esc(gm.full_name || gm.name)}</h2><span class="wc-sub">${role}, AI Accountant</span></span><span class="wc-ic">${ICON_CAMVID}${ICON_PHONE}<span class="wc-dots">${ICON_DOTS}</span></span></div>
 <div class="wc-bd"><span class="wc-pill">Today</span><span class="wc-enc">${ICON_LOCK}Messages are end-to-end encrypted</span><div class="wc-bub">Let's continue this conversation on WhatsApp<span class="wc-tm">now</span></div></div>
@@ -423,8 +430,7 @@ function instantCardHTML(gm: Gm) {
 <div class="idgm">${avHTML(gm, "ring")}<div><h2 id="lr-h" class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
 <p class="idh">Get a live demo right now</p>
 <button type="button" class="b1 idm idgo">${ICON_VIDEO}Start instant demo</button>
-</div>
-<div class="idsub"><p>Prefer to set it up yourself?</p><a class="idca" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_LINK}Create account</a></div>`;
+</div>`;
 }
 
 // 16 Nov 2026 enterprise: leads the router sends to Deb (pool E). WhatsApp only: no instant demo, no Create account.
@@ -454,8 +460,7 @@ function waCardHTML(gm: Gm, inHours: boolean, whatsapp = true) {
 <div class="idgm">${avHTML(gm, "big")}<div><h2 class="idnm">${esc(gm.full_name || gm.name)}</h2><span class="idrole">${esc(gm.title || "Product Specialist")}, AI Accountant</span></div></div>
 <p id="lr-h" class="idh">${title}</p>
 ${waHref ? `<a class="b1 idwa" href="${waHref}" target="_blank" rel="noopener">${ICON_MSG}Chat with ${name} on WhatsApp</a>` : ""}
-</div>
-<div class="idsub"><p>Prefer to set it up yourself?</p><a class="idca" href="${BOT_WA_URL}" target="_blank" rel="noopener">${ICON_LINK}Create account</a></div>`;
+</div>`;
 }
 
 async function startInstantDemo(token: string, gm: Gm, backToCard: () => void) {
@@ -530,6 +535,16 @@ ${ph ? `<a class="b1 wa" href="https://wa.me/${ph.wa}?text=${waText}" target="_b
 <button class="btn dn">Done</button>`);
 }
 
+/** 27 Nov 2026: Tally local lead -> short "taking you" screen, then the pre-filled sign-up page.
+ *  The HubSpot webhook (sendToRouterWebhook) is already sent with keepalive, so leaving the page cannot cancel it.
+ *  Logged as self_setup (meta auto: true) so the backend and reports treat it like a Create account click. */
+function goToSignup(token: string) {
+  const href = signupHref();
+  showModal(`<div class="sp" aria-hidden="true"></div><h2 id="lr-h">Taking you to your account setup</h2><p>This takes a second.</p>`);
+  if (token) { lrToken = token; lrShownAt = Date.now(); lrTrack("self_setup", { auto: true, via: "redirect" }); }
+  setTimeout(() => { window.location.assign(href); }, 900);
+}
+
 /** Swap the loader for the GM card (or the generic card if routing failed). */
 export function showResult(result: RouterResult | null, firstName: string, opts: { selfSetup?: boolean; whatsapp?: boolean; track?: boolean; variant?: Variant; instantDemo?: boolean } = {}) {
   const ok = !!(result && result.ok && result.gm && result.token);
@@ -541,6 +556,7 @@ export function showResult(result: RouterResult | null, firstName: string, opts:
     if (track) lrTrack("popup_shown", { design: "enterprise" });
     return;
   }
+  if (opts.variant !== "va_blr" && tallyLocal(result) && !bigTeam()) { goToSignup(ok ? result!.token! : ""); return; }
   const card = !ok ? fallbackHTML(opts.variant)
     : opts.variant === "va_blr" ? vaBlrHTML(result!.gm!, firstName)
     : gmHTML(result!.gm!, firstName, result!.tally_bucket, result!.callback, opts.selfSetup, opts.whatsapp !== false);
